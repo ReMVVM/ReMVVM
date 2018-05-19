@@ -9,20 +9,20 @@
 import Actions
 import MVVM
 
-public class Store<StoreState: State> {
+public class Store<State: StoreState> {
 
     private let actionDispatcher = ActionsDispatcher(routingEnabled: false)
-    private(set) public var state: StoreState
+    private(set) public var state: State
 
-    public init(with state: StoreState) {
+    public init(with state: State) {
         self.state = state
     }
 
-    public var stateWillChange: ((_ oldState: StoreState) -> Void)?
-    public var stateDidChange: ((_ newState: StoreState, _ oldState: StoreState) -> Void)?
+    public var stateWillChange: ((_ oldState: State) -> Void)?
+    public var stateDidChange: ((_ newState: State, _ oldState: State) -> Void)?
 
-    public func register<R: Reducer>(reducer: R.Type) where StoreState == R.StoreState {
-        actionDispatcher.register(action: reducer.StoreAction.self) { [unowned self] in
+    public func register<R: Reducer>(reducer: R.Type) where State == R.State {
+        actionDispatcher.register(action: reducer.Action.self) { [unowned self] in
             let oldState = self.state
             self.stateWillChange?(oldState)
             self.state = reducer.reduce(state: oldState, with: $0)
@@ -30,7 +30,7 @@ public class Store<StoreState: State> {
         }
     }
 
-    public func handle<StoreAction: Action>(action: StoreAction) {
+    public func handle<Action: StoreAction>(action: Action) {
         actionDispatcher.handle(action: action)
     }
 }

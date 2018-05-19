@@ -7,8 +7,8 @@
 //
 
 public protocol Reducer {
-    associatedtype StoreAction: Action
-    associatedtype StoreState: State
+    associatedtype Action: StoreAction
+    associatedtype State: StoreState
 
-    static func reduce(state: StoreState, with params: StoreAction.ParamType) -> StoreState
+    static func reduce(state: State, with params: Action.ParamType) -> State
 }

@@ -6,6 +6,6 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-public protocol State {
+public protocol StoreState {
     var factory: ViewModelFactory { get }
 }

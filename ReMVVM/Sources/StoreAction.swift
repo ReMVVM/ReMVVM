@@ -8,4 +8,4 @@
 
 import Actions
 
-public protocol Action: Actions.Action where ReturnType == Void { }
+public protocol StoreAction: Actions.Action where ReturnType == Void { }
