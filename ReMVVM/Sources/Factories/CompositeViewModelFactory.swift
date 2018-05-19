@@ -8,7 +8,7 @@
 
 import MVVM
 
-public struct CompositeStoreViewModelFactory: ViewModelFactory {
+public struct CompositeViewModelFactory: ViewModelFactory {
 
     private var factories: [ViewModelFactory] = []
 
