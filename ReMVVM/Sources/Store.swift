@@ -18,8 +18,8 @@ public class Store<StoreState: State> {
         self.state = state
     }
 
-    public var stateWillChange: ((_ oldState: State) -> Void)?
-    public var stateDidChange: ((_ newState: State, _ oldState: State) -> Void)?
+    public var stateWillChange: ((_ oldState: StoreState) -> Void)?
+    public var stateDidChange: ((_ newState: StoreState, _ oldState: StoreState) -> Void)?
 
     public func register<R: Reducer>(reducer: R.Type) where StoreState == R.StoreState {
         actionDispatcher.register(action: reducer.StoreAction.self) { [unowned self] in
