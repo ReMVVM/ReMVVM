@@ -8,6 +8,9 @@
 
 import MVVM
 
+public typealias ViewModel = MVVM.ViewModel
+public typealias ViewModelContext = MVVM.ViewModelContext
+
 public protocol ViewModelProvider {
     func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String?) -> VM?
 }
