@@ -11,10 +11,11 @@ import MVVM
 
 public class Store<State: StoreState> {
 
-    private let actionDispatcher = ActionsDispatcher(routingEnabled: false)
+    private let actionDispatcher: ActionsDispatcher
     private(set) public var state: State
 
-    public init(with state: State) {
+    public init(with state: State, routingEnabled: Bool = false) {
+        actionDispatcher = ActionsDispatcher(routingEnabled: false)
         self.state = state
     }
 
