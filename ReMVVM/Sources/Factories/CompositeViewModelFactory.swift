@@ -10,7 +10,7 @@ import MVVM
 
 public struct CompositeViewModelFactory: ViewModelFactory {
 
-    private var factories: [ViewModelFactory] = []
+    private var factories: [ViewModelFactory] = [InitializableViewModelFactory()]
 
     public init() { }
     public init(factory: ViewModelFactory) {
