@@ -15,7 +15,7 @@ public class Store<State: StoreState> {
     private(set) public var state: State
 
     public init(with state: State, routingEnabled: Bool = false) {
-        actionDispatcher = ActionsDispatcher(routingEnabled: false)
+        actionDispatcher = ActionsDispatcher(routingEnabled: routingEnabled)
         self.state = state
     }
 
