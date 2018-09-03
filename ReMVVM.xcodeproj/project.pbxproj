@@ -26,6 +26,8 @@
 		08491BE620B02439008D93AA /* StoreState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD420B01F35008D93AA /* StoreState.swift */; };
 		08491BE720B0243C008D93AA /* ViewModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD620B01F78008D93AA /* ViewModelProvider.swift */; };
 		08491BE820B0243F008D93AA /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD820B01FA2008D93AA /* ViewModelFactory.swift */; };
+		086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */; };
+		086E214F2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */; };
 		089426BF20B03D8200A4B6FF /* MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BD20B03D8200A4B6FF /* MVVM.framework */; };
 		089426C020B03D8200A4B6FF /* Actions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BE20B03D8200A4B6FF /* Actions.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +57,7 @@
 		08491BDA20B01FD0008D93AA /* StoreAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAction.swift; sourceTree = "<group>"; };
 		08491BDC20B02026008D93AA /* CompositeViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeViewModelFactory.swift; sourceTree = "<group>"; };
 		08491BDF20B02074008D93AA /* SingleViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleViewModelFactory.swift; sourceTree = "<group>"; };
+		086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializableViewModelFactory.swift; sourceTree = "<group>"; };
 		089426BD20B03D8200A4B6FF /* MVVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MVVM.framework; path = Carthage/Build/iOS/MVVM.framework; sourceTree = "<group>"; };
 		089426BE20B03D8200A4B6FF /* Actions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Actions.framework; path = Carthage/Build/iOS/Actions.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +140,7 @@
 			children = (
 				08491BDF20B02074008D93AA /* SingleViewModelFactory.swift */,
 				08491BDC20B02026008D93AA /* CompositeViewModelFactory.swift */,
+				086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -266,6 +270,7 @@
 				08491BDB20B01FD0008D93AA /* StoreAction.swift in Sources */,
 				08491BD520B01F35008D93AA /* StoreState.swift in Sources */,
 				08491BD720B01F78008D93AA /* ViewModelProvider.swift in Sources */,
+				086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +285,7 @@
 				08491BE520B02437008D93AA /* Store.swift in Sources */,
 				08491BE420B02434008D93AA /* Reducer.swift in Sources */,
 				08491BE820B0243F008D93AA /* ViewModelFactory.swift in Sources */,
+				086E214F2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */,
 				08491BE620B02439008D93AA /* StoreState.swift in Sources */,
 				08491BE120B0242B008D93AA /* SingleViewModelFactory.swift in Sources */,
 			);
