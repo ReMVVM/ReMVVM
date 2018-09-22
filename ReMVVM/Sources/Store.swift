@@ -7,6 +7,7 @@
 //
 
 import Actions
+import Foundation
 import MVVM
 
 public class Store<State: StoreState> {
@@ -19,39 +20,32 @@ public class Store<State: StoreState> {
         self.state = state
     }
 
-    public var stateWillChange: ((_ oldState: State) -> Void)?
-    public var stateDidChange: ((_ newState: State, _ oldState: State) -> Void)?
-
     public func register<R: Reducer>(reducer: R.Type) where State == R.State {
         actionDispatcher.register(action: reducer.Action.self) { [unowned self] in
             let oldState = self.state
-            self.stateWillChange?(oldState)
+            self.activeSubscribers.forEach { $0.willChange(state: oldState) }
             self.state = reducer.reduce(state: oldState, with: $0)
-            self.stateDidChange?(self.state, oldState)
+            self.activeSubscribers.forEach { $0.didChange(state: self.state, oldState: oldState) }
         }
     }
 
     public func handle<Action: StoreAction>(action: Action) {
         actionDispatcher.handle(action: action)
     }
-}
 
-extension Store: ViewModelProvider {
-    public func viewModel<VM>(for context: ViewModelContext, for key: String?) -> VM? {
-        let factory = MVVMViewModelFactory(key: key, factory: state.factory)
-        return ViewModelProviders.get(for: context, with: factory).get(for: key)
-    }
-}
-
-private struct MVVMViewModelFactory: MVVM.ViewModelFactory {
-    let key: String?
-    let factory: ViewModelFactory
-    func create<VM>() -> VM? {
-        return factory.create(key: key)
+    private var subscribers = [AnyWeakStoreSubscriber<State>]()
+    private var activeSubscribers: [AnyWeakStoreSubscriber<State>] {
+        subscribers = subscribers.filter { $0.anyValue != nil }
+        return subscribers
     }
 
-    init(key: String?, factory: ViewModelFactory) {
-        self.key = key
-        self.factory = factory
+    public func add<Subscriber>(subscriber: Subscriber) where Subscriber: StoreSubscriber, State == Subscriber.State {
+        guard !activeSubscribers.contains(where: { $0.anyValue === subscriber }) else { return }
+        subscribers.append(AnyWeakStoreSubscriber(subscriber: subscriber))
+    }
+
+    public func remove<Subscriber>(subscriber: Subscriber) where Subscriber: StoreSubscriber, State == Subscriber.State {
+        guard let index = activeSubscribers.index(where: { $0.anyValue === subscriber }) else { return }
+        subscribers.remove(at: index)
     }
 }

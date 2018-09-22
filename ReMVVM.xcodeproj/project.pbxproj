@@ -26,10 +26,14 @@
 		08491BE620B02439008D93AA /* StoreState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD420B01F35008D93AA /* StoreState.swift */; };
 		08491BE720B0243C008D93AA /* ViewModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD620B01F78008D93AA /* ViewModelProvider.swift */; };
 		08491BE820B0243F008D93AA /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD820B01FA2008D93AA /* ViewModelFactory.swift */; };
+		08676B5C21518E39003CC293 /* StoreSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08676B5B21518E39003CC293 /* StoreSubscriber.swift */; };
+		08676B5D21519B68003CC293 /* StoreSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08676B5B21518E39003CC293 /* StoreSubscriber.swift */; };
 		086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */; };
 		086E214F2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */; };
 		089426BF20B03D8200A4B6FF /* MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BD20B03D8200A4B6FF /* MVVM.framework */; };
 		089426C020B03D8200A4B6FF /* Actions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BE20B03D8200A4B6FF /* Actions.framework */; };
+		08FB77912152E72500283977 /* Actions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BE20B03D8200A4B6FF /* Actions.framework */; };
+		08FB77922152E72700283977 /* MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BD20B03D8200A4B6FF /* MVVM.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,7 @@
 		08491BDA20B01FD0008D93AA /* StoreAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAction.swift; sourceTree = "<group>"; };
 		08491BDC20B02026008D93AA /* CompositeViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeViewModelFactory.swift; sourceTree = "<group>"; };
 		08491BDF20B02074008D93AA /* SingleViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleViewModelFactory.swift; sourceTree = "<group>"; };
+		08676B5B21518E39003CC293 /* StoreSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSubscriber.swift; sourceTree = "<group>"; };
 		086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializableViewModelFactory.swift; sourceTree = "<group>"; };
 		089426BD20B03D8200A4B6FF /* MVVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MVVM.framework; path = Carthage/Build/iOS/MVVM.framework; sourceTree = "<group>"; };
 		089426BE20B03D8200A4B6FF /* Actions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Actions.framework; path = Carthage/Build/iOS/Actions.framework; sourceTree = "<group>"; };
@@ -76,7 +81,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08FB77912152E72500283977 /* Actions.framework in Frameworks */,
 				08491B9E20B010D1008D93AA /* ReMVVM.framework in Frameworks */,
+				08FB77922152E72700283977 /* MVVM.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +136,7 @@
 				08491BD220B01E99008D93AA /* Reducer.swift */,
 				08491BD020B01E69008D93AA /* Store.swift */,
 				08491BD420B01F35008D93AA /* StoreState.swift */,
+				08676B5B21518E39003CC293 /* StoreSubscriber.swift */,
 				08491BD620B01F78008D93AA /* ViewModelProvider.swift */,
 				08491BD820B01FA2008D93AA /* ViewModelFactory.swift */,
 			);
@@ -267,6 +275,7 @@
 				08491BD120B01E69008D93AA /* Store.swift in Sources */,
 				08491BD320B01E99008D93AA /* Reducer.swift in Sources */,
 				08491BD920B01FA2008D93AA /* ViewModelFactory.swift in Sources */,
+				08676B5C21518E39003CC293 /* StoreSubscriber.swift in Sources */,
 				08491BDB20B01FD0008D93AA /* StoreAction.swift in Sources */,
 				08491BD520B01F35008D93AA /* StoreState.swift in Sources */,
 				08491BD720B01F78008D93AA /* ViewModelProvider.swift in Sources */,
@@ -280,6 +289,7 @@
 			files = (
 				08491BA320B010D1008D93AA /* ReMVVMTests.swift in Sources */,
 				08491BE720B0243C008D93AA /* ViewModelProvider.swift in Sources */,
+				08676B5D21519B68003CC293 /* StoreSubscriber.swift in Sources */,
 				08491BE320B02432008D93AA /* StoreAction.swift in Sources */,
 				08491BE220B0242E008D93AA /* CompositeViewModelFactory.swift in Sources */,
 				08491BE520B02437008D93AA /* Store.swift in Sources */,
@@ -483,11 +493,16 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ReMVVMTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.db.ReMVVMTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -501,11 +516,16 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ReMVVMTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.db.ReMVVMTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -11,12 +11,35 @@ import MVVM
 public typealias ViewModel = MVVM.ViewModel
 public typealias ViewModelContext = MVVM.ViewModelContext
 
-public protocol ViewModelProvider {
-    func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String?) -> VM?
+public class ViewModelProvider<State: StoreState> {
+
+    private let store: Store<State>
+    public init(with store: Store<State>) {
+        self.store = store
+    }
+
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
+        let factory = MVVMViewModelFactory(key: key, factory: store.state.factory)
+        return ViewModelProviders.get(for: context, with: factory).get(for: key)
+    }
+
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State == State {
+        let factory = MVVMViewModelFactory(key: key, factory: store.state.factory)
+        guard let vm: VM = ViewModelProviders.get(for: context, with: factory).get(for: key) else { return nil }
+        store.add(subscriber: vm)
+        return vm
+    }
 }
 
-public extension ViewModelProvider {
-    func viewModel<VM: ViewModel>(for context: ViewModelContext) -> VM? {
-        return viewModel(for: context, for: nil)
+private struct MVVMViewModelFactory: MVVM.ViewModelFactory {
+    let key: String?
+    let factory: ViewModelFactory
+    func create<VM>() -> VM? {
+        return factory.create(key: key)
+    }
+
+    init(key: String?, factory: ViewModelFactory) {
+        self.key = key
+        self.factory = factory
     }
 }
