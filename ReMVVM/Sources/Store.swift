@@ -10,14 +10,18 @@ import Actions
 import Foundation
 import MVVM
 
+public typealias StoreState = Any
+
 public class Store<State: StoreState> {
 
     private let actionDispatcher: ActionsDispatcher
     private(set) public var state: State
+    let middleware: [AnyMiddleware]
 
-    public init(with state: State, routingEnabled: Bool = false) {
+    public init(with state: State, middleware: [AnyMiddleware] = [], routingEnabled: Bool = false) {
         actionDispatcher = ActionsDispatcher(routingEnabled: routingEnabled)
         self.state = state
+        self.middleware = middleware
     }
 
     public func register<R: Reducer>(reducer: R.Type) where State == R.State {
@@ -30,7 +34,7 @@ public class Store<State: StoreState> {
     }
 
     public func handle<Action: StoreAction>(action: Action) {
-        actionDispatcher.handle(action: action)
+        handle(action: action, completion: nil)
     }
 
     private var subscribers = [AnyWeakStoreSubscriber<State>]()
@@ -47,5 +51,17 @@ public class Store<State: StoreState> {
     public func remove<Subscriber>(subscriber: Subscriber) where Subscriber: StoreSubscriber, State == Subscriber.State {
         guard let index = activeSubscribers.index(where: { $0.anyValue === subscriber }) else { return }
         subscribers.remove(at: index)
+    }
+}
+
+extension Store: DispatchHandler {
+
+    func handle<Action: StoreAction>(action: Action, index: Int = 0, completion: ((_ state: Any) -> Void)?) {
+        if index == middleware.count {
+            actionDispatcher.handle(action: action)
+            completion?(state)
+        } else {
+            middleware[index].middleware(with: action, dispatch: Dispatch(handler: self, index: index, completion: completion), state: state)
+        }
     }
 }

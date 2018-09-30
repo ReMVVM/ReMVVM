@@ -8,6 +8,7 @@
 import XCTest
 @testable import ReMVVM
 
+
 class ReMVVMTests: XCTestCase {
     
     override func setUp() {
@@ -21,8 +22,7 @@ class ReMVVMTests: XCTestCase {
     }
     
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+
     }
     
     func testPerformanceExample() {

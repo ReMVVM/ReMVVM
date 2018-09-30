@@ -11,7 +11,11 @@ import MVVM
 public typealias ViewModel = MVVM.ViewModel
 public typealias ViewModelContext = MVVM.ViewModelContext
 
-public class ViewModelProvider<State: StoreState> {
+public protocol FactoryStoreState: StoreState {
+    var factory: ViewModelFactory { get }
+}
+
+public struct ViewModelProvider<State: FactoryStoreState> {
 
     private let store: Store<State>
     public init(with store: Store<State>) {
