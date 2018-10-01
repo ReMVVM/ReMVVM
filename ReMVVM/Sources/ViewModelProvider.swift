@@ -8,14 +8,7 @@
 
 import MVVM
 
-public typealias ViewModel = MVVM.ViewModel
-public typealias ViewModelContext = MVVM.ViewModelContext
-
-public protocol FactoryStoreState: StoreState {
-    var factory: ViewModelFactory { get }
-}
-
-public struct ViewModelProvider<State: FactoryStoreState> {
+public struct ViewModelProvider<State: StoreState> {
 
     private let store: Store<State>
     public init(with store: Store<State>) {
@@ -32,6 +25,10 @@ public struct ViewModelProvider<State: FactoryStoreState> {
         guard let vm: VM = ViewModelProviders.get(for: context, with: factory).get(for: key) else { return nil }
         store.add(subscriber: vm)
         return vm
+    }
+
+    public func clear(context: ViewModelContext) {
+        ViewModelStores.get(for: context).clear()
     }
 }
 

@@ -8,7 +8,7 @@
 import XCTest
 @testable import ReMVVM
 
-struct TestState: FactoryStoreState {
+struct TestState: StoreState {
     var factory: ViewModelFactory = CompositeViewModelFactory()
 
 }
