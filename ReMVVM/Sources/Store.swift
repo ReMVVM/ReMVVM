@@ -25,16 +25,36 @@ public class Store<State: StoreState> {
     }
 
     public func register<R: Reducer>(reducer: R.Type) where State == R.State {
-        actionDispatcher.register(action: reducer.Action.self) { [unowned self] in
-            let oldState = self.state
-            self.activeSubscribers.forEach { $0.willChange(state: oldState) }
-            self.state = reducer.reduce(state: oldState, with: $0)
-            self.activeSubscribers.forEach { $0.didChange(state: self.state, oldState: oldState) }
+        actionDispatcher.register(action: reducer.Action.self) { [weak self] in
+            self?.handle(param: $0, with: reducer)
         }
     }
 
+    private func handle<Action, R: Reducer>(param: Action.ParamType, with reducer: R.Type) where R.Action == Action, State == R.State {
+
+        let reduce = { [weak self] in
+            guard let strongSelf = self else { return }
+            let oldState = strongSelf.state
+            strongSelf.activeSubscribers.forEach { $0.willChange(state: oldState) }
+            strongSelf.state = reducer.reduce(state: oldState, with: param)
+            strongSelf.activeSubscribers.forEach { $0.didChange(state: strongSelf.state, oldState: oldState) }
+        }
+
+        let getState = { [weak self] in
+            return self?.state
+        }
+
+        let dispatch = Dispatch<Action>(handler: self,
+                                        completion: nil,
+                                        middleware: middleware,
+                                        getState: getState,
+                                        reduce: reduce,
+                                        actionParam: param)
+        dispatch.next()
+    }
+
     public func handle<Action: StoreAction>(action: Action) {
-        handle(action: action, completion: nil)
+        actionDispatcher.handle(action: action)
     }
 
     private var subscribers = [AnyWeakStoreSubscriber<State>]()
@@ -51,17 +71,5 @@ public class Store<State: StoreState> {
     public func remove<Subscriber>(subscriber: Subscriber) where Subscriber: StoreSubscriber, State == Subscriber.State {
         guard let index = activeSubscribers.index(where: { $0.anyValue === subscriber }) else { return }
         subscribers.remove(at: index)
-    }
-}
-
-extension Store: DispatchHandler {
-
-    func handle<Action: StoreAction>(action: Action, index: Int = 0, completion: ((_ state: Any) -> Void)?) {
-        if index == middleware.count {
-            actionDispatcher.handle(action: action)
-            completion?(state)
-        } else {
-            middleware[index].middleware(with: action, dispatch: Dispatch(handler: self, index: index, completion: completion), state: state)
-        }
     }
 }
