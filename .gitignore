@@ -20,6 +20,7 @@ DerivedData
 
 # Carthage
 Carthage/Build
+Carthage/Checkouts
 
 # Swift package manager
 .build/

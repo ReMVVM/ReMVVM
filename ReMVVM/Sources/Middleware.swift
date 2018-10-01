@@ -7,48 +7,47 @@
 //
 
 public protocol AnyMiddleware {
-    func middleware<Action: StoreAction>(with param: Action.ParamType, dispatch: Dispatch<Action>, state: Any)
+    func apply<Action: StoreAction>(with dispatcher: Dispatcher<Action>, storeState: Any)
 }
 
 public protocol Middleware: AnyMiddleware {
     associatedtype Action: StoreAction
     associatedtype State: StoreState
-    func middleware(with param: Action.ParamType, dispatch: Dispatch<Action>, state: State)
+    func apply(with dispatcher: Dispatcher<Action>, storeState: State)
 }
 
 extension AnyMiddleware where Self: Middleware {
-    public func middleware<Action: StoreAction>(with param: Action.ParamType, dispatch: Dispatch<Action>, state: Any) {
+    public func apply<Action: StoreAction>(with dispatcher: Dispatcher<Action>, storeState: Any) {
         guard Action.self == Self.Action.self,
-            let state = state as? State,
-            let par = param as? Self.Action.ParamType,
-            let dis = dispatch as? Dispatch<Self.Action>
+            let state = storeState as? State,
+            let dis = dispatcher as? Dispatcher<Self.Action>
         else {
-            dispatch.next()
+            dispatcher.next()
             return
         }
 
-        middleware(with: par, dispatch: dis, state: state)
+        apply(with: dis, storeState: state)
     }
 }
 
-protocol DispatchHandler: class {
-    func handle<Action: StoreAction>(action: Action)
+protocol StoreActionDispatcher: class {
+    func dispatch<Action: StoreAction>(action: Action)
 }
 
-extension Store: DispatchHandler { }
+extension Store: StoreActionDispatcher { }
 
-public struct Dispatch<Action: StoreAction> {
+public struct Dispatcher<Action: StoreAction> {
 
-    weak var handler: DispatchHandler?
+    weak var dispatcher: StoreActionDispatcher?
     let completion: ((Any) -> Void)?
     let middleware: [AnyMiddleware]
     let getState: () -> Any
     let reduce: () -> Void
 
-    let actionParam: Action.ParamType
+    public let param: Action.ParamType
 
-    public func handle<Action: StoreAction>(action: Action) {
-        handler?.handle(action: action)
+    public func dispatch<Action: StoreAction>(action: Action) {
+        dispatcher?.dispatch(action: action)
     }
 
     public func next(completion: ((Any) -> Void)? = nil) {
@@ -63,13 +62,13 @@ public struct Dispatch<Action: StoreAction> {
 
         var newWiddleware = middleware
         let first = newWiddleware.removeFirst()
-        let dispatch = Dispatch(handler: handler,
+        let dispatch = Dispatcher(dispatcher: dispatcher,
                                 completion: compl,
                                 middleware: newWiddleware,
                                 getState: getState,
                                 reduce: reduce,
-                                actionParam: actionParam)
-        first.middleware(with: actionParam, dispatch: dispatch, state: getState())
+                                param: param)
+        first.apply(with: dispatch, storeState: getState())
     }
 
     private func compose(completion1: ((Any) -> Void)?, completion2: ((Any) -> Void)?) -> ((Any) -> Void)? {

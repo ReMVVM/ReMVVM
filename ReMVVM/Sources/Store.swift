@@ -26,11 +26,11 @@ public class Store<State: StoreState> {
 
     public func register<R: Reducer>(reducer: R.Type) where State == R.State {
         actionDispatcher.register(action: reducer.Action.self) { [weak self] in
-            self?.handle(param: $0, with: reducer)
+            self?.dispatch(param: $0, with: reducer)
         }
     }
 
-    private func handle<Action, R: Reducer>(param: Action.ParamType, with reducer: R.Type) where R.Action == Action, State == R.State {
+    private func dispatch<Action, R: Reducer>(param: Action.ParamType, with reducer: R.Type) where R.Action == Action, State == R.State {
 
         let reduce = { [weak self] in
             guard let strongSelf = self else { return }
@@ -44,17 +44,17 @@ public class Store<State: StoreState> {
             return self?.state
         }
 
-        let dispatch = Dispatch<Action>(handler: self,
-                                        completion: nil,
-                                        middleware: middleware,
-                                        getState: getState,
-                                        reduce: reduce,
-                                        actionParam: param)
-        dispatch.next()
+       Dispatcher<Action>(dispatcher: self,
+                                 completion: nil,
+                                 middleware: middleware,
+                                 getState: getState,
+                                 reduce: reduce,
+                                 param: param)
+        .next()
     }
 
-    public func handle<Action: StoreAction>(action: Action) {
-        actionDispatcher.handle(action: action)
+    public func dispatch<Action: StoreAction>(action: Action) {
+        actionDispatcher.dispatch(action: action)
     }
 
     private var subscribers = [AnyWeakStoreSubscriber<State>]()
