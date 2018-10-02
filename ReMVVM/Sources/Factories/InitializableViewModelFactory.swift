@@ -6,11 +6,13 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-public protocol Initializable {
-    init()
-}
+import MVVM
+
+public typealias Initializable = MVVM.Initializable
 
 public struct InitializableViewModelFactory: ViewModelFactory {
+
+    private let viewModelFactory = MVVM.InitializableViewModelFactory()
 
     public init() { }
 
@@ -19,7 +21,6 @@ public struct InitializableViewModelFactory: ViewModelFactory {
     }
 
     public func create<VM>(key: String?) -> VM? {
-        guard let objType = VM.self as? (Initializable.Type) else { return nil }
-        return objType.init() as? VM
+        return viewModelFactory.create()
     }
 }
