@@ -16,7 +16,7 @@ struct TestState: StoreState {
 
 struct TestAAction: StoreAction { }
 struct TestAMiddleware: Middleware {
-    func apply(with dispatcher: Dispatcher<TestAAction>, storeState: TestState) {
+    func applyMiddleware(with actionParam: Void, dispatcher: Dispatcher<TestAAction>, storeState: TestState) {
         print("middleware A")
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             dispatcher.dispatch(action: TestBAction())
@@ -35,7 +35,7 @@ struct TestAReducer: Reducer {
 
 struct TestBAction: StoreAction { }
 struct TestBMiddleware: Middleware {
-    func apply(with dispatcher: Dispatcher<TestBAction>, storeState: TestState) {
+    func applyMiddleware(with actionParam: Void, dispatcher: Dispatcher<TestBAction>, storeState: TestState) {
         print("middleware B")
         dispatcher.next() { newState in
             print("middleware Baa")
@@ -53,7 +53,8 @@ struct TestBReducer: Reducer {
 }
 
 struct TestCMiddleware: AnyMiddleware {
-    func apply<Action>(with dispatcher: Dispatcher<Action>, storeState: Any) where Action : StoreAction {
+
+    func applyMiddleware<Action>(with actionParam: Action.ParamType, dispatcher: Dispatcher<Action>, storeState: Any) where Action : StoreAction {
         print("middleware C")
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             dispatcher.next() { newState in
