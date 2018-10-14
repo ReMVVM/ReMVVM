@@ -13,14 +13,20 @@ public struct CompositeViewModelFactory: ViewModelFactory {
     private var factories: [ViewModelFactory] = [InitializableViewModelFactory()]
 
     public init() { }
-    public init(factory: ViewModelFactory) {
-        add(factory: factory)
+
+    public init(with factories: [ViewModelFactory]) {
+        self.factories.append(contentsOf: factories)
     }
-    public init<VM>(factory: @escaping () -> VM) where VM: ViewModel {
+
+    public init(with factory: ViewModelFactory) {
         add(factory: factory)
     }
 
-    public init<VM>(factory: @escaping (String?) -> VM?) where VM: ViewModel {
+    public init<VM>(with factory: @escaping () -> VM) where VM: ViewModel {
+        add(factory: factory)
+    }
+
+    public init<VM>(with factory: @escaping (String?) -> VM?) where VM: ViewModel {
         add(factory: factory)
     }
 
@@ -29,11 +35,11 @@ public struct CompositeViewModelFactory: ViewModelFactory {
     }
 
     public mutating func add<VM>(factory: @escaping () -> VM) where VM: ViewModel {
-        factories.append(SingleViewModelFactory(factory: { _ in factory() }))
+        factories.append(SingleViewModelFactory(with: { _ in factory() }))
     }
 
     public mutating func add<VM>(factory: @escaping (String?) -> VM?) where VM: ViewModel {
-        factories.append(SingleViewModelFactory(factory: factory))
+        factories.append(SingleViewModelFactory(with: factory))
     }
 
     public func creates<VM: ViewModel>(type: VM.Type) -> Bool {

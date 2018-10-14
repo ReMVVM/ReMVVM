@@ -12,7 +12,7 @@ public struct SingleViewModelFactory<SVM: ViewModel>: ViewModelFactory {
 
     private let factory: (String?) -> SVM?
 
-    public init(factory: @escaping (String?) -> SVM?) {
+    public init(with factory: @escaping (String?) -> SVM?) {
         self.factory = factory
     }
 
