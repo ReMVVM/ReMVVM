@@ -8,22 +8,23 @@
 
 import MVVM
 
-public struct ViewModelProvider<State: StoreState> {
+public struct ViewModelProvider {
 
-    private let store: Store<State>
-    public init(with store: Store<State>) {
+    private let store: AnyStore
+    public init(with store: AnyStore) {
         self.store = store
     }
 
     public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
-        let factory = MVVMViewModelFactory(key: key, factory: store.state.factory)
+        let factory = MVVMViewModelFactory(key: key, factory: store.anyState.factory)
         return ViewModelProviders.provider(for: context, with: factory).get(for: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State == State {
-        let factory = MVVMViewModelFactory(key: key, factory: store.state.factory)
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State: StoreState {
+        let factory = MVVMViewModelFactory(key: key, factory: store.anyState.factory)
         guard let vm: VM = ViewModelProviders.provider(for: context, with: factory).get(for: key) else { return nil }
         store.add(subscriber: vm)
+
         return vm
     }
 

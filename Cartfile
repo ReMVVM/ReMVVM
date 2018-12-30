@@ -1,2 +1,2 @@
-git "git@github.com:dgrzeszczak/SwiftyRedux.git" "develop"
+git "git@github.com:dgrzeszczak/SwiftyRedux.git" "feature/subscribers"
 git "git@github.com:dgrzeszczak/MVVM.git" "develop"
