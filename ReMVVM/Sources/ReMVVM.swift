@@ -38,7 +38,7 @@ public struct ReMVVM: StoreActionDispatcher {
         viewModelProvider = ViewModelProvider(with: store)
     }
 
-    public func dispatch<Action>(action: Action) where Action : StoreAction {
+    public func dispatch(action: StoreAction) {
         store.dispatch(action: action)
     }
 

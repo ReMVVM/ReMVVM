@@ -17,6 +17,7 @@ public typealias StoreAction = SwiftyRedux.StoreAction
 public typealias Reducer = SwiftyRedux.Reducer
 public typealias AnyMiddleware = SwiftyRedux.AnyMiddleware
 public typealias Middleware = SwiftyRedux.Middleware
+public typealias AnyDispatcher = SwiftyRedux.AnyDispatcher
 public typealias Dispatcher = SwiftyRedux.Dispatcher
 public typealias StoreSubscriber = SwiftyRedux.StoreSubscriber
 public typealias StoreActionDispatcher = SwiftyRedux.StoreActionDispatcher
