@@ -7,26 +7,32 @@
 //
 
 public protocol ReMVVMDriven {
+    var remvvmScope: String { get }
     var remvvm: ReMVVM { get }
+}
+
+extension ReMVVMDriven {
+    public var remvvmScope: String { return ReMVVM.Config.defaultScope }
 }
 
 public struct ReMVVM: StoreActionDispatcher {
     public struct Config {
-        fileprivate static var defaultReMVVM: ReMVVM = {
-            guard let store = store else {
-                fatalError("ReMVVM has to be initialized first. Please use ReMVVM.Config.initialize(with:) method.")
+        public static let defaultScope = "default"
+
+        private static var remvvm: [String: ReMVVM] = [:]
+        public static func initialize(scope: String = defaultScope, with store: AnyStore) {
+            guard !remvvm.keys.contains(scope) else {
+                fatalError("ReMVVM already initialized for scope: \(scope).")
+            }
+            remvvm[scope] = ReMVVM(with: store)
+        }
+
+        fileprivate static func remvvm(for scope: String) -> ReMVVM {
+            guard let remmvvm = ReMVVM.Config.remvvm[scope] else {
+                fatalError("ReMVVM not initialized for scope: \(scope). Please uee ReMVVM.Config.initialize(scope: with:) method first.")
             }
 
-            return ReMVVM(with: store)
-        }()
-
-        private static var store: AnyStore?
-        public static func initialize(with store: AnyStore) {
-            guard Config.store == nil else {
-                assertionFailure("ReMVVM already initialized. Are you sure ?")
-                return
-            }
-            Config.store = store
+            return remmvvm
         }
     }
 
@@ -56,5 +62,5 @@ public struct ReMVVM: StoreActionDispatcher {
 }
 
 extension ReMVVMDriven {
-    public var remvvm: ReMVVM { return ReMVVM.Config.defaultReMVVM }
+    public var remvvm: ReMVVM { return ReMVVM.Config.remvvm(for: remvvmScope) }
 }
