@@ -6,6 +6,18 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
+//RxSwift snippet for action observer
+//public extension StoreActionDispatcher where Self: ObserverType {
+//    public func on(_ event: Event<StoreAction>) {
+//        guard let action = event.element else { return }
+//        self.dispatch(action: action)
+//    }
+//}
+//extension SwiftyRedux.Store: ObserverType { }
+//extension ReMVVM: ObserverType { }
+//extension Dispatcher: ObserverType { }
+//extension AnyDispatcher: ObserverType { }
+
 public protocol ReMVVMDriven {
     var remvvmScope: String { get }
     var remvvm: ReMVVM { get }
