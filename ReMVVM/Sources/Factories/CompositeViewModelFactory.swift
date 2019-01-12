@@ -8,7 +8,7 @@
 
 import MVVM
 
-public struct CompositeViewModelFactory: ViewModelFactory {
+public final class CompositeViewModelFactory: ViewModelFactory {
 
     private var factories: [ViewModelFactory] = [InitializableViewModelFactory()]
 
@@ -26,19 +26,27 @@ public struct CompositeViewModelFactory: ViewModelFactory {
         add(factory: factory)
     }
 
+    public init<VM>(with factory: @escaping () -> VM?) where VM: ViewModel {
+        add(factory: factory)
+    }
+
     public init<VM>(with factory: @escaping (String?) -> VM?) where VM: ViewModel {
         add(factory: factory)
     }
 
-    public mutating func add(factory: ViewModelFactory) {
+    public func add(factory: ViewModelFactory) {
         factories.append(factory)
     }
 
-    public mutating func add<VM>(factory: @escaping () -> VM) where VM: ViewModel {
+    public func add<VM>(factory: @escaping () -> VM) where VM: ViewModel {
         factories.append(SingleViewModelFactory(with: { _ in factory() }))
     }
 
-    public mutating func add<VM>(factory: @escaping (String?) -> VM?) where VM: ViewModel {
+    public func add<VM>(factory: @escaping () -> VM?) where VM: ViewModel {
+        factories.append(SingleViewModelFactory(with: { _ in factory() }))
+    }
+
+    public func add<VM>(factory: @escaping (String?) -> VM?) where VM: ViewModel {
         factories.append(SingleViewModelFactory(with: factory))
     }
 
