@@ -7,14 +7,14 @@ Redux + MVVM = ReMVVM
 
 # Motivation 
 
-**Model-View-ViewModel** - is well known and widely used architecture on *iOS* platform. It is very simple, lightweight, doesn’t bring any boilerplate and works well with reactive programming (can be used without it of course). Working on the app that contain more than single view you will find couple of questions: 
+**Model-View-ViewModel** - is well known and widely used architecture on *iOS* platform. It is very simple, lightweight, doesn’t bring any boilerplate and works well with reactive programming (can be used without it of course). Working on the app which contain more than single view you will find couple of questions: 
 * who is responsible to create View Model ? 
 * how to pass parameters to View Model’s constructor or fabric ? 
-* how to implement switching to the new view ? Where to make view change and how to pass View Model to it ?
+* how to implement switching to the new view ? Where to make view change and how to pass View Model to the View ?
 
 Of course you can find couple patterns to solve that such as coordinator but surprisingly easy you can follow the wrong path.
 
-**Unidirectional Data Flow (UDF)** - the main concept behind is the application state is immutable and can be changed only in one place in the app (*Store*) and only by predictable plain functions (in *Reducers*) ie. State + Action =  NewState. The most popular implementation of that concept is JavaScript library called *Redux*. The first and most popular swift’s implementation is *ReSwift* by Benjamin Encz. If you are not familiar with that architecture I strongly recommend to look on Benjamin’s [presentation](https://academy.realm.io/posts/benji-encz-unidirectional-data-flow-swift/) and look into [ReSwift](https://github.com/ReSwift/ReSwift) documentation. 
+**Unidirectional Data Flow (UDF)** - the main concept behind is immutable application state that can be changed only in one place in the app (*Store*) and only by predictable plain functions (in *Reducers*) ie. State + Action =  NewState. The most popular implementation of that concept is JavaScript library called *Redux*. The first and most popular swift’s implementation is *ReSwift* by Benjamin Encz. If you are not familiar with that architecture I strongly recommend to look on Benjamin’s [presentation](https://academy.realm.io/posts/benji-encz-unidirectional-data-flow-swift/) and look into [ReSwift](https://github.com/ReSwift/ReSwift) documentation. 
 
 You can find an easy example of *Redux* implementation with incrementing and decrementing single integer value. Let’s imagine you have application with 15-30 screens, all with complicated view structure and communication with backend API. It will bring complicated *Application State*, a lot of *Reducers* and dozens or even hundreds of *Actions* for the state changes. 
 
@@ -32,7 +32,7 @@ In *ReMVVM* we can divide components on two groups related with *Unidirectional 
 
 **StoreAction** - describes state change and is handled by corresponding *Reducer*. 
 
-**Middleware** - mechanism for enhance action’s dispatch functionality. It is usually used for simplify asynchronous dispatch and ‘side effects’ if required.
+**Middleware** - mechanism for enhance action’s dispatch functionality. It is usually used to simplify asynchronous dispatch and implement ‘side effects’ if required.
 
 **Reducer** - provides pure function that returns new state based on current state and the action. 
 
@@ -49,7 +49,7 @@ In *ReMVVM* we can divide components on two groups related with *Unidirectional 
 
 # Example
 
-We will build application containing two screens. First the Login screen where user may enter his first and second name. And second greeting screen that presents values entered on previous screen with logout button.
+We will build application containing two screens. On the Login screen user may enter his first and second name. And greeting screen that presents values entered on previous screen.
 
 ![](/images/LoginViewController_screenshot.png) |    | ![](/images/GreetingsViewController_screenshot.png)
 | - | --- | - |
@@ -155,7 +155,7 @@ store.register(reducer: LogoutReducer.self)
 ReMVVM.Config.initialize(with: store)
 ```
 
-Now we can write ours view controllers. Please notice ```ReMVVMDriven``` protocol which gives us ```ReMVVM``` object for getting view models and dispatching actions. 
+Now we can write ours view controllers. Please notice ```ReMVVMDriven``` protocol which gives us ```ReMVVM``` object to get view models and dispatch actions. 
 
  ```swift
 class LoginViewController: UIViewController, ReMVVMDriven {
@@ -214,11 +214,11 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
 }
 ```
 
-The last concept whould like to show is how we can handle navigation in the app using *ReMVVM*. We could have add navigation changes after dispatching each action in UIViewControllers but please notice we didn't handle it there. So where it is ? It's implemented in the last component called *Middleware*. It's mechanism that can change dispatch of the action and is offten used for asynchronous requests and side effect (in our case side effect of  changing the state is displaying new screen of the app). 
+The last concept whould like to show is how we can handle navigation in the app using *ReMVVM*. We could have add navigation changes after dispatching each action in UIViewControllers but please notice we didn't handle it there. So where it is ? It's implemented in the component called *Middleware*. It's mechanism that can change dispatch of the action and is offten used for asynchronous requests and side effect (in our case side effect for state change is displaying new screen of the app). 
 
-*Middleware* is a stack of objects and each action dispatched in the store is passed thorugh each element of that stack. It's done by calling next() method from dispatcher. On the end action is reduced in corresponding reducer and the state in the store is changed. After state is changed the completion block from ```next()``` is called in backward order. 
+*Middleware* is a stack of objects and each action dispatched in the store is passed thorugh each element of that stack. It's done by calling ```next()``` method from dispatcher. On the end action is reduced in corresponding reducer and the state in the store is changed. After state is changed the completion block from ```next()``` is called in backward order. 
 
-In middleware you can also dispatch completly new action by calling ```dispatcher.dispatch(action:)```. If you don't call next() method the action's dispatch will break and as a result reducer will not be called and state will not change. It can be intentional in some cases for example when you need to download data asynchronously first.
+In middleware you can also dispatch completly new action by calling ```dispatcher.dispatch(action:)```. If you don't call ```next()``` method the action's dispatch will break and as a result reducer will not be called and state will not change. It can be intentional in some cases for example when you need to download some data asynchronously.
 
 Let's back to our example and define really simple ```UIState``` that give us possibility to navigate through the app. 
 
