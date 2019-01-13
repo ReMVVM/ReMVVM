@@ -18,12 +18,14 @@ Unidirectional Data Flow (UDF) - the main concept behind is the application stat
 
 You can find an easy example of Redux implementation with incrementing and decrementing single integer value. Let’s imagine you have application with 15-30 screens, all with complicated view structure and communication with backend API. It will bring complicated Application State, a lot of Reducers and dozens or even hundreds of Actions for the state changes. 
 
-But… what about making a mix of two architectures ? Can we implement “global” app state by Unidirectional Data Flow and use MVVM pattern for each screen in the app with all benefits we know it has ? We can and it is what ReMVVM was made for.
+But… what about making a mix of two architectures ? Can we implement “global” app state by Unidirectional Data Flow and use MVVM pattern for each screen in the app with all benefits it has ? We can and it is what ReMVVM was made for.
 
 # Components 
 In ReMVVM we can divide components on two groups related with Redux and MVVM
 
-[image]
+
+
+![](/images/ReMVVM_architecture_components.png) 
 
 ## Redux: 
 Store - contains your application state that can be modified only by dispatching an action. Every state change is notified to every store Subscriber.
@@ -49,9 +51,10 @@ View Model provided by View Model Provider lives as long as the context which wa
 
 # Example
 
-We will build application containing two screens. First the Login screen when user may enter his first and second name. And second greeting screen that presents values entered on previous screen with logout button.
+We will build application containing two screens. First the Login screen where user may enter his first and second name. And second greeting screen that presents values entered on previous screen with logout button.
 
-[screens]
+![](/images/LoginViewController_screenshot.png) | ![](/images/GreetingsViewController_screenshot.png)
+| - | - |
 
 Note: We use RxSwift/RxCocoa in the example because it's great fit to MVVM architecture but please remember there is no need to use any Reactive framework with ReMVVM and there is no dependency to Rx libarary. 
 
