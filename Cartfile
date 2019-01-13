@@ -1,2 +1,2 @@
-git "git@github.com:dgrzeszczak/SwiftyRedux.git" "feature/storeActionUpdate"
-git "git@github.com:dgrzeszczak/MVVM.git" "develop"
+github "dgrzeszczak/MVVM"
+github "dgrzeszczak/SwiftyRedux"

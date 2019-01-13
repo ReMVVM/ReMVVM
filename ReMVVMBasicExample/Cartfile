@@ -1,2 +1,2 @@
-git "git@github.com:dgrzeszczak/ReMVVM.git" "feature/storeActionUpdate"
+github "dgrzeszczak/ReMVVM"
 github "ReactiveX/RxSwift" ~> 4.0
