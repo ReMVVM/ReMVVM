@@ -19,12 +19,14 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // handle logout button tap
         // without Rx: self.remvvm.dispatch(action: LogoutAction())
         logoutButton.rx.tap
             .map { LogoutAction() }
             .bind(to: remvvm)
             .disposed(by: disposeBag)
 
+        // get view model from remvvm and bind to the view
         guard let viewModel: GreetingsViewModel = remvvm.viewModel(for: self) else { return }
         viewModel.messageLabel.bind(to: messageLabel.rx.text).disposed(by: disposeBag)
     }

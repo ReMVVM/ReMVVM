@@ -19,20 +19,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let rootViewController = window?.rootViewController else { fatalError("Root controler wasn't set") }
         let uiState = UIState(rootViewController: rootViewController)
 
-        var getUser: (() -> User?)!
-        let factory = CompositeViewModelFactory { _ -> GreetingsViewModel? in
-            guard let user = getUser() else { return nil }
-            return GreetingsViewModel(with: user)
-        }
-
+        let factory = CompositeViewModelFactory()
         let initialState = AppState(factory: factory, user: nil)
         let middleware: [AnyMiddleware] = [LoginMiddleware(uiState: uiState), LogoutMiddleware(uiState: uiState)]
 
-        let store = Store<AppState>(with: initialState, middleware: middleware)
+        let store = Store(with: initialState, middleware: middleware)
         store.register(reducer: LoginReducer.self)
         store.register(reducer: LogoutReducer.self)
 
-        getUser = { store.state.user }
+        factory.add { () -> GreetingsViewModel? in
+            guard let user = store.state.user else { return nil }
+            return GreetingsViewModel(with: user)
+        }
         
         ReMVVM.Config.initialize(with: store)
 

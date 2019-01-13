@@ -21,7 +21,11 @@ struct User {
 
 struct UIState {
 
-    let rootViewController: UIViewController
+    private let rootViewController: UIViewController
+
+    init(rootViewController: UIViewController) {
+        self.rootViewController = rootViewController
+    }
 
     func showModal(controller: UIViewController) {
         rootViewController.present(controller, animated: true, completion: nil)
