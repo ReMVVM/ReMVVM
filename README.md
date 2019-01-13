@@ -45,7 +45,7 @@ In *ReMVVM* we can divide components on two groups related with *Unidirectional 
 
 **View Model Factory** - creates View Model instances
 
-*View Model* provided by *View Model Provider* lives as long as the context which was created for. For more detail please look at [MVVM library](https://github.com/dgrzeszczak/MVVM) that is a part of ReMVVM.
+*View Model* provided by *View Model Provider* lives as long as the context which was created for. For more detail please look at [MVVM library](https://github.com/dgrzeszczak/MVVM) which is a part of ReMVVM.
 
 # Example
 
