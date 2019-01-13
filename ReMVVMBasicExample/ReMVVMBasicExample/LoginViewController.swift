@@ -31,8 +31,8 @@ class LoginViewController: UIViewController, ReMVVMDriven {
         viewModel.lastName.bind(to: lastNameTextField.rx.text).disposed(by: disposeBag)
 
         // bind view to view model
-        firstNameTextField.rx.text.map { $0 ?? "" }.bind(to: viewModel.firstName).disposed(by: disposeBag)
-        lastNameTextField.rx.text.map { $0 ?? "" }.bind(to: viewModel.lastName).disposed(by: disposeBag)
+        firstNameTextField.rx.text.orEmpty.bind(to: viewModel.firstName).disposed(by: disposeBag)
+        lastNameTextField.rx.text.orEmpty.bind(to: viewModel.lastName).disposed(by: disposeBag)
 
         // handle login button tap
         // without rx: self.remvvm.dispatch(action: LoginAction(firstName: , lastName:))
