@@ -1,0 +1,9 @@
+{
+  "commitish" : "1.0.0",
+  "iOS" : [
+    {
+      "name" : "MVVM",
+      "hash" : "99d358887751d8186e65a8fadb45c1ee647f7f3d368b6d6383f048021d28ff7f"
+    }
+  ]
+}

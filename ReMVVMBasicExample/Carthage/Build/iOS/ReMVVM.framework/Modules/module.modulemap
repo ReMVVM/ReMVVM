@@ -1,0 +1,11 @@
+framework module ReMVVM {
+  umbrella header "ReMVVM.h"
+
+  export *
+  module * { export * }
+}
+
+module ReMVVM.Swift {
+    header "ReMVVM-Swift.h"
+    requires objc
+}

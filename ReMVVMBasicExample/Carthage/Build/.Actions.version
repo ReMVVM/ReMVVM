@@ -1,0 +1,9 @@
+{
+  "commitish" : "1.0.0",
+  "iOS" : [
+    {
+      "name" : "Actions",
+      "hash" : "647072506fed755d42c03e7595dd930f34a1e773ba19533d6e3675e347de6785"
+    }
+  ]
+}

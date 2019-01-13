@@ -1,0 +1,11 @@
+framework module SwiftyRedux {
+  umbrella header "SwiftyRedux.h"
+
+  export *
+  module * { export * }
+}
+
+module SwiftyRedux.Swift {
+    header "SwiftyRedux-Swift.h"
+    requires objc
+}

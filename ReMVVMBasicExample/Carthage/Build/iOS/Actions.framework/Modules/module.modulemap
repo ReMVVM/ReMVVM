@@ -1,0 +1,11 @@
+framework module Actions {
+  umbrella header "Actions.h"
+
+  export *
+  module * { export * }
+}
+
+module Actions.Swift {
+    header "Actions-Swift.h"
+    requires objc
+}

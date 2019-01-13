@@ -1,0 +1,9 @@
+{
+  "commitish" : "1.0.0",
+  "iOS" : [
+    {
+      "name" : "SwiftyRedux",
+      "hash" : "262e2092e342381065737d47d4a450575ea98bad4b12e1e1046043ac5a949b1a"
+    }
+  ]
+}
