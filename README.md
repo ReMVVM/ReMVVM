@@ -1,64 +1,62 @@
 
 # ReMVVM
  
-*ReMVVM* is an application architecture concept, marriage of Unidirectional Data Flow (Redux) with MVVM. 
+*ReMVVM* is an application architecture concept, marriage of *Unidirectional Data Flow* (*Redux*) with *MVVM*. 
 
 Redux + MVVM = ReMVVM 
 
 # Motivation 
 
-Model-View-ViewModel - is well known and widely used architecture on iOS platform. It is very simple, lightweight, doesn’t bring any boilerplate and works well with reactive programming (can be used without it of course). Working on the app that contain more than single view you will find couple of questions: 
-who is responsible to create ViewModel ? 
-how to pass parameters to ViewModel’s constructor or fabric ? 
-how to implement switching to the new view ? Where to make view change and how to pass View Model to it ?
+**Model-View-ViewModel** - is well known and widely used architecture on *iOS* platform. It is very simple, lightweight, doesn’t bring any boilerplate and works well with reactive programming (can be used without it of course). Working on the app that contain more than single view you will find couple of questions: 
+* who is responsible to create View Model ? 
+* how to pass parameters to View Model’s constructor or fabric ? 
+* how to implement switching to the new view ? Where to make view change and how to pass View Model to it ?
 
 Of course you can find couple patterns to solve that such as coordinator but surprisingly easy you can follow the wrong path.
 
-Unidirectional Data Flow (UDF) - the main concept behind is the application state is immutable and can be changed only in one place in the app (Store) and only by predictable plain functions (in Reducers) ie. State + Action =  NewState. The most popular implementation of that concept is JavaScript library called Redux. The first and most popular swift’s implementation is ReSwift by Benjamin Encz. If you are not familiar with that architecture I strongly recommend to look on Benjamin’s presentation and look into ReSwift documentation first. 
+**Unidirectional Data Flow (UDF)** - the main concept behind is the application state is immutable and can be changed only in one place in the app (*Store*) and only by predictable plain functions (in *Reducers*) ie. State + Action =  NewState. The most popular implementation of that concept is JavaScript library called *Redux*. The first and most popular swift’s implementation is *ReSwift* by Benjamin Encz. If you are not familiar with that architecture I strongly recommend to look on Benjamin’s [presentation](https://academy.realm.io/posts/benji-encz-unidirectional-data-flow-swift/) and look into [ReSwift](https://github.com/ReSwift/ReSwift) documentation. 
 
-You can find an easy example of Redux implementation with incrementing and decrementing single integer value. Let’s imagine you have application with 15-30 screens, all with complicated view structure and communication with backend API. It will bring complicated Application State, a lot of Reducers and dozens or even hundreds of Actions for the state changes. 
+You can find an easy example of *Redux* implementation with incrementing and decrementing single integer value. Let’s imagine you have application with 15-30 screens, all with complicated view structure and communication with backend API. It will bring complicated *Application State*, a lot of *Reducers* and dozens or even hundreds of *Actions* for the state changes. 
 
-But… what about making a mix of two architectures ? Can we implement “global” app state by Unidirectional Data Flow and use MVVM pattern for each screen in the app with all benefits it has ? We can and it is what ReMVVM was made for.
+But… what about making a mix of two architectures ? Can we implement “global” app state by *Unidirectional Data Flow* and use *MVVM* pattern for each screen in the app with all benefits it has ? We can and it is what *ReMVVM* was made for.
 
 # Components 
-In ReMVVM we can divide components on two groups related with Redux and MVVM
-
-
+In *ReMVVM* we can divide components on two groups related with *Unidirectional Data Flow* and *MVVM*
 
 ![](/images/ReMVVM_architecture_components.png) 
 
-## Redux: 
-Store - contains your application state that can be modified only by dispatching an action. Every state change is notified to every store Subscriber.
+## Unidirectional Data Flow: 
+**Store** - contains your application state that can be modified only by dispatching an action. Every state change is notified to every store Subscriber.
 
-StoreState - it’s immutable data structure that holds your application data. In ReMVVM it has to provide ViewModelFactory that will be used for creating ViewModels for your view(s).
+**StoreState** - it’s immutable data structure that holds your application data. In *ReMVVM* it has to provide *ViewModelFactory* that will be used for creating View Models for your view(s).
 
-StoreAction - describes state change and is handled by corresponding Reducer. 
+**StoreAction** - describes state change and is handled by corresponding *Reducer*. 
 
-Middleware - mechanism for enhance action’s dispatch functionality. It is usually used for simplify asynchronous dispatch and ‘side effects’ if required.
+**Middleware** - mechanism for enhance action’s dispatch functionality. It is usually used for simplify asynchronous dispatch and ‘side effects’ if required.
 
-Reducer - provides pure function that returns new state based on current state and the action. 
+**Reducer** - provides pure function that returns new state based on current state and the action. 
 
-Note: There is a small difference between Redux implementation and ReMVVM. In Redux one reducer can handle any type of action. Because of that we can see a lot of switch blocks inside reducers and it’s not clear where the action is finally handled. In ReMVVM reducer can handle exactly one type of the action. Action handling is separated into different reducers what makes the code more clean. 
+**_Note:_** *There is a small difference between Redux implementation and ReMVVM. In Redux one reducer can handle any type of action. Because of that we can see a lot of switch blocks inside reducers and it’s not clear where the action is finally handled. In ReMVVM reducer can handle exactly one type of the action. Action handling is separated into different reducers what makes the code more clean.* 
 
 ## MVVM:
-View Model - is designed to store and manage UI related data for the view
+**View Model** - is designed to store and manage UI related data for the view
 
-View Model Provider - provides View Model(s) for the context (View)
+**View Model Provider** - provides View Model(s) for the context (View)
 
-View Model Factory - creates View Model instances
+**View Model Factory** - creates View Model instances
 
-View Model provided by View Model Provider lives as long as the context which was created for. For more detail please look at MVVM library that is a part of ReMVVM.
+*View Model* provided by *View Model Provider* lives as long as the context which was created for. For more detail please look at [MVVM library](https://github.com/dgrzeszczak/MVVM) that is a part of ReMVVM.
 
 # Example
 
 We will build application containing two screens. First the Login screen where user may enter his first and second name. And second greeting screen that presents values entered on previous screen with logout button.
 
-![](/images/LoginViewController_screenshot.png) | ![](/images/GreetingsViewController_screenshot.png)
-| - | - |
+![](/images/LoginViewController_screenshot.png) |    | ![](/images/GreetingsViewController_screenshot.png)
+| - | --- | - |
 
-Note: We use RxSwift/RxCocoa in the example because it's great fit to MVVM architecture but please remember there is no need to use any Reactive framework with ReMVVM and there is no dependency to Rx libarary. 
+**_Note:_** *We use RxSwift/RxCocoa in the example because it's great fit to MVVM architecture but please remember there is no need to use any Reactive framework with ReMVVM and there is no dependency to Rx libarary.* 
 
-First we need a struct for State with the data for our app. It contain data for logged in User and it also have to provide factory for our View Models. 
+First we need a struct for State with the data for our app. It contain data for logged in ```User``` and it also have to provide factory for our View Models. 
 
 ```swift
 struct AppState: StoreState {
@@ -73,11 +71,11 @@ struct User {
 }
 ```
 
-Let's create view models for our screens. LoginViewModel implements two protocols StoreSubscriber and Initializable. 
+Let's create view models for our screens. ```LoginViewModel``` implements two protocols ```StoreSubscriber``` and ```Initializable```. 
 
-Initializable is used by InitializableViewModelFactory and CompositeViewModelFactory for creating ViewModels by using default/empty constructor. So it means you don't need to provide factory method for it. 
+```Initializable``` is used by ```InitializableViewModelFactory``` and ```CompositeViewModelFactory``` for creating View Models by using default/empty constructor. So it means you don't need to provide factory method for it. 
 
-StoreSubscriber means that your view model will be automatically notified on any state changes in store. Here it's used for clearing first and second name values when user logs out.
+```StoreSubscriber``` means that your view model will be automatically notified on any state changes in store. Here it's used for clearing first and second name values when user logs out.
 
 ```swift
 final class LoginViewModel: StoreSubscriber, Initializable {
@@ -104,7 +102,7 @@ struct GreetingsViewModel {
 }
 ```
 
-For the simplicyty of the example we will use one factory for all states. Other solution is to use seperate factories for each screen or module in the app. As alredy mentioned CompositeViewModelFactory by defauts are able to create Initializable View Models so we only need to add factory for GreetingsViewModel. We will use helper method 'add' and it will look like:
+For the simplicyty of the example we will use one factory for all states. Other solution is to use seperate factories for each screen or module in the app. As alredy mentioned ```CompositeViewModelFactory``` by defauts are able to create ```Initializable``` View Models so we only need to add factory for ```GreetingsViewModel```. We will use helper method ```add()``` and it will look like:
 
 ```swift
  
@@ -115,7 +113,7 @@ factory.add { _ -> GreetingsViewModel? in
 }
 ```
 
-Ok so that's all regarding MVVM part. Let's see how to implement Unidirectional Data Flow part. We will have two actions:
+Ok so that's all regarding *MVVM* part. Let's see how to implement *Unidirectional Data Flow* part. We will have two actions:
 
  ```swift
 struct LoginAction: StoreAction {
@@ -128,14 +126,16 @@ struct LogoutAction: StoreAction { }
 
 And two reducers for each of them: 
 
- ```swift
+```swift
 struct LoginReducer: Reducer {
     static func reduce(state: AppState, with action: LoginAction) -> AppState {
         let user = User(firstName: action.firstName, lastName: action.lastName)
         return AppState(factory: state.factory, user: user)
     }
 }
+```
 
+```swift
 struct LogoutReducer: Reducer {
     static func reduce(state: AppState, with action: LogoutAction) -> AppState {
         return AppState(factory: state.factory, user: nil)
@@ -144,9 +144,9 @@ struct LogoutReducer: Reducer {
 
 ```
 
-We can initialize ReMVVM like that: 
+We can initialize *ReMVVM* like that: 
 
- ```swift
+```swift
 
 let store = Store(with: initialState, middleware: middleware)
 store.register(reducer: LoginReducer.self)
@@ -155,7 +155,7 @@ store.register(reducer: LogoutReducer.self)
 ReMVVM.Config.initialize(with: store)
 ```
 
-Now we can write ours view controllers. Please notice ReMVVMDriven protocol which gives us ReMVVM object for getting view models and dispatching actions. 
+Now we can write ours view controllers. Please notice ```ReMVVMDriven``` protocol which gives us ```ReMVVM``` object for getting view models and dispatching actions. 
 
  ```swift
 class LoginViewController: UIViewController, ReMVVMDriven {
@@ -214,13 +214,13 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
 }
 ```
 
-The last concept whould like to show is how we can handle navigation in the app using ReMVVM. We could have add navigation changes after dispatching each action in ViewControllers but please notice we didn't handle it there. So where it is ? It's implemented in the last component called Middleware. It's mechanism that can change dispatch of the action and is offten used for asynchronous requests and side effect (in our case side effect of  changing the state is displaying new screen of the app). 
+The last concept whould like to show is how we can handle navigation in the app using *ReMVVM*. We could have add navigation changes after dispatching each action in UIViewControllers but please notice we didn't handle it there. So where it is ? It's implemented in the last component called *Middleware*. It's mechanism that can change dispatch of the action and is offten used for asynchronous requests and side effect (in our case side effect of  changing the state is displaying new screen of the app). 
 
-Middleware is a stack of objects and each action dispatched in the store is passed thorugh each element of that stack. It's done by calling next() method from dispatcher. On the end action is reduced in corresponding reducer and the state in the store is changed. After state is changed the completion block from next() is called in backward order. 
+*Middleware* is a stack of objects and each action dispatched in the store is passed thorugh each element of that stack. It's done by calling next() method from dispatcher. On the end action is reduced in corresponding reducer and the state in the store is changed. After state is changed the completion block from ```next()``` is called in backward order. 
 
-In middleware you can also dispatch completly new action by calling dispatcher.dispatch(action:). If you don't call next() method the action's dispatch will break and as a result reducer will not be called and state will not change. It can be intentional in some cases for example when you need to download data asynchronously first.
+In middleware you can also dispatch completly new action by calling ```dispatcher.dispatch(action:)```. If you don't call next() method the action's dispatch will break and as a result reducer will not be called and state will not change. It can be intentional in some cases for example when you need to download data asynchronously first.
 
-Let's back to our example and define really simple UIState that give us possibility to navigate through the app. 
+Let's back to our example and define really simple ```UIState``` that give us possibility to navigate through the app. 
 
 ```swift
 struct UIState {
@@ -261,7 +261,9 @@ struct LoginMiddleware: Middleware {
         }
     }
 }
+```
 
+```swift
 struct LogoutMiddleware: Middleware {
     let uiState: UIState
 
@@ -274,8 +276,8 @@ struct LogoutMiddleware: Middleware {
 }
 ```
 
-The biggest advantage is that ViewControllers know nothing about each other. They are not connected at all, you can easily change the flow of the application without touching ViewControllers. 
+The biggest advantage is that UIViewControllers know nothing about each other. They are not connected at all, you can easily change the flow of the application without touching UIViewControllers. 
 
-Summary
+# Summary
 
-The big advantages of the concept of ReMVVM architecture is great separation between layers. It's clear where to store model data, who and where creates view model and how it's passed to the view. It takes the biggest advantages of two different architectures and makes the code readable without introducing any boilerplate.
+The big advantages of the concept of *ReMVVM* architecture is great separation between layers. It's clear where to store model data, who and where creates view model and how it's passed to the view. It takes the biggest advantages of two different architectures and makes the code readable without introducing any boilerplate.
