@@ -117,7 +117,7 @@ factory.add { _ -> GreetingsViewModel? in
 
 Ok so that's all regarding *MVVM* part. Let's see how to implement *Unidirectional Data Flow* part. We will have two actions:
 
- ```swift
+```swift
 struct LoginAction: StoreAction {
     let firstName: String
     let lastName: String
@@ -192,7 +192,7 @@ class LoginViewController: UIViewController, ReMVVMDriven {
 }
 ```
 
- ```swift
+```swift
 class GreetingsViewController: UIViewController, ReMVVMDriven {
 
     @IBOutlet private var messageLabel: UILabel!
