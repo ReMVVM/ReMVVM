@@ -75,9 +75,9 @@ struct User {
 
 Let's create view models for our screens. ```LoginViewModel``` implements two protocols ```StoreSubscriber``` and ```Initializable```. 
 
-```Initializable``` is used by ```InitializableViewModelFactory``` and ```CompositeViewModelFactory``` for creating View Models by using default/empty constructor. So it means you don't need to provide factory method for it. 
+ ```Initializable``` is used by ```InitializableViewModelFactory``` and ```CompositeViewModelFactory``` for creating View Models by using default/empty constructor. So it means you don't need to provide factory method for it. 
 
-```StoreSubscriber``` means that your view model will be automatically notified on any state changes in store. Here it's used for clearing first and second name values when user logs out.
+ ```StoreSubscriber``` means that your view model will be automatically notified on any state changes in store. Here it's used for clearing first and second name values when user logs out.
 
 ```swift
 final class LoginViewModel: StoreSubscriber, Initializable {
@@ -107,7 +107,6 @@ struct GreetingsViewModel {
 For the simplicyty of the example we will use one factory for all states. Other solution is to use seperate factories for each screen or module in the app. As alredy mentioned ```CompositeViewModelFactory``` by defauts are able to create ```Initializable``` View Models so we only need to add factory for ```GreetingsViewModel```. We will use helper method ```add()``` and it will look like:
 
 ```swift
- 
 let factory = CompositeViewModelFactory()
 factory.add { _ -> GreetingsViewModel? in
     guard let user = store.state.user else { return nil }
@@ -149,7 +148,6 @@ struct LogoutReducer: Reducer {
 We can initialize *ReMVVM* like that: 
 
 ```swift
-
 let store = Store(with: initialState, middleware: middleware)
 store.register(reducer: LoginReducer.self)
 store.register(reducer: LogoutReducer.self)
@@ -159,7 +157,7 @@ ReMVVM.Config.initialize(with: store)
 
 Now we can write ours view controllers. Please notice ```ReMVVMDriven``` protocol which gives us ```ReMVVM``` object to get view models and dispatch actions. 
 
- ```swift
+```swift
 class LoginViewController: UIViewController, ReMVVMDriven {
 
     @IBOutlet private var firstNameTextField: UITextField!
@@ -246,7 +244,6 @@ struct UIState {
 And then we can define our middlewares.
 
 ```swift
-
 struct LoginMiddleware: Middleware {
     let uiState: UIState
 
