@@ -9,15 +9,14 @@
 import ReMVVM
 import RxSwift
 
-final class LoginViewModel: StoreSubscriber, Initializable {
+struct LoginViewModel {
+
     let firstName = BehaviorSubject(value: "")
     let lastName = BehaviorSubject(value: "")
 
-    func didChange(state: AppState, oldState: AppState) {
-        if oldState.user != nil && state.user == nil {
-            // reset values on logout
-            firstName.onNext("")
-            lastName.onNext("")
-        }
+    private let disposeBag = DisposeBag()
+    init(state: Observable<AppState>) {
+        state.map { $0.user?.firstName ?? "" }.bind(to: firstName).disposed(by: disposeBag)
+        state.map { $0.user?.lastName ?? "" }.bind(to: lastName).disposed(by: disposeBag)
     }
 }

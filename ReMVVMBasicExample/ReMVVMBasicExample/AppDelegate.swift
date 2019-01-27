@@ -27,6 +27,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         store.register(reducer: LoginReducer.self)
         store.register(reducer: LogoutReducer.self)
 
+        let rxStore = RxStore(with: store)
+
+        factory.add { () -> LoginViewModel? in
+            return LoginViewModel(state: rxStore.state)
+        }
         factory.add { () -> GreetingsViewModel? in
             guard let user = store.state.user else { return nil }
             return GreetingsViewModel(with: user)
