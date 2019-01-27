@@ -29,9 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let rxStore = RxStore(with: store)
 
-        factory.add { () -> LoginViewModel? in
-            return LoginViewModel(state: rxStore.state)
-        }
+        factory.add { LoginViewModel(state: rxStore.state) }
         factory.add { () -> GreetingsViewModel? in
             guard let user = store.state.user else { return nil }
             return GreetingsViewModel(with: user)
