@@ -19,9 +19,10 @@
 //extension AnyDispatcher: ObserverType { }
 
 public protocol ReMVVMDriven {
+    associatedtype Base
 
-    var remvvm: ReMVVM<Self> { get }
-    static var remvvm: ReMVVM<Self>.Type { get }
+    var remvvm: ReMVVM<Base> { get }
+    static var remvvm: ReMVVM<Base>.Type { get }
 }
 
 public struct ReMVVM<Base> {
