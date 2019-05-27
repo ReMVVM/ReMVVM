@@ -89,7 +89,7 @@ extension ReMVVM: StoreActionDispatcher where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM where Base: StoreSubscriber {
+extension ReMVVM: StoreStateSubject where Base: StoreSubscriber {
 
     public func add<Subscriber: StoreSubscriber>(subscriber: Subscriber) {
         remvvm.store.add(subscriber: subscriber)
