@@ -19,54 +19,82 @@
 //extension AnyDispatcher: ObserverType { }
 
 public protocol ReMVVMDriven {
-    var remvvm: ReMVVM { get }
+
+    var remvvm: ReMVVM<Self> { get }
+    static var remvvm: ReMVVM<Self>.Type { get }
 }
 
-public struct ReMVVM: StoreActionDispatcher {
-    public struct Config {
-        fileprivate static var defaultReMVVM: ReMVVM = {
-            guard let store = store else {
-                fatalError("ReMVVM has to be initialized first. Please use ReMVVM.Config.initialize(with:) method.")
-            }
+public struct ReMVVM<Base> {
 
-            return ReMVVM(with: store)
-        }()
+    private let remvvm: AnyReMVVM
+    fileprivate init(with remvvm: AnyReMVVM) {
+        self.remvvm = remvvm
+    }
+}
 
-        private static var store: AnyStore?
-        public static func initialize(with store: AnyStore) {
-            guard Config.store == nil else {
-                assertionFailure("ReMVVM already initialized. Are you sure ?")
-                return
-            }
-            Config.store = store
+public enum ReMVVMConfig {
+
+    fileprivate static var defaultReMVVM: AnyReMVVM {
+        guard let remvvm = remvvm else {
+            fatalError("ReMVVM has to be initialized first. Please use ReMVVMConfig.initialize(with:) method.")
         }
+        return remvvm
     }
 
-    private let store: AnyStore
-    private let viewModelProvider: ViewModelProvider
+    private static var remvvm: AnyReMVVM?
+    public static func initialize<State: StoreState>(with store: Store<State>) {
+        guard remvvm == nil else {
+            assertionFailure("ReMVVM already initialized. Are you sure ?")
+            return
+        }
+        remvvm = AnyReMVVM(store: store)
+    }
+}
 
-    public init(with store: AnyStore) {
-        self.store = store
+fileprivate struct AnyReMVVM {
+
+    let state: () -> StoreState
+    let store: StoreActionDispatcher & StoreStateSubject
+    let viewModelProvider: ViewModelProvider
+    init<State: StoreState>(store: Store<State>) {
         viewModelProvider = ViewModelProvider(with: store)
-    }
-
-    public func dispatch(action: StoreAction) {
-        store.dispatch(action: action)
-    }
-
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
-        return viewModelProvider.viewModel(for: context, for: key)
-    }
-
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State: StoreState {
-        return viewModelProvider.viewModel(for: context, for: key)
-    }
-
-    public func clear(context: ViewModelContext) {
-        viewModelProvider.clear(context: context)
+        state = { store.state }
+        self.store = store
     }
 }
 
 extension ReMVVMDriven {
-    public var remvvm: ReMVVM { return ReMVVM.Config.defaultReMVVM }
+
+    public var remvvm: ReMVVM<Self> { return ReMVVM(with: ReMVVMConfig.defaultReMVVM) }
+    public static var remvvm: ReMVVM<Self>.Type { return ReMVVM<Self>.self }
+}
+
+extension ReMVVM: StoreActionDispatcher where Base: ViewModelContext {
+
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
+        return remvvm.viewModelProvider.viewModel(for: context, for: key)
+    }
+
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State: StoreState {
+        return remvvm.viewModelProvider.viewModel(for: context, for: key)
+    }
+
+    public func clear(context: ViewModelContext) {
+        remvvm.viewModelProvider.clear(context: context)
+    }
+
+    public func dispatch(action: StoreAction) {
+        remvvm.store.dispatch(action: action)
+    }
+}
+
+extension ReMVVM where Base: StoreSubscriber {
+
+    public func add<Subscriber: StoreSubscriber>(subscriber: Subscriber) {
+        remvvm.store.add(subscriber: subscriber)
+    }
+
+    public func remove<Subscriber: StoreSubscriber>(subscriber: Subscriber) {
+        remvvm.store.remove(subscriber: subscriber)
+    }
 }
