@@ -14,6 +14,7 @@ public typealias ViewModelContext = MVVM.ViewModelContext
 
 public typealias Store<State> = SwiftyRedux.Store<State> where State: StoreState
 public typealias StoreAction = SwiftyRedux.StoreAction
+public typealias AnyReducer = SwiftyRedux.AnyReducer
 public typealias Reducer = SwiftyRedux.Reducer
 public typealias AnyMiddleware = SwiftyRedux.AnyMiddleware
 public typealias Middleware = SwiftyRedux.Middleware
