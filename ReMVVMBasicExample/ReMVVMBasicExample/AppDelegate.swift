@@ -21,21 +21,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let factory = CompositeViewModelFactory()
         let initialState = AppState(factory: factory, user: nil)
-        let middleware: [AnyMiddleware] = [LoginMiddleware(uiState: uiState), LogoutMiddleware(uiState: uiState)]
 
-        let store = Store(with: initialState, middleware: middleware)
-        store.register(reducer: LoginReducer.self)
-        store.register(reducer: LogoutReducer.self)
+        let middleware = [LoginMiddleware(uiState: uiState), LogoutMiddleware(uiState: uiState)] as [AnyMiddleware]
+        let reducer = AnyReducer(with: [LoginReducer.any, LogoutReducer.any])
 
-        let rxStore = RxStore(with: store)
+        let store = Store(with: initialState, reducer: reducer, middleware: middleware)
 
-        factory.add { LoginViewModel(state: rxStore.state) }
+        factory.add { LoginViewModel() }
         factory.add { () -> GreetingsViewModel? in
             guard let user = store.state.user else { return nil }
             return GreetingsViewModel(with: user)
         }
         
-        ReMVVM.Config.initialize(with: store)
+        ReMVVMConfig.initialize(with: store)
 
         return true
     }

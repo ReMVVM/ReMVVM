@@ -8,43 +8,42 @@
 
 import ReMVVM
 import RxSwift
-import class SwiftyRedux.Store
 
-public extension StoreActionDispatcher where Self: ObserverType {
+extension ReMVVM: ReactiveCompatible { }
+
+extension Reactive: ObserverType where Base: StoreActionDispatcher {
     public func on(_ event: Event<StoreAction>) {
         guard let action = event.element else { return }
-        self.dispatch(action: action)
+        base.dispatch(action: action)
     }
 }
-extension SwiftyRedux.Store: ObserverType { }
-extension ReMVVM: ObserverType { }
-extension Dispatcher: ObserverType { }
-extension AnyDispatcher: ObserverType { }
 
-class RxStore<State: StoreState>  {
+extension Reactive where Base: StoreStateSubject {
 
-    let state: Observable<State>
+    var state: Observable<Base.State> {
+        let base = self.base
+        guard let state = base.state else { return .never() } //or .empty() ? 
 
-    init(with store: Store<State>) {
-        state = Observable<State>.create { observer -> Disposable in
-            let rxObserver = StateSubscriber(observer: observer)
-            store.add(subscriber: rxObserver)
+        return Observable.create { observer in
+            let subscriber = StateSubscriber(observer)
+            base.add(subscriber: subscriber)
 
             return Disposables.create {
-                store.remove(subscriber: rxObserver)
+                base.remove(subscriber: subscriber)
             }
         }
+        .startWith(state)
         .share(replay: 1)
-        .startWith(store.state)
     }
 
-    private class StateSubscriber<Element>: StoreSubscriber {
-        let observer: AnyObserver<Element>
-        init(observer: AnyObserver<Element>) {
+    private class StateSubscriber: StoreSubscriber {
+
+        let observer: AnyObserver<Base.State>
+        init(_ observer: AnyObserver<Base.State>) {
             self.observer = observer
         }
 
-        func didChange(state: Element, oldState: Element) {
+        func didChange(state: Base.State, oldState: Base.State) {
             observer.onNext(state)
         }
     }

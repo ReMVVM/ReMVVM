@@ -23,7 +23,7 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
         // without Rx: self.remvvm.dispatch(action: LogoutAction())
         logoutButton.rx.tap
             .map { LogoutAction() }
-            .bind(to: remvvm)
+            .bind(to: remvvm.rx)
             .disposed(by: disposeBag)
 
         // get view model from remvvm and bind to the view

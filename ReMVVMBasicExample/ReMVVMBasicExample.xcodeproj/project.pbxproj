@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08ADCDAB229C3653004CD357 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08ADCDAA229C3652004CD357 /* RxRelay.framework */; };
 		08FFCD4F21E72BE80088454D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFCD4E21E72BE80088454D /* AppDelegate.swift */; };
 		08FFCD5121E72BE80088454D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFCD5021E72BE80088454D /* LoginViewController.swift */; };
 		08FFCD5421E72BE80088454D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08FFCD5221E72BE80088454D /* Main.storyboard */; };
 		08FFCD5621E72BED0088454D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08FFCD5521E72BED0088454D /* Assets.xcassets */; };
 		08FFCD5921E72BED0088454D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08FFCD5721E72BED0088454D /* LaunchScreen.storyboard */; };
-		08FFCD6421E7EB060088454D /* Actions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FFCD6321E7EB050088454D /* Actions.framework */; };
 		08FFCD6621E7EB0F0088454D /* MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FFCD6521E7EB0F0088454D /* MVVM.framework */; };
 		08FFCD6821E7EB140088454D /* ReMVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FFCD6721E7EB140088454D /* ReMVVM.framework */; };
 		08FFCD6A21E7EB1A0088454D /* SwiftyRedux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FFCD6921E7EB1A0088454D /* SwiftyRedux.framework */; };
@@ -28,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		08ADCDAA229C3652004CD357 /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = Carthage/Build/iOS/RxRelay.framework; sourceTree = "<group>"; };
 		08FFCD4B21E72BE80088454D /* ReMVVMBasicExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReMVVMBasicExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08FFCD4E21E72BE80088454D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08FFCD5021E72BE80088454D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -35,7 +36,6 @@
 		08FFCD5521E72BED0088454D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08FFCD5821E72BED0088454D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08FFCD5A21E72BED0088454D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		08FFCD6321E7EB050088454D /* Actions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Actions.framework; path = Carthage/Build/iOS/Actions.framework; sourceTree = "<group>"; };
 		08FFCD6521E7EB0F0088454D /* MVVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MVVM.framework; path = Carthage/Build/iOS/MVVM.framework; sourceTree = "<group>"; };
 		08FFCD6721E7EB140088454D /* ReMVVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReMVVM.framework; path = Carthage/Build/iOS/ReMVVM.framework; sourceTree = "<group>"; };
 		08FFCD6921E7EB1A0088454D /* SwiftyRedux.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyRedux.framework; path = Carthage/Build/iOS/SwiftyRedux.framework; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 			files = (
 				08FFCD6E21E7EB220088454D /* RxCocoa.framework in Frameworks */,
 				08FFCD6A21E7EB1A0088454D /* SwiftyRedux.framework in Frameworks */,
-				08FFCD6421E7EB060088454D /* Actions.framework in Frameworks */,
+				08ADCDAB229C3653004CD357 /* RxRelay.framework in Frameworks */,
 				08FFCD6621E7EB0F0088454D /* MVVM.framework in Frameworks */,
 				08FFCD6C21E7EB1F0088454D /* RxSwift.framework in Frameworks */,
 				08FFCD6821E7EB140088454D /* ReMVVM.framework in Frameworks */,
@@ -107,12 +107,12 @@
 		08FFCD6221E7EB050088454D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				08ADCDAA229C3652004CD357 /* RxRelay.framework */,
 				08FFCD6D21E7EB220088454D /* RxCocoa.framework */,
 				08FFCD6B21E7EB1F0088454D /* RxSwift.framework */,
 				08FFCD6921E7EB1A0088454D /* SwiftyRedux.framework */,
 				08FFCD6721E7EB140088454D /* ReMVVM.framework */,
 				08FFCD6521E7EB0F0088454D /* MVVM.framework */,
-				08FFCD6321E7EB050088454D /* Actions.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -198,7 +198,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyRedux.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ReMVVM.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/MVVM.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Actions.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxRelay.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
@@ -209,7 +209,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftyRedux.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ReMVVM.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MVVM.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Actions.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxRelay.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -314,6 +314,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -368,6 +369,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -388,7 +390,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = db.ReMVVMBasicExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -409,7 +410,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = db.ReMVVMBasicExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -8,70 +8,72 @@
 import XCTest
 @testable import ReMVVM
 
-struct TestState: StoreState {
-    var factory: ViewModelFactory = CompositeViewModelFactory()
+//struct TestState: StoreState {
+//    var factory: ViewModelFactory = CompositeViewModelFactory()
+//
+//}
+//
+//
+//struct TestAAction: StoreAction { }
+//struct TestAMiddleware: Middleware {
+//    func applyMiddleware(with actionParam: Void, dispatcher: Dispatcher<TestAAction>, storeState: TestState) {
+//        print("middleware A")
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            dispatcher.dispatch(action: TestBAction())
+//        }
+//        print("middleware Aa")
+//    }
+//}
+//struct TestAReducer: Reducer {
+//    typealias Action = TestAAction
+//
+//    static func reduce(state: TestState, with params: TestAAction.ParamType) -> TestState {
+//        print("reducer A")
+//        return state
+//    }
+//}
+//
+//struct TestBAction: StoreAction { }
+//struct TestBMiddleware: Middleware {
+//    func applyMiddleware(with actionParam: Void, dispatcher: Dispatcher<TestBAction>, storeState: TestState) {
+//        print("middleware B")
+//        dispatcher.next() { newState in
+//            print("middleware Baa")
+//        }
+//        print("middleware Ba")
+//    }
+//}
+//struct TestBReducer: Reducer {
+//    typealias Action = TestBAction
+//
+//    static func reduce(state: TestState, with params: TestBAction.ParamType) -> TestState {
+//        print("reducer B")
+//        return state
+//    }
+//}
+//
+//struct TestCMiddleware: AnyMiddleware {
+//
+//    func applyMiddleware<Action>(with actionParam: Action.ParamType, dispatcher: Dispatcher<Action>, storeState: Any) where Action : StoreAction {
+//        print("middleware C")
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            dispatcher.next() { newState in
+//                print("middleware Caa")
+//            }
+//        }
+//        print("middleware Ca")
+//    }
+//
+//
+//}
+//var store = Store<TestState>(with: TestState(), middleware:[TestAMiddleware(), TestCMiddleware(), TestBMiddleware()], routingEnabled: true)
+//var vmProvider = ViewModelProvider(with: store)
+//
+//struct StructViewModel: Initializable {
+//
+//}
 
-}
-
-
-struct TestAAction: StoreAction { }
-struct TestAMiddleware: Middleware {
-    func applyMiddleware(with actionParam: Void, dispatcher: Dispatcher<TestAAction>, storeState: TestState) {
-        print("middleware A")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            dispatcher.dispatch(action: TestBAction())
-        }
-        print("middleware Aa")
-    }
-}
-struct TestAReducer: Reducer {
-    typealias Action = TestAAction
-
-    static func reduce(state: TestState, with params: TestAAction.ParamType) -> TestState {
-        print("reducer A")
-        return state
-    }
-}
-
-struct TestBAction: StoreAction { }
-struct TestBMiddleware: Middleware {
-    func applyMiddleware(with actionParam: Void, dispatcher: Dispatcher<TestBAction>, storeState: TestState) {
-        print("middleware B")
-        dispatcher.next() { newState in
-            print("middleware Baa")
-        }
-        print("middleware Ba")
-    }
-}
-struct TestBReducer: Reducer {
-    typealias Action = TestBAction
-
-    static func reduce(state: TestState, with params: TestBAction.ParamType) -> TestState {
-        print("reducer B")
-        return state
-    }
-}
-
-struct TestCMiddleware: AnyMiddleware {
-
-    func applyMiddleware<Action>(with actionParam: Action.ParamType, dispatcher: Dispatcher<Action>, storeState: Any) where Action : StoreAction {
-        print("middleware C")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            dispatcher.next() { newState in
-                print("middleware Caa")
-            }
-        }
-        print("middleware Ca")
-    }
-
-
-}
-var store = Store<TestState>(with: TestState(), middleware:[TestAMiddleware(), TestCMiddleware(), TestBMiddleware()], routingEnabled: true)
-var vmProvider = ViewModelProvider(with: store)
-
-struct StructViewModel: Initializable {
-
-}
+//-----------------------------
 
 //class ClassViewModel: StoreSubscriber, Initializable {
 //    typealias State = TestState
@@ -202,16 +204,16 @@ class ReMVVMTests: XCTestCase {
 //        st.dispatch(BananaAction())
 
 
-        store.register(reducer: TestAReducer.self)
-        store.register(reducer: TestBReducer.self)
-
-        store.dispatch(action: TestAAction())
-
-        let expectation = XCTestExpectation(description: "Download apple.com home page")
-
-
-        wait(for: [expectation], timeout: 10)
-        print("hhh")
+//        store.register(reducer: TestAReducer.self)
+//        store.register(reducer: TestBReducer.self)
+//
+//        store.dispatch(action: TestAAction())
+//
+//        let expectation = XCTestExpectation(description: "Download apple.com home page")
+//
+//
+//        wait(for: [expectation], timeout: 10)
+//        print("hhh")
     }
     
     func testPerformanceExample() {

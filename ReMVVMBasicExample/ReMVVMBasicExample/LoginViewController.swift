@@ -39,7 +39,7 @@ class LoginViewController: UIViewController, ReMVVMDriven {
         loginButton.rx.tap
             .withLatestFrom(Observable.combineLatest(viewModel.firstName, viewModel.lastName))
             .map(LoginAction.init)
-            .bind(to: remvvm)
+            .bind(to: remvvm.rx)
             .disposed(by: disposeBag)
     }
 }
