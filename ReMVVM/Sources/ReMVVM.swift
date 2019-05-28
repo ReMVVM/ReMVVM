@@ -58,7 +58,14 @@ extension ReMVVMDriven {
     public static var remvvm: ReMVVM<Self> { return ReMVVM(with: ReMVVMConfig.defaultReMVVM) }
 }
 
-extension ReMVVM: StoreActionDispatcher where Base: ViewModelContext {
+extension ReMVVM: StoreActionDispatcher {
+
+    public func dispatch(action: StoreAction) {
+        remvvm.store.dispatch(action: action)
+    }
+}
+
+extension ReMVVM where Base: ViewModelContext {
 
     public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
         return remvvm.viewModelProvider.viewModel(for: context, for: key)
@@ -70,10 +77,6 @@ extension ReMVVM: StoreActionDispatcher where Base: ViewModelContext {
 
     public func clear(context: ViewModelContext) {
         remvvm.viewModelProvider.clear(context: context)
-    }
-
-    public func dispatch(action: StoreAction) {
-        remvvm.store.dispatch(action: action)
     }
 }
 
