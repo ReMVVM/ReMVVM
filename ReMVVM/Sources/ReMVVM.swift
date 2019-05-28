@@ -91,7 +91,7 @@ extension ReMVVM: StoreActionDispatcher where Base: ViewModelContext {
 
 extension ReMVVM: StoreStateSubject where Base: StoreSubscriber {
 
-    public var state: Base.State? { return remvvm.state as? Base.State }
+    public var state: Base.State? { return remvvm.state() as? Base.State }
 
     public func add<Subscriber: StoreSubscriber>(subscriber: Subscriber) {
         remvvm.store.add(subscriber: subscriber)
