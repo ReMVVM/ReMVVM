@@ -6,23 +6,11 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-//RxSwift snippet for action observer
-//public extension StoreActionDispatcher where Self: ObserverType {
-//    public func on(_ event: Event<StoreAction>) {
-//        guard let action = event.element else { return }
-//        self.dispatch(action: action)
-//    }
-//}
-//extension SwiftyRedux.Store: ObserverType { }
-//extension ReMVVM: ObserverType { }
-//extension Dispatcher: ObserverType { }
-//extension AnyDispatcher: ObserverType { }
-
 public protocol ReMVVMDriven {
     associatedtype Base
 
     var remvvm: ReMVVM<Base> { get }
-    static var remvvm: ReMVVM<Base>.Type { get }
+    static var remvvm: ReMVVM<Base> { get }
 }
 
 public struct ReMVVM<Base> {
@@ -67,7 +55,7 @@ fileprivate struct AnyReMVVM {
 extension ReMVVMDriven {
 
     public var remvvm: ReMVVM<Self> { return ReMVVM(with: ReMVVMConfig.defaultReMVVM) }
-    public static var remvvm: ReMVVM<Self>.Type { return ReMVVM<Self>.self }
+    public static var remvvm: ReMVVM<Self> { return ReMVVM(with: ReMVVMConfig.defaultReMVVM) }
 }
 
 extension ReMVVM: StoreActionDispatcher where Base: ViewModelContext {
