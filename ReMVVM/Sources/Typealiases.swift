@@ -22,4 +22,5 @@ public typealias AnyDispatcher = SwiftyRedux.AnyDispatcher
 public typealias Dispatcher = SwiftyRedux.Dispatcher
 public typealias StoreSubscriber = SwiftyRedux.StoreSubscriber
 public typealias StoreActionDispatcher = SwiftyRedux.StoreActionDispatcher
-public typealias StoreStateSubject = SwiftyRedux.StoreStateSubject
+public typealias StoreStateSubject = SwiftyRedux.StoreStateSubject & AnyStoreStateSubject
+public typealias AnyStoreStateSubject = SwiftyRedux.AnyStoreStateSubject

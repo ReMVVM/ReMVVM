@@ -12,7 +12,7 @@ import SwiftyRedux
 public struct ViewModelProvider {
 
     private let state: () -> StoreState
-    private let subject: StoreStateSubject
+    private let subject: AnyStoreStateSubject
     public init<State: StoreState>(with store: Store<State>) {
         state = { store.state }
         subject = store
