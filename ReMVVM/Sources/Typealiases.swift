@@ -7,20 +7,6 @@
 //
 
 import MVVM
-import SwiftyRedux
 
 public typealias ViewModel = MVVM.ViewModel
 public typealias ViewModelContext = MVVM.ViewModelContext
-
-public typealias Store<State> = SwiftyRedux.Store<State> where State: StoreState
-public typealias StoreAction = SwiftyRedux.StoreAction
-public typealias AnyReducer = SwiftyRedux.AnyReducer
-public typealias Reducer = SwiftyRedux.Reducer
-public typealias AnyMiddleware = SwiftyRedux.AnyMiddleware
-public typealias Middleware = SwiftyRedux.Middleware
-public typealias AnyDispatcher = SwiftyRedux.AnyDispatcher
-public typealias Dispatcher = SwiftyRedux.Dispatcher
-public typealias StoreSubscriber = SwiftyRedux.StoreSubscriber
-public typealias StoreActionDispatcher = SwiftyRedux.StoreActionDispatcher
-public typealias StoreStateSubject = SwiftyRedux.StoreStateSubject & AnyStoreStateSubject
-public typealias AnyStoreStateSubject = SwiftyRedux.AnyStoreStateSubject

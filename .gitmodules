@@ -1,0 +1,3 @@
+[submodule "Submodules/SwiftyRedux"]
+	path = Submodules/SwiftyRedux
+	url = git@github.com:dgrzeszczak/SwiftyRedux.git

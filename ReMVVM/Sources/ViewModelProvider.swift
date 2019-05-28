@@ -7,7 +7,6 @@
 //
 
 import MVVM
-import SwiftyRedux
 
 public struct ViewModelProvider {
 
@@ -23,7 +22,7 @@ public struct ViewModelProvider {
         return ViewModelProviders.provider(for: context, with: factory).get(for: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State: StoreState {
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber {
         let factory = MVVMViewModelFactory(key: key, factory: state().factory)
         guard let vm: VM = ViewModelProviders.provider(for: context, with: factory).get(for: key) else { return nil }
         subject.add(subscriber: vm)

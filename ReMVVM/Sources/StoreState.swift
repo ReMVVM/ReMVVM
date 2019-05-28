@@ -6,8 +6,6 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-import SwiftyRedux
-
-public protocol StoreState: SwiftyRedux.StoreState {
+public protocol StoreState {
     var factory: ViewModelFactory { get }
 }

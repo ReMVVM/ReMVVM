@@ -71,7 +71,7 @@ extension ReMVVM where Base: ViewModelContext {
         return remvvm.viewModelProvider.viewModel(for: context, for: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber, VM.State: StoreState {
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber {
         return remvvm.viewModelProvider.viewModel(for: context, for: key)
     }
 
@@ -80,7 +80,7 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: StoreStateSubject where Base: StoreSubscriber {
+extension ReMVVM: StoreStateSubject, AnyStoreStateSubject where Base: StoreSubscriber {
 
     public var state: Base.State? { return remvvm.state() as? Base.State }
 

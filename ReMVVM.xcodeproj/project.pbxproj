@@ -13,22 +13,17 @@
 		08491BD920B01FA2008D93AA /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD820B01FA2008D93AA /* ViewModelFactory.swift */; };
 		08491BDD20B02026008D93AA /* CompositeViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BDC20B02026008D93AA /* CompositeViewModelFactory.swift */; };
 		08491BE020B02074008D93AA /* SingleViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BDF20B02074008D93AA /* SingleViewModelFactory.swift */; };
-		08491BE120B0242B008D93AA /* SingleViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BDF20B02074008D93AA /* SingleViewModelFactory.swift */; };
-		08491BE220B0242E008D93AA /* CompositeViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BDC20B02026008D93AA /* CompositeViewModelFactory.swift */; };
-		08491BE720B0243C008D93AA /* ViewModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD620B01F78008D93AA /* ViewModelProvider.swift */; };
-		08491BE820B0243F008D93AA /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BD820B01FA2008D93AA /* ViewModelFactory.swift */; };
 		086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */; };
-		086E214F2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */; };
 		089426BF20B03D8200A4B6FF /* MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BD20B03D8200A4B6FF /* MVVM.framework */; };
 		08A3FCE921D94B4800DC601C /* ReMVVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A3FCE821D94B4800DC601C /* ReMVVM.swift */; };
-		08A3FCEA21D94B4800DC601C /* ReMVVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A3FCE821D94B4800DC601C /* ReMVVM.swift */; };
 		08ADCDA5229C2654004CD357 /* ReMVVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BA220B010D1008D93AA /* ReMVVMTests.swift */; };
-		08B99D022162C705005627E9 /* SwiftyRedux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B99D012162C705005627E9 /* SwiftyRedux.framework */; };
-		08B99D032162C705005627E9 /* SwiftyRedux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B99D012162C705005627E9 /* SwiftyRedux.framework */; };
+		08ADCDC9229DB79A004CD357 /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC4229DB79A004CD357 /* Middleware.swift */; };
+		08ADCDCA229DB79A004CD357 /* StoreAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC5229DB79A004CD357 /* StoreAction.swift */; };
+		08ADCDCB229DB79A004CD357 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC6229DB79A004CD357 /* Store.swift */; };
+		08ADCDCC229DB79A004CD357 /* StoreSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC7229DB79A004CD357 /* StoreSubscriber.swift */; };
+		08ADCDCD229DB79A004CD357 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC8229DB79A004CD357 /* Reducer.swift */; };
 		08B99D052162C9D7005627E9 /* StoreState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D042162C9D7005627E9 /* StoreState.swift */; };
-		08B99D062162C9D7005627E9 /* StoreState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D042162C9D7005627E9 /* StoreState.swift */; };
 		08B99D082162CA2F005627E9 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D072162CA2F005627E9 /* Typealiases.swift */; };
-		08B99D092162CA2F005627E9 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D072162CA2F005627E9 /* Typealiases.swift */; };
 		08FB77922152E72700283977 /* MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089426BD20B03D8200A4B6FF /* MVVM.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +51,11 @@
 		086E214D2127F2A700EF3A20 /* InitializableViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializableViewModelFactory.swift; sourceTree = "<group>"; };
 		089426BD20B03D8200A4B6FF /* MVVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MVVM.framework; path = Carthage/Build/iOS/MVVM.framework; sourceTree = "<group>"; };
 		08A3FCE821D94B4800DC601C /* ReMVVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReMVVM.swift; sourceTree = "<group>"; };
-		08B99D012162C705005627E9 /* SwiftyRedux.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyRedux.framework; path = Carthage/Build/iOS/SwiftyRedux.framework; sourceTree = "<group>"; };
+		08ADCDC4229DB79A004CD357 /* Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Middleware.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/Middleware.swift; sourceTree = SOURCE_ROOT; };
+		08ADCDC5229DB79A004CD357 /* StoreAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreAction.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/StoreAction.swift; sourceTree = SOURCE_ROOT; };
+		08ADCDC6229DB79A004CD357 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Store.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/Store.swift; sourceTree = SOURCE_ROOT; };
+		08ADCDC7229DB79A004CD357 /* StoreSubscriber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreSubscriber.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/StoreSubscriber.swift; sourceTree = SOURCE_ROOT; };
+		08ADCDC8229DB79A004CD357 /* Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reducer.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/Reducer.swift; sourceTree = SOURCE_ROOT; };
 		08B99D042162C9D7005627E9 /* StoreState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreState.swift; sourceTree = "<group>"; };
 		08B99D072162CA2F005627E9 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,7 +66,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				089426BF20B03D8200A4B6FF /* MVVM.framework in Frameworks */,
-				08B99D022162C705005627E9 /* SwiftyRedux.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +75,6 @@
 			files = (
 				08491B9E20B010D1008D93AA /* ReMVVM.framework in Frameworks */,
 				08FB77922152E72700283977 /* MVVM.framework in Frameworks */,
-				08B99D032162C705005627E9 /* SwiftyRedux.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				08491BB920B01127008D93AA /* Sources */,
+				08ADCDC3229DB77A004CD357 /* SwiftyRedux */,
 				08491B9720B010D1008D93AA /* ReMVVM.h */,
 				08491B9820B010D1008D93AA /* Info.plist */,
 			);
@@ -148,10 +146,21 @@
 		089426BC20B03D8100A4B6FF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				08B99D012162C705005627E9 /* SwiftyRedux.framework */,
 				089426BD20B03D8200A4B6FF /* MVVM.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		08ADCDC3229DB77A004CD357 /* SwiftyRedux */ = {
+			isa = PBXGroup;
+			children = (
+				08ADCDC4229DB79A004CD357 /* Middleware.swift */,
+				08ADCDC8229DB79A004CD357 /* Reducer.swift */,
+				08ADCDC6229DB79A004CD357 /* Store.swift */,
+				08ADCDC5229DB79A004CD357 /* StoreAction.swift */,
+				08ADCDC7229DB79A004CD357 /* StoreSubscriber.swift */,
+			);
+			name = SwiftyRedux;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,12 +272,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08ADCDC9229DB79A004CD357 /* Middleware.swift in Sources */,
 				08491BE020B02074008D93AA /* SingleViewModelFactory.swift in Sources */,
 				08491BDD20B02026008D93AA /* CompositeViewModelFactory.swift in Sources */,
 				08B99D082162CA2F005627E9 /* Typealiases.swift in Sources */,
 				08491BD920B01FA2008D93AA /* ViewModelFactory.swift in Sources */,
+				08ADCDCA229DB79A004CD357 /* StoreAction.swift in Sources */,
+				08ADCDCB229DB79A004CD357 /* Store.swift in Sources */,
 				08A3FCE921D94B4800DC601C /* ReMVVM.swift in Sources */,
 				08B99D052162C9D7005627E9 /* StoreState.swift in Sources */,
+				08ADCDCC229DB79A004CD357 /* StoreSubscriber.swift in Sources */,
+				08ADCDCD229DB79A004CD357 /* Reducer.swift in Sources */,
 				08491BD720B01F78008D93AA /* ViewModelProvider.swift in Sources */,
 				086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */,
 			);
@@ -278,15 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08B99D092162CA2F005627E9 /* Typealiases.swift in Sources */,
-				08491BE720B0243C008D93AA /* ViewModelProvider.swift in Sources */,
-				08491BE220B0242E008D93AA /* CompositeViewModelFactory.swift in Sources */,
-				08491BE820B0243F008D93AA /* ViewModelFactory.swift in Sources */,
 				08ADCDA5229C2654004CD357 /* ReMVVMTests.swift in Sources */,
-				08A3FCEA21D94B4800DC601C /* ReMVVM.swift in Sources */,
-				086E214F2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */,
-				08B99D062162C9D7005627E9 /* StoreState.swift in Sources */,
-				08491BE120B0242B008D93AA /* SingleViewModelFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
