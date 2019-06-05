@@ -20,7 +20,7 @@
 		08ADCDC9229DB79A004CD357 /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC4229DB79A004CD357 /* Middleware.swift */; };
 		08ADCDCA229DB79A004CD357 /* StoreAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC5229DB79A004CD357 /* StoreAction.swift */; };
 		08ADCDCB229DB79A004CD357 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC6229DB79A004CD357 /* Store.swift */; };
-		08ADCDCC229DB79A004CD357 /* StoreSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC7229DB79A004CD357 /* StoreSubscriber.swift */; };
+		08ADCDCC229DB79A004CD357 /* StateSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC7229DB79A004CD357 /* StateSubscriber.swift */; };
 		08ADCDCD229DB79A004CD357 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ADCDC8229DB79A004CD357 /* Reducer.swift */; };
 		08B99D052162C9D7005627E9 /* StoreState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D042162C9D7005627E9 /* StoreState.swift */; };
 		08B99D082162CA2F005627E9 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D072162CA2F005627E9 /* Typealiases.swift */; };
@@ -54,7 +54,7 @@
 		08ADCDC4229DB79A004CD357 /* Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Middleware.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/Middleware.swift; sourceTree = SOURCE_ROOT; };
 		08ADCDC5229DB79A004CD357 /* StoreAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreAction.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/StoreAction.swift; sourceTree = SOURCE_ROOT; };
 		08ADCDC6229DB79A004CD357 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Store.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/Store.swift; sourceTree = SOURCE_ROOT; };
-		08ADCDC7229DB79A004CD357 /* StoreSubscriber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreSubscriber.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/StoreSubscriber.swift; sourceTree = SOURCE_ROOT; };
+		08ADCDC7229DB79A004CD357 /* StateSubscriber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateSubscriber.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/StateSubscriber.swift; sourceTree = SOURCE_ROOT; };
 		08ADCDC8229DB79A004CD357 /* Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Reducer.swift; path = Submodules/SwiftyRedux/SwiftyRedux/Sources/Reducer.swift; sourceTree = SOURCE_ROOT; };
 		08B99D042162C9D7005627E9 /* StoreState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreState.swift; sourceTree = "<group>"; };
 		08B99D072162CA2F005627E9 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 				08ADCDC8229DB79A004CD357 /* Reducer.swift */,
 				08ADCDC6229DB79A004CD357 /* Store.swift */,
 				08ADCDC5229DB79A004CD357 /* StoreAction.swift */,
-				08ADCDC7229DB79A004CD357 /* StoreSubscriber.swift */,
+				08ADCDC7229DB79A004CD357 /* StateSubscriber.swift */,
 			);
 			name = SwiftyRedux;
 			sourceTree = "<group>";
@@ -281,7 +281,7 @@
 				08ADCDCB229DB79A004CD357 /* Store.swift in Sources */,
 				08A3FCE921D94B4800DC601C /* ReMVVM.swift in Sources */,
 				08B99D052162C9D7005627E9 /* StoreState.swift in Sources */,
-				08ADCDCC229DB79A004CD357 /* StoreSubscriber.swift in Sources */,
+				08ADCDCC229DB79A004CD357 /* StateSubscriber.swift in Sources */,
 				08ADCDCD229DB79A004CD357 /* Reducer.swift in Sources */,
 				08491BD720B01F78008D93AA /* ViewModelProvider.swift in Sources */,
 				086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */,

@@ -42,12 +42,10 @@ public enum ReMVVMConfig {
 
 fileprivate struct AnyReMVVM {
 
-    let state: () -> StoreState
-    let store: StoreActionDispatcher & AnyStoreStateSubject
+    let store: StoreActionDispatcher & AnyStateSubject & AnyStateStore
     let viewModelProvider: ViewModelProvider
     init<State: StoreState>(store: Store<State>) {
         viewModelProvider = ViewModelProvider(with: store)
-        state = { store.state }
         self.store = store
     }
 }
@@ -71,7 +69,7 @@ extension ReMVVM where Base: ViewModelContext {
         return remvvm.viewModelProvider.viewModel(for: context, for: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StoreSubscriber {
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StateSubscriber {
         return remvvm.viewModelProvider.viewModel(for: context, for: key)
     }
 
@@ -80,15 +78,15 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: StoreStateSubject, AnyStoreStateSubject where Base: StoreSubscriber {
+extension ReMVVM: AnyStateSubject where Base: StateSubscriber {
 
-    public var state: Base.State? { return remvvm.state() as? Base.State }
+    public var state: Base.State? { return remvvm.store.anyState() }
 
-    public func add<Subscriber: StoreSubscriber>(subscriber: Subscriber) {
+    public func add<Subscriber: StateSubscriber>(subscriber: Subscriber) {
         remvvm.store.add(subscriber: subscriber)
     }
 
-    public func remove<Subscriber: StoreSubscriber>(subscriber: Subscriber) {
+    public func remove<Subscriber: StateSubscriber>(subscriber: Subscriber) {
         remvvm.store.remove(subscriber: subscriber)
     }
 }
