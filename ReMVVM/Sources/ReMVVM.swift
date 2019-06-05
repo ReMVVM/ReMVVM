@@ -78,7 +78,7 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: AnyStateSubject where Base: StateSubscriber {
+extension ReMVVM: StateSubject & AnyStateSubject where Base: StateSubscriber {
 
     public var state: Base.State? { return remvvm.store.anyState() }
 
