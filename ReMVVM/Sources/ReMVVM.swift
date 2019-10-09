@@ -6,6 +6,40 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
+#if swift(>=5.1)
+@propertyWrapper
+public struct Provider<VM: ViewModel> {
+    public let wrappedValue: VM?
+
+    public init(key: String? = nil) {
+        wrappedValue = ReMVVMConfig.defaultReMVVM.viewModelProvider.viewModel(with: key)
+    }
+}
+#endif
+
+//@propertyWrapper
+//public final class ReMVVMState<State> {
+//    public private(set) var wrappedValue: State?
+//    private var subscriber: Subscriber
+//    public init() {
+//        subscriber = Subscriber()
+//        wrappedValue = subscriber.remvvm.state
+//        subscriber.update = { state in
+//            self.wrappedValue = state
+//        }
+//        //subscriber.remvvm.add(subscriber: self)
+//    }
+//
+//    private class Subscriber: StateSubscriber, ReMVVMDriven {
+//        var update: ((State) -> Void)?
+//        init() {
+//            self.remvvm.add(subscriber: self)
+//        }
+//
+//
+//    }
+//}
+
 public protocol ReMVVMDriven {
     associatedtype Base
 
@@ -42,7 +76,7 @@ public enum ReMVVMConfig {
 
 fileprivate struct AnyReMVVM {
 
-    let store: StoreActionDispatcher & AnyStateSubject & AnyStateStore
+    let store: StoreActionDispatcher & StateSubject & AnyStateStore
     let viewModelProvider: ViewModelProvider
     init<State: StoreState>(store: Store<State>) {
         viewModelProvider = ViewModelProvider(with: store)
@@ -65,12 +99,12 @@ extension ReMVVM: StoreActionDispatcher {
 
 extension ReMVVM where Base: ViewModelContext {
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
-        return remvvm.viewModelProvider.viewModel(for: context, for: key)
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? {
+        return remvvm.viewModelProvider.viewModel(for: context, with: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StateSubscriber {
-        return remvvm.viewModelProvider.viewModel(for: context, for: key)
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateSubscriber {
+        return remvvm.viewModelProvider.viewModel(for: context, with: key)
     }
 
     public func clear(context: ViewModelContext) {
@@ -78,7 +112,7 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: StateSubject & AnyStateSubject where Base: StateSubscriber {
+extension ReMVVM: StateContainer & StateSubject where Base: StateSubscriber {
 
     public var state: Base.State? { return remvvm.store.anyState() }
 

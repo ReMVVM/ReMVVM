@@ -11,23 +11,36 @@ import MVVM
 public struct ViewModelProvider {
 
     private let state: () -> StoreState
-    private let subject: AnyStateSubject
+    private let subject: StateSubject
     public init<State: StoreState>(with store: Store<State>) {
         state = { store.state }
         subject = store
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? {
-        let factory = MVVMViewModelFactory(key: key, factory: state().factory)
-        return ViewModelProviders.provider(for: context, with: factory).get(for: key)
+    // context that viewModel will be assigned with, nil means dev takes care of manage VM's lifecycle
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, with key: String? = nil) -> VM? {
+
+        return getViewModel(for: context, with: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext, for key: String? = nil) -> VM? where VM: StateSubscriber {
-        let factory = MVVMViewModelFactory(key: key, factory: state().factory)
-        guard let vm: VM = ViewModelProviders.provider(for: context, with: factory).get(for: key) else { return nil }
+    // context that viewModel will be assigned with, nil means dev takes care of manage VM's lifecycle
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, with key: String? = nil) -> VM? where VM: StateSubscriber {
+
+        guard let vm: VM = getViewModel(for: context, with: key) else { return nil }
         subject.add(subscriber: vm)
 
         return vm
+    }
+
+    public func creates<VM: ViewModel>(type: VM.Type) -> Bool {
+        return state().factory.creates(type: VM.self)
+    }
+
+    private func getViewModel<VM: ViewModel>(for context: ViewModelContext?, with key: String?) -> VM? {
+        let factory = MVVMViewModelFactory(key: key, factory: state().factory)
+        guard let context = context else { return factory.create() }
+
+        return ViewModelProviders.provider(for: context, with: factory).get(for: key)
     }
 
     public func clear(context: ViewModelContext) {
