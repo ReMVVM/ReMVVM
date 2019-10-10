@@ -8,15 +8,18 @@
 
 #if swift(>=5.1)
 @propertyWrapper
-public struct Provided<VM: ViewModel> {
-    public let wrappedValue: VM?
+public final class Provided<VM: ViewModel> {
+    private let key: String?
+    public private(set) lazy var wrappedValue: VM? = {
+        return ReMVVMConfig.defaultReMVVM.viewModelProvider.viewModel(with: key)
+    }()
 
     public init(key: String) {
-        wrappedValue = ReMVVMConfig.defaultReMVVM.viewModelProvider.viewModel(with: key)
+        self.key = key
     }
 
     public init() {
-        wrappedValue = ReMVVMConfig.defaultReMVVM.viewModelProvider.viewModel(with: nil)
+        key = nil
     }
 }
 #endif
