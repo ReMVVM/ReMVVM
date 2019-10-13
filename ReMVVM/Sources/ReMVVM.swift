@@ -119,9 +119,11 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: AnyStateSubject where Base: StateSubscriber {
+extension ReMVVM: AnyStateSubject, StateAssociated where Base: StateAssociated {
 
-    public var state: Base.State? { return anyState() }
+    public typealias State = Base.State
+
+    public var state: State? { return anyState() }
 
     public func anyState<State>() -> State? {
         return remvvm.store.anyState()
