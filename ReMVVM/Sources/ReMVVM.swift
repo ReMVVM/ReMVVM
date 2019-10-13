@@ -83,7 +83,7 @@ public enum ReMVVMConfig {
 
 fileprivate struct AnyReMVVM {
 
-    let store: StoreActionDispatcher & AnyStateSubject & AnyStateStore
+    let store: StoreActionDispatcher & AnyStateSubject
     let viewModelProvider: ViewModelProvider
     init<State: StoreState>(store: Store<State>) {
         viewModelProvider = ViewModelProvider(with: store)
@@ -119,9 +119,13 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: StateSubject & AnyStateSubject where Base: StateSubscriber {
+extension ReMVVM: AnyStateSubject where Base: StateSubscriber {
 
-    public var state: Base.State? { return remvvm.store.anyState() }
+    public var state: Base.State? { return anyState() }
+
+    public func anyState<State>() -> State? {
+        return remvvm.store.anyState()
+    }
 
     public func add<Subscriber: StateSubscriber>(subscriber: Subscriber) {
         remvvm.store.add(subscriber: subscriber)
