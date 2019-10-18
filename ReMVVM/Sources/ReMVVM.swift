@@ -74,8 +74,7 @@ public enum ReMVVMConfig {
     private static var remvvm: AnyReMVVM?
     public static func initialize<State: StoreState>(with store: Store<State>) {
         guard remvvm == nil else {
-            assertionFailure("ReMVVM already initialized. Are you sure ?")
-            return
+            fatalError("ReMVVM already initialized. You are allowed to have only one store managed by ReMVVM.")
         }
         remvvm = AnyReMVVM(store: store)
     }
