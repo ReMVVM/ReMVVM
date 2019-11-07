@@ -82,7 +82,7 @@ public enum ReMVVMConfig {
 
 fileprivate struct AnyReMVVM {
 
-    let store: StoreActionDispatcher & AnyStateSubject
+    let store: StoreActionDispatcher & AnyStateTypeSubject
     let viewModelProvider: ViewModelProvider
     init<State: StoreState>(store: Store<State>) {
         viewModelProvider = ViewModelProvider(with: store)
@@ -118,21 +118,39 @@ extension ReMVVM where Base: ViewModelContext {
     }
 }
 
-extension ReMVVM: AnyStateSubject, StateAssociated where Base: StateAssociated {
+
+extension ReMVVM /*: AnyStateTypeSubject, Subject, StateAssociated */where Base: StateAssociated {
 
     public typealias State = Base.State
 
-    public var state: State? { return anyState() }
+//    public var state: State? { return anyState() }
+//
+//    public func anyState<State>() -> State? {
+//        return remvvm.store.anyState()
+//    }
+//
+//    public func add<Subscriber: StateSubscriber>(subscriber: Subscriber) {
+//        remvvm.store.add(subscriber: subscriber)
+//    }
+//
+//    public func remove<Subscriber: StateSubscriber>(subscriber: Subscriber) {
+//        remvvm.store.remove(subscriber: subscriber)
+//    }
 
-    public func anyState<State>() -> State? {
-        return remvvm.store.anyState()
+    public var stateSubject: AnyStateSubject<State> {
+        return ReMVVMSubject<State>().any
+    }
+}
+
+
+struct ReMVVMSubject<State>: StateSubject {
+    var state: State? { ReMVVMConfig.defaultReMVVM.store.anyState() }
+
+    func add<Subscriber>(subscriber: Subscriber) where Subscriber : StateSubscriber {
+        ReMVVMConfig.defaultReMVVM.store.add(subscriber: subscriber)
     }
 
-    public func add<Subscriber: StateSubscriber>(subscriber: Subscriber) {
-        remvvm.store.add(subscriber: subscriber)
-    }
-
-    public func remove<Subscriber: StateSubscriber>(subscriber: Subscriber) {
-        remvvm.store.remove(subscriber: subscriber)
+    func remove<Subscriber>(subscriber: Subscriber) where Subscriber : StateSubscriber {
+        ReMVVMConfig.defaultReMVVM.store.remove(subscriber: subscriber)
     }
 }

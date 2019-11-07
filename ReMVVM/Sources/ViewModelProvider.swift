@@ -11,7 +11,7 @@ import MVVM
 public struct ViewModelProvider {
 
     private let state: () -> StoreState
-    private let subject: AnyStateSubject
+    private let subject: AnyStateTypeSubject
     public init<State: StoreState>(with store: Store<State>) {
         state = { store.state }
         subject = store
