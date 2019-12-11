@@ -8,6 +8,7 @@
 
 import MVVM
 
+/// Helper implementation of view model factory that creates view models based on closure given in initializer.
 public struct SingleViewModelFactory<SVM: ViewModel>: ViewModelFactory {
 
     private let factory: (String?) -> SVM?

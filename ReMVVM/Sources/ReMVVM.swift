@@ -6,151 +6,112 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-#if swift(>=5.1)
-@propertyWrapper
-public final class Provided<VM: ViewModel> {
-    private let key: String?
-    public private(set) lazy var wrappedValue: VM? = {
-        return ReMVVMConfig.defaultReMVVM.viewModelProvider.viewModel(with: key)
-    }()
-
-    public init(key: String) {
-        self.key = key
-    }
-
-    public init() {
-        key = nil
-    }
-}
-#endif
-
-//@propertyWrapper
-//public final class ReMVVMState<State> {
-//    public private(set) var wrappedValue: State?
-//    private var subscriber: Subscriber
-//    public init() {
-//        subscriber = Subscriber()
-//        wrappedValue = subscriber.remvvm.state
-//        subscriber.update = { state in
-//            self.wrappedValue = state
-//        }
-//        //subscriber.remvvm.add(subscriber: self)
-//    }
-//
-//    private class Subscriber: StateSubscriber, ReMVVMDriven {
-//        var update: ((State) -> Void)?
-//        init() {
-//            self.remvvm.add(subscriber: self)
-//        }
-//
-//
-//    }
-//}
-
-public protocol ReMVVMDriven {
-    associatedtype Base
-
-    var remvvm: ReMVVM<Base> { get }
-    static var remvvm: ReMVVM<Base> { get }
-}
-
+/// Main ReMVVM struct. It may be instantiated only by ReMVVM framework. Usually is used by ReMVVMDriven extensions and provide additional methods.
 public struct ReMVVM<Base> {
 
-    private let remvvm: AnyReMVVM
-    fileprivate init(with remvvm: AnyReMVVM) {
-        self.remvvm = remvvm
-    }
-}
-
-public enum ReMVVMConfig {
-
-    fileprivate static var defaultReMVVM: AnyReMVVM {
-        guard let remvvm = remvvm else {
-            fatalError("ReMVVM has to be initialized first. Please use ReMVVMConfig.initialize(with:) method.")
-        }
-        return remvvm
-    }
-
-    private static var remvvm: AnyReMVVM?
-    public static func initialize<State: StoreState>(with store: Store<State>) {
-        if remvvm != nil {
-            assertionFailure("ReMVVM already initialized. Are you sure ?")
-        }
-        remvvm = AnyReMVVM(store: store)
-    }
-}
-
-fileprivate struct AnyReMVVM {
-
-    let store: StoreActionDispatcher & AnyStateTypeSubject
+    let store: Dispatcher & Subject & AnyStateProvider
     let viewModelProvider: ViewModelProvider
-    init<State: StoreState>(store: Store<State>) {
-        viewModelProvider = ViewModelProvider(with: store)
-        self.store = store
+
+    init() {
+        store = ReMVVM<Any>.store
+        viewModelProvider = ReMVVM<Any>.viewModelProvider
     }
 }
 
-extension ReMVVMDriven {
+extension ReMVVM where Base: StoreState {
 
-    public var remvvm: ReMVVM<Self> { return ReMVVM(with: ReMVVMConfig.defaultReMVVM) }
-    public static var remvvm: ReMVVM<Self> { return ReMVVM(with: ReMVVMConfig.defaultReMVVM) }
+    /// Initializes ReMVVM framework with the store. ReMVVM is Redux like framework and has the only one store for the app.
+    /// - Parameter store: store that will be used by ReMVVM framework.
+    public static func initialize(with store: Store<Base>) {
+        ReMVVM<Any>.initialize(with: store)
+    }
 }
 
-extension ReMVVM: StoreActionDispatcher {
+extension ReMVVM: Dispatcher {
 
+    /// Dispatches action in the store.
+    /// - Parameter action: action to dispatch
     public func dispatch(action: StoreAction) {
-        remvvm.store.dispatch(action: action)
+        store.dispatch(action: action)
     }
 }
 
 extension ReMVVM where Base: ViewModelContext {
 
+    /// Provides view model of specified type.
+    /// - Parameters:
+    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by framework.
+    ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? {
-        return remvvm.viewModelProvider.viewModel(for: context, with: key)
+        return viewModelProvider.viewModel(for: context, with: key)
     }
 
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateSubscriber {
-        return remvvm.viewModelProvider.viewModel(for: context, with: key)
+    /// Provides view model of specified type and register it for state changes in the store.
+    /// - Parameters:
+    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by framework.
+    ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
+    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateObserver {
+        return viewModelProvider.viewModel(for: context, with: key)
     }
 
+
+    /// Clears all view models created for specified context.
+    /// - Parameter context: context that should be cleared
     public func clear(context: ViewModelContext) {
-        remvvm.viewModelProvider.clear(context: context)
+        viewModelProvider.clear(context: context)
     }
 }
 
-
-extension ReMVVM /*: AnyStateTypeSubject, Subject, StateAssociated */where Base: StateAssociated {
+extension ReMVVM where Base: StateAssociated {
 
     public typealias State = Base.State
 
-//    public var state: State? { return anyState() }
-//
-//    public func anyState<State>() -> State? {
-//        return remvvm.store.anyState()
-//    }
-//
-//    public func add<Subscriber: StateSubscriber>(subscriber: Subscriber) {
-//        remvvm.store.add(subscriber: subscriber)
-//    }
-//
-//    public func remove<Subscriber: StateSubscriber>(subscriber: Subscriber) {
-//        remvvm.store.remove(subscriber: subscriber)
-//    }
-
+    /// state subject that can be used to observe state changes
     public var stateSubject: AnyStateSubject<State> {
-        return ReMVVMSubject<State>().any
+        return ReMVVMStateSubject<State>().any
+    }
+
+    private struct ReMVVMStateSubject<State>: StateSubject {
+        let store: Dispatcher & Subject & AnyStateProvider = ReMVVM<Any>.store
+        var state: State? { store.anyState() }
+
+        func add<Observer>(observer: Observer) where Observer : StateObserver {
+            store.add(observer: observer)
+        }
+
+        func remove<Observer>(observer: Observer) where Observer : StateObserver {
+            store.remove(observer: observer)
+        }
     }
 }
 
+extension ReMVVM where Base == Any {
 
-struct ReMVVMSubject<State>: StateSubject {
-    var state: State? { ReMVVMConfig.defaultReMVVM.store.anyState() }
+    static var store: (Dispatcher & Subject & AnyStateProvider)! = {
+        guard initialized else {
+            fatalError("ReMVVM has to be initialized first. Please use ReMVVM.initialize(with:) method.")
+        }
 
-    func add<Subscriber>(subscriber: Subscriber) where Subscriber : StateSubscriber {
-        ReMVVMConfig.defaultReMVVM.store.add(subscriber: subscriber)
-    }
+        return nil
+    }()
 
-    func remove<Subscriber>(subscriber: Subscriber) where Subscriber : StateSubscriber {
-        ReMVVMConfig.defaultReMVVM.store.remove(subscriber: subscriber)
+    static var viewModelProvider: ViewModelProvider! = {
+        guard initialized else {
+            fatalError("ReMVVM has to be initialized first. Please use ReMVVM.initialize(with:) method.")
+        }
+
+        return nil
+    }()
+
+    private static var initialized: Bool = false
+    static func initialize<State: StoreState>(with store: Store<State>) {
+        if initialized {
+            print("ReMVVM already initialized. Are you sure ?")
+        } else {
+            initialized = true
+        }
+
+        Self.store = store
+        viewModelProvider = ViewModelProvider(with: store)
     }
 }

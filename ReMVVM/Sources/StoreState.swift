@@ -6,6 +6,8 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
+/// Application state managed by  the store.
 public protocol StoreState {
+    /// View model factory that will be used to create view models.
     var factory: ViewModelFactory { get }
 }
