@@ -10,41 +10,53 @@ import ReMVVM
 import RxSwift
 
 extension ReMVVM: ReactiveCompatible { }
+extension Store: ReactiveCompatible { }
+extension AnyStateSubject: ReactiveCompatible { }
 
-extension Reactive: ObserverType where Base: StoreActionDispatcher {
+extension Reactive: ObserverType where Base: Dispatcher {
     public func on(_ event: Event<StoreAction>) {
         guard let action = event.element else { return }
         base.dispatch(action: action)
     }
 }
 
-extension Reactive where Base: StoreStateSubject {
+extension Reactive where Base: StateSubject {
 
-    var state: Observable<Base.State> {
-        let base = self.base
-        guard let state = base.state else { return .never() } //or .empty() ? 
+    public var state: Observable<Base.State> {
 
-        return Observable.create { observer in
-            let subscriber = StateSubscriber(observer)
-            base.add(subscriber: subscriber)
+        return Observable.create { [base] observer in
+            let reactiveObserver = ReactiveObserver(observer)
+            base.add(observer: reactiveObserver)
 
             return Disposables.create {
-                base.remove(subscriber: subscriber)
+                base.remove(observer: reactiveObserver)
             }
         }
-        .startWith(state)
         .share(replay: 1)
     }
 
-    private class StateSubscriber: StoreSubscriber {
+    private class ReactiveObserver: StateObserver {
 
         let observer: AnyObserver<Base.State>
         init(_ observer: AnyObserver<Base.State>) {
             self.observer = observer
         }
 
-        func didChange(state: Base.State, oldState: Base.State) {
+        func didChange(state: Base.State, oldState: Base.State?) {
             observer.onNext(state)
         }
+    }
+}
+
+public protocol StateSubjectContainer: StateAssociated {
+    var stateSubject: AnyStateSubject<State> { get }
+}
+
+extension ReMVVM: StateSubjectContainer, StateAssociated where Base: StateAssociated { }
+
+extension Reactive where Base: StateSubjectContainer {
+
+    public var state: Observable<Base.State> {
+        base.stateSubject.rx.state
     }
 }

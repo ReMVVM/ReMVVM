@@ -19,9 +19,8 @@ struct LogoutReducer: Reducer {
 struct LogoutMiddleware: Middleware {
     let uiState: UIState
 
-    func applyMiddleware(for state: AppState, action: LogoutAction, dispatcher: Dispatcher<LogoutAction, AppState>) {
-
-        dispatcher.next { state in
+    func onNext(for state: AppState, action: LogoutAction, interceptor: Interceptor<LogoutAction, AppState>, dispatcher: Dispatcher) {
+        interceptor.next { state in
             self.uiState.dismissModal()
         }
     }

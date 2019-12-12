@@ -24,12 +24,11 @@ struct LoginReducer: Reducer {
 struct LoginMiddleware: Middleware {
     let uiState: UIState
 
-    func applyMiddleware(for state: AppState, action: LoginAction, dispatcher: Dispatcher<LoginAction, AppState>) {
-
+    func onNext(for state: AppState, action: LoginAction, interceptor: Interceptor<LoginAction, AppState>, dispatcher: Dispatcher) {
         // here you can do something asynchronously - like download user data
         // ....
 
-        dispatcher.next { state in
+        interceptor.next { state in
             // this closure is called after action is handled by reducer - can be used for side effects like that ;)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "LogoutViewController")

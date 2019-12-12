@@ -27,13 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let store = Store(with: initialState, reducer: reducer, middleware: middleware)
 
-        factory.add { LoginViewModel() }
+        //factory.add { LoginViewModel() } - not needed LoginViewModel is Initializable
         factory.add { () -> GreetingsViewModel? in
             guard let user = store.state.user else { return nil }
             return GreetingsViewModel(with: user)
         }
         
-        ReMVVMConfig.initialize(with: store)
+        ReMVVM.initialize(with: store)
 
         return true
     }
