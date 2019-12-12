@@ -3,7 +3,8 @@
   "iOS" : [
     {
       "name" : "MVVM",
-      "hash" : "a82b3c89f19051ff373e0d5cc61fe441cb765b1ac3cae91b8b5e66431b400e1f"
+      "hash" : "b65a52da6af867163b6b812655bda694213135e48c059aa32e46790e46a6acf1",
+      "swiftToolchainVersion" : "5.1.2 (swiftlang-1100.0.278 clang-1100.0.33.9)"
     }
   ]
 }

@@ -1,0 +1,5 @@
+github "ReactiveX/RxSwift" "4.4.0"
+github "dgrzeszczak/Actions" "1.0.0"
+github "dgrzeszczak/MVVM" "1.0.0"
+github "dgrzeszczak/ReMVVM" "1.0.0"
+github "dgrzeszczak/SwiftyRedux" "1.0.0"
