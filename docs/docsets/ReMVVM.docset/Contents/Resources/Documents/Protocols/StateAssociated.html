@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>StateAssociated Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/StateAssociated" class="dashAnchor"></a>
+    <a title="StateAssociated Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">ReMVVM Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">ReMVVM Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        StateAssociated Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../ReMVVM.html">ReMVVM</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/ReMVVM.html">ReMVVM</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ReMVVMDriven.html">ReMVVMDriven</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Store.html">Store</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StoreState.html">StoreState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateObserver.html">StateObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StateMapper.html">StateMapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Subject.html">Subject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Action.html">Action</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Action.html#/s:6ReMVVM11StoreActionP">StoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Dispatcher.html">Dispatcher</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Reducer.html">Reducer</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnyReducer.html">AnyReducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EmptyReducer.html">EmptyReducer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Middleware.html">Middleware</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/AnyMiddleware.html">AnyMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Interceptor.html">Interceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Middleware.html#/s:6ReMVVM23InterceptorNextFunctiona">InterceptorNextFunction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../StateSubject.html">StateSubject</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/StateSubject.html">StateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnyStateSubject.html">AnyStateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MockStateSubject.html">MockStateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateAssociated.html">StateAssociated</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../ViewModel.html">ViewModel</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../ViewModel.html#/s:6ReMVVM9ViewModela">ViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../ViewModel.html#/s:6ReMVVM16ViewModelContexta">ViewModelContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ViewModelProvider.html">ViewModelProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Provided.html">Provided</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../ViewModelFactory.html">ViewModelFactory</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ViewModelFactory.html">ViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../ViewModelFactory.html#/s:6ReMVVM13Initializablea">Initializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/InitializableViewModelFactory.html">InitializableViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CompositeViewModelFactory.html">CompositeViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SingleViewModelFactory.html">SingleViewModelFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Deprecated.html">Deprecated</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Deprecated.html#/s:6ReMVVM15StateSubscribera">StateSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Deprecated.html#/s:6ReMVVM21StoreActionDispatchera">StoreActionDispatcher</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>StateAssociated</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StateAssociated</span></code></pre>
+
+                </div>
+              </div>
+            <p>Associate object with the State</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM15StateAssociatedP0C0Qa"></a>
+                    <a name="//apple_ref/swift/Alias/State" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM15StateAssociatedP0C0Qa">State</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>State type associated with the object</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/dgrzeszczak" target="_blank" rel="external">Dariusz Grzeszczak</a>. All rights reserved. (Last updated: 2019-12-23)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

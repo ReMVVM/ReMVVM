@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AnyReducer Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/AnyReducer" class="dashAnchor"></a>
+    <a title="AnyReducer Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">ReMVVM Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">ReMVVM Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        AnyReducer Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../ReMVVM.html">ReMVVM</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/ReMVVM.html">ReMVVM</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ReMVVMDriven.html">ReMVVMDriven</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Store.html">Store</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StoreState.html">StoreState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateObserver.html">StateObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StateMapper.html">StateMapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Subject.html">Subject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Action.html">Action</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Action.html#/s:6ReMVVM11StoreActionP">StoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Dispatcher.html">Dispatcher</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Reducer.html">Reducer</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnyReducer.html">AnyReducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EmptyReducer.html">EmptyReducer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Middleware.html">Middleware</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/AnyMiddleware.html">AnyMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Interceptor.html">Interceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Middleware.html#/s:6ReMVVM23InterceptorNextFunctiona">InterceptorNextFunction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../StateSubject.html">StateSubject</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/StateSubject.html">StateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnyStateSubject.html">AnyStateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MockStateSubject.html">MockStateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateAssociated.html">StateAssociated</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../ViewModel.html">ViewModel</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../ViewModel.html#/s:6ReMVVM9ViewModela">ViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../ViewModel.html#/s:6ReMVVM16ViewModelContexta">ViewModelContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ViewModelProvider.html">ViewModelProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Provided.html">Provided</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../ViewModelFactory.html">ViewModelFactory</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ViewModelFactory.html">ViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../ViewModelFactory.html#/s:6ReMVVM13Initializablea">Initializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/InitializableViewModelFactory.html">InitializableViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CompositeViewModelFactory.html">CompositeViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SingleViewModelFactory.html">SingleViewModelFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Deprecated.html">Deprecated</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Deprecated.html#/s:6ReMVVM15StateSubscribera">StateSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Deprecated.html#/s:6ReMVVM21StoreActionDispatchera">StoreActionDispatcher</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>AnyReducer</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">AnyReducer</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>Type erasured reducer. Used to make composition of pure reducers into more complicated state reducers.</p>
+<h1 id='examples' class='heading'>Examples</h1>
+
+<ul>
+<li><p>Convert Reducer to AnyReducer</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">anyLoginReducer</span> <span class="o">=</span> <span class="kt">LoginReducer</span><span class="o">.</span><span class="n">any</span> <span class="c1">// AnyReducer&lt;UserState&gt;</span>
+</code></pre></li>
+<li><p>Compose reducers for the same State</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">userReducer</span> <span class="o">=</span> <span class="kt">AnyReducer</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="p">[</span><span class="kt">LoginReducer</span><span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="kt">LogoutReducer</span><span class="o">.</span><span class="n">any</span><span class="p">])</span> <span class="c1">// AnyReducer&lt;UserState&gt;</span>
+</code></pre></li>
+<li><p>Create reducer for complex state that contains couple of &lsquo;subStates&rsquo;</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">applicationReducer</span> <span class="o">=</span> <span class="kt">AnyReducer</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span> <span class="o">-&gt;</span> <span class="kt">ApplicationState</span> <span class="k">in</span>
+
+   <span class="k">let</span> <span class="nv">userReducer</span> <span class="o">=</span> <span class="kt">AnyReducer</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="p">[</span><span class="kt">LoginReducer</span><span class="o">.</span><span class="n">any</span><span class="p">,</span> <span class="kt">LogoutReducer</span><span class="o">.</span><span class="n">any</span><span class="p">])</span>
+   <span class="c1">// ...</span>
+   <span class="k">return</span> <span class="kt">ApplicationState</span><span class="p">(</span>
+        <span class="nv">userState</span><span class="p">:</span> <span class="n">userReducer</span><span class="o">.</span><span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">userState</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="n">action</span><span class="p">),</span>
+        <span class="nv">favouritesState</span><span class="p">:</span> <span class="n">favouriteReducer</span><span class="o">.</span><span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">favouritesState</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="n">action</span><span class="p">),</span>
+
+       <span class="c1">// ...</span>
+   <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></li>
+</ul>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM10AnyReducerV4withACyxGSayAEG_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM10AnyReducerV4withACyxGSayAEG_tcfc">init(with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize reducer with an array of reducers to compose</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">reducers</span><span class="p">:</span> <span class="p">[</span><span class="kt">AnyReducer</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>reducers</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>array of reducers to compose</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM10AnyReducerV7reducerACyxGxx_AA11StoreAction_ptc_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(reducer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM10AnyReducerV7reducerACyxGxx_AA11StoreAction_ptc_tcfc">init(reducer:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize reducer with pure function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">reducer</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="n">_</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Action.html#/s:6ReMVVM11StoreActionP">StoreAction</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">State</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>reducer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>pure function that will be used to reduce state</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM10AnyReducerV6reduce5state4withxx_AA11StoreAction_ptF"></a>
+                    <a name="//apple_ref/swift/Method/reduce(state:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM10AnyReducerV6reduce5state4withxx_AA11StoreAction_ptF">reduce(state:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reduce the state - returns new state base on current state and action.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="n">with</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Action.html#/s:6ReMVVM11StoreActionP">StoreAction</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">State</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>state</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>current state to reduce</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>action</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/dgrzeszczak" target="_blank" rel="external">Dariusz Grzeszczak</a>. All rights reserved. (Last updated: 2019-12-23)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

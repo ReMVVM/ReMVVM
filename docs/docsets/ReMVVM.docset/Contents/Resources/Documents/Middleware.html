@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Middleware  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Section/Middleware" class="dashAnchor"></a>
+    <a title="Middleware  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">ReMVVM Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">ReMVVM Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Middleware  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="ReMVVM.html">ReMVVM</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/ReMVVM.html">ReMVVM</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ReMVVMDriven.html">ReMVVMDriven</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Store.html">Store</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StoreState.html">StoreState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StateObserver.html">StateObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StateMapper.html">StateMapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Subject.html">Subject</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Action.html">Action</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Action.html#/s:6ReMVVM11StoreActionP">StoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Dispatcher.html">Dispatcher</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Reducer.html">Reducer</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/AnyReducer.html">AnyReducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/EmptyReducer.html">EmptyReducer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Middleware.html">Middleware</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Middleware.html">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/AnyMiddleware.html">AnyMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Interceptor.html">Interceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Middleware.html#/s:6ReMVVM23InterceptorNextFunctiona">InterceptorNextFunction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="StateSubject.html">StateSubject</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/StateSubject.html">StateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/AnyStateSubject.html">AnyStateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/MockStateSubject.html">MockStateSubject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StateAssociated.html">StateAssociated</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="ViewModel.html">ViewModel</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="ViewModel.html#/s:6ReMVVM9ViewModela">ViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="ViewModel.html#/s:6ReMVVM16ViewModelContexta">ViewModelContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ViewModelProvider.html">ViewModelProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Provided.html">Provided</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="ViewModelFactory.html">ViewModelFactory</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/ViewModelFactory.html">ViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="ViewModelFactory.html#/s:6ReMVVM13Initializablea">Initializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/InitializableViewModelFactory.html">InitializableViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/CompositeViewModelFactory.html">CompositeViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SingleViewModelFactory.html">SingleViewModelFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Deprecated.html">Deprecated</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Deprecated.html#/s:6ReMVVM15StateSubscribera">StateSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Deprecated.html#/s:6ReMVVM21StoreActionDispatchera">StoreActionDispatcher</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Middleware</h1>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM10MiddlewareP"></a>
+                    <a name="//apple_ref/swift/Protocol/Middleware" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM10MiddlewareP">Middleware</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Middleware associated with specific Action&rsquo;s type. </p>
+
+<p>Middleware enchances action&rsquo;s dispatch functionality and may be applied in the store during initialization process. Before action is reduced in the store&rsquo;s reducer it has to go through all middlewares in the stack and each onNext() method has to be called.</p>
+<h1 id='rules' class='heading'>Rules</h1>
+
+<ul>
+<li>Middleware intercepts an action to the next middleware in the stack.</li>
+<li>Action will be reduced in the store only if it leaves last middleware in the stack.</li>
+<li>Middleware may &lsquo;block&rsquo; action&rsquo;s dispatch by not intercepting it to the next middleware.</li>
+<li>Middleware also may dispatch completely new action. New action will go through whole middleware stack.</li>
+</ul>
+<h1 id='example' class='heading'>Example</h1>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">ShowUserProfileMiddleware</span><span class="p">:</span> <span class="kt">Middleware</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">uiState</span><span class="p">:</span> <span class="kt">UIState</span>
+
+    <span class="kd">func</span> <span class="nf">onNext</span><span class="p">(</span><span class="k">for</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">ShowUserProfile</span><span class="p">,</span> <span class="nv">interceptor</span><span class="p">:</span> <span class="kt">Interceptor</span><span class="o">&lt;</span><span class="kt">ShowUserProfile</span><span class="p">,</span> <span class="kt">AppState</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">dispatcher</span><span class="p">:</span> <span class="kt">Dispatcher</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// block showing user's profile when user is not logged in, redirect to login page instead</span>
+        <span class="k">guard</span> <span class="n">state</span><span class="o">.</span><span class="n">isUserLoggedIn</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">dispatcher</span><span class="o">.</span><span class="nf">dispatch</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">ShowLoginPage</span><span class="p">())</span>
+        <span class="p">}</span>
+
+        <span class="c1">// everything is ok, intercept the action to the next reducer</span>
+        <span class="n">interceptor</span><span class="o">.</span><span class="n">next</span> <span class="p">{</span> <span class="n">state</span> <span class="k">in</span>
+            <span class="c1">// this closure is called after action is handled by reducer - can be used for side effects like that ;)</span>
+            <span class="k">let</span> <span class="nv">storyboard</span> <span class="o">=</span> <span class="kt">UIStoryboard</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Main"</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+            <span class="k">let</span> <span class="nv">controller</span> <span class="o">=</span> <span class="n">storyboard</span><span class="o">.</span><span class="nf">instantiateViewController</span><span class="p">(</span><span class="nv">withIdentifier</span><span class="p">:</span> <span class="s">"UserProfileController"</span><span class="p">)</span>
+            <span class="k">self</span><span class="o">.</span><span class="n">uiState</span><span class="o">.</span><span class="nf">showModal</span><span class="p">(</span><span class="nv">controller</span><span class="p">:</span> <span class="n">controller</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Protocols/Middleware.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Middleware</span> <span class="p">:</span> <span class="kt"><a href="Protocols/AnyMiddleware.html">AnyMiddleware</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM13AnyMiddlewareP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyMiddleware" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM13AnyMiddlewareP">AnyMiddleware</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Middleware enchances action&rsquo;s dispatch functionality and may be applied in the store during initialization process. Before action is reduced in the store&rsquo;s reducer it has to go through all middlewares in the stack and each onNext() method has to be called.</p>
+<h1 id='rules' class='heading'>Rules</h1>
+
+<ul>
+<li>Middleware intercepts an action to the next middleware in the stack.</li>
+<li>Action will be reduced in the store only if it leaves last middleware in the stack.</li>
+<li>Middleware may &lsquo;block&rsquo; action&rsquo;s dispatch by not intercepting it to the next middleware.</li>
+<li>Middleware also may dispatch completely new action. New action will go through whole middleware stack.</li>
+</ul>
+<h1 id='example' class='heading'>Example</h1>
+<pre class="highlight swift"><code> <span class="c1">// Put it as first middleware to just 'track' all actions</span>
+ <span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TrackDispatchMiddleware</span><span class="p">:</span> <span class="kt">AnyMiddleware</span> <span class="p">{</span>
+
+     <span class="k">let</span> <span class="nv">printDebugInfo</span><span class="p">:</span> <span class="kt">Bool</span>
+
+     <span class="kd">public</span> <span class="kd">func</span> <span class="n">onNext</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="k">for</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">StoreAction</span><span class="p">,</span> <span class="nv">interceptor</span><span class="p">:</span> <span class="kt">Interceptor</span><span class="o">&lt;</span><span class="kt">StoreAction</span><span class="p">,</span> <span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">dispatcher</span><span class="p">:</span> <span class="kt">Dispatcher</span><span class="p">)</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">StoreState</span> <span class="p">{</span>
+
+         <span class="c1">// debug disabled - just intercept the action</span>
+         <span class="k">guard</span> <span class="n">printDebugInfo</span> <span class="k">else</span> <span class="p">{</span> <span class="n">interceptor</span><span class="o">.</span><span class="nf">next</span><span class="p">()</span> <span class="p">}</span>
+
+         <span class="nf">print</span><span class="p">(</span><span class="s">"Action: </span><span class="se">\(</span><span class="n">action</span><span class="se">)</span><span class="s"> is going to be dispatched with state: </span><span class="se">\(</span><span class="n">state</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+         <span class="n">interceptor</span><span class="o">.</span><span class="n">next</span> <span class="p">{</span> <span class="n">state</span> <span class="k">in</span>
+             <span class="nf">print</span><span class="p">(</span><span class="s">"Action dispatched. New state: </span><span class="se">\(</span><span class="n">state</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre>
+
+                        <a href="Protocols/AnyMiddleware.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyMiddleware</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM11InterceptorV"></a>
+                    <a name="//apple_ref/swift/Struct/Interceptor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM11InterceptorV">Interceptor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Intercepts call of next(action:completion:) method to the custom function. Used by Middleware to intercept the action to the next middleware in the stack.
+May be used in UnitTests to test if middleware intercepts an action properly.</p>
+
+                        <a href="Structs/Interceptor.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Interceptor</span><span class="o">&lt;</span><span class="kt">Action</span><span class="p">,</span> <span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="Protocols/StoreState.html">StoreState</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6ReMVVM23InterceptorNextFunctiona"></a>
+                    <a name="//apple_ref/swift/Alias/InterceptorNextFunction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6ReMVVM23InterceptorNextFunctiona">InterceptorNextFunction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Custom function that Interceptor&rsquo;s next(action:completion:) method will be intercepted to</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">InterceptorNextFunction</span><span class="o">&lt;</span><span class="kt">Action</span><span class="p">,</span> <span class="kt">State</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="kt">Action</span><span class="p">?,</span> <span class="p">((</span><span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="Protocols/StoreState.html">StoreState</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/dgrzeszczak" target="_blank" rel="external">Dariusz Grzeszczak</a>. All rights reserved. (Last updated: 2019-12-23)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
