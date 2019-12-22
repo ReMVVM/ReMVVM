@@ -48,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0832043D23B02A1F00E18516 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		0845DB0523A8297C0005DA37 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		0845DB0B23A8297C0005DA37 /* .jazzy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = .jazzy.json; sourceTree = "<group>"; };
 		08491B9420B010D1008D93AA /* ReMVVM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReMVVM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +111,7 @@
 				0845DB0B23A8297C0005DA37 /* .jazzy.json */,
 				0845DB0523A8297C0005DA37 /* LICENSE */,
 				08FA075F23A3E58A00BC9D70 /* README.md */,
+				0832043D23B02A1F00E18516 /* CHANGELOG.md */,
 				08491B9620B010D1008D93AA /* ReMVVM */,
 				08491BA120B010D1008D93AA /* ReMVVMTests */,
 				08491B9520B010D1008D93AA /* Products */,
