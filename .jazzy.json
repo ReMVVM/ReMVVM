@@ -1,0 +1,103 @@
+{
+    "author": "Dariusz Grzeszczak",
+    "author_url": "https://github.com/dgrzeszczak",
+    "module": "ReMVVM",
+
+    "custom_categories": [{
+        "name": "Documentation",
+        "children": [
+
+        ]
+    }, {
+        "name": "ReMVVM",
+        "children": [
+            "ReMVVM",
+            "ReMVVMDriven"
+        ]
+    }, {
+        "name": "Store",
+        "children": [
+            "Store",
+            "StoreState",
+            "StateObserver",
+            "StateMapper",
+            "Subject"
+        ]
+    }, {
+        "name": "Action",
+        "children": [
+            "StoreAction",
+            "Dispatcher"
+        ]
+    }, {
+        "name": "Reducer",
+        "children": [
+            "Reducer",
+            "AnyReducer",
+            "EmptyReducer"
+        ]
+    }, {
+        "name": "Middleware",
+        "children": [
+            "Middleware",
+            "AnyMiddleware",
+            "Interceptor",
+            "InterceptorNextFunction"
+        ]
+    }, {
+        "name": "StateSubject",
+        "children": [
+            "StateSubject",
+            "AnyStateSubject",
+            "MockStateSubject",
+            "StateAssociated"
+        ]
+    }, {
+        "name": "ViewModel",
+        "children": [
+            "ViewModel",
+            "ViewModelContext",
+            "ViewModelProvider",
+            "Provided"
+        ]
+    }, {
+        "name": "ViewModelFactory",
+        "children": [
+            "ViewModelFactory",
+            "Initializable",
+            "InitializableViewModelFactory",
+            "CompositeViewModelFactory",
+            "SingleViewModelFactory"
+        ]
+    }, {
+        "name": "Deprecated",
+        "children": [
+            "StateSubscriber",
+            "StoreActionDispatcher"
+        ]
+    }]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

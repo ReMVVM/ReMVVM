@@ -8,20 +8,25 @@
 
 import MVVM
 
-/// Initializable type that require to provide empty constructor
+/// Requires empty constructor
 public typealias Initializable = MVVM.Initializable
 
-/// Helper implementation of view model factory that creates view models with empty constructor (Initializable view models)
+/// ViewModelFactory that creates view models using empty constructor (Initializable view models)
 public struct InitializableViewModelFactory: ViewModelFactory {
 
     private let viewModelFactory = MVVM.InitializableViewModelFactory()
 
+    /// Initializes factory
     public init() { }
 
+    /// Returns true if is able to create view model of specified type
+    /// - Parameter type: view model's type to be created
     public func creates<VM>(type: VM.Type) -> Bool {
         return type is Initializable.Type
     }
 
+    /// Creates view model of specified type or returns nil if is not able
+    /// - Parameter key: optional identifier
     public func create<VM>(key: String?) -> VM? {
         return viewModelFactory.create()
     }

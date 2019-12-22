@@ -9,7 +9,7 @@
 import ReMVVM
 import RxSwift
 
-final class LoginViewModel: ReMVVMDriven, StateAssociated, Initializable {
+struct LoginViewModel: ReMVVMDriven, StateAssociated, Initializable {
 
     typealias State = AppState
 
@@ -17,13 +17,13 @@ final class LoginViewModel: ReMVVMDriven, StateAssociated, Initializable {
     let lastName = BehaviorSubject(value: "")
 
     private let disposeBag = DisposeBag()
-
-    convenience init() {
+    init() {
         self.init(stateSubject: Self.remvvm.stateSubject)
     }
 
+    // here you can inject MockStateSubject<AppState> in your unit tests
     init(stateSubject: AnyStateSubject<AppState>) {
-        let state = stateSubject.rx.state.share()
+        let state = stateSubject.rx.state // Observer<AppState>
         state.map { $0.user?.firstName ?? "" }.bind(to: firstName).disposed(by: disposeBag)
         state.map { $0.user?.lastName ?? "" }.bind(to: lastName).disposed(by: disposeBag)
     }

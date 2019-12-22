@@ -8,7 +8,7 @@
 
 import MVVM
 
-/// Provides view models based on current ViewModelFactory from application state in the store.
+/// Provides view models using current ViewModelFactory from the current state in the store.
 public struct ViewModelProvider {
 
     private let state: () -> StoreState

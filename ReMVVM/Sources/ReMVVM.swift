@@ -6,7 +6,64 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-/// Main ReMVVM struct. It may be instantiated only by ReMVVM framework. Usually is used by ReMVVMDriven extensions and provide additional methods.
+/**
+Allows to initialize ReMVVM framework.
+
+Provides additional functionalities for ReMVVMDriven objects.
+
+#Example
+
+ - initialize the framework
+
+```
+     let store = Store<State>(with: state,
+                        reducer: reducer,
+                        middleware: middleware,
+                        stateMappers: stateMappers)
+
+     ReMVVM.initialize(with: store)
+ ```
+ 
+ - adds functionality to ViewModelContext eg. UIViewController
+
+```
+     class LoginViewController: UIViewController, ReMVVMDriven {
+
+         @IBOutlet private var firstNameTextField: UITextField!
+         @IBOutlet private var lastNameTextField: UITextField!
+
+         @IBAction func loginAction(_ sender: Any) {
+             let action = LoginAction(firstName: firstNameTextField.text ?? "",
+                                      lastName: lastNameTextField.text ?? "")
+
+             remvvm.dispatch(action: action)
+         }
+
+         override func viewDidLoad() {
+             super.viewDidLoad()
+
+             // get view model
+             guard let viewModel: LoginViewModel = remvvm.viewModel(for: self) else { return }
+
+             // bind view model to view
+         }
+     }
+```
+ - adds functionality to StateAssociated objects eg. ViewModels
+
+```
+     struct ViewModel: StateAssociated, ReMVVMDriven {
+         typealias State = ApplicationState
+
+         // ...
+
+         init(with subject: AnyStateSubject<ApplicationState> = remvvm.stateSubject) {
+
+             // ...
+         }
+     }
+```
+ */
 public struct ReMVVM<Base> {
 
     let store: Dispatcher & Subject & AnyStateProvider
@@ -64,6 +121,7 @@ extension ReMVVM where Base: ViewModelContext {
 
 extension ReMVVM where Base: StateAssociated {
 
+    /// type of state in stateSubject
     public typealias State = Base.State
 
     /// state subject that can be used to observe state changes

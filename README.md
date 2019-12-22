@@ -1,4 +1,4 @@
-
+[![Documentation](https://img.shields.io/badge/Documentation-geen)]()
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 # ReMVVM
@@ -25,35 +25,35 @@ But… what about making a mix of two architectures ? Can we implement “global
 # Components 
 In *ReMVVM* we can divide components on two groups related with *Unidirectional Data Flow* and *MVVM*
 
-![](/images/ReMVVM_architecture_components.png) 
+![](https://raw.githubusercontent.com/dgrzeszczak/ReMVVM/master/images/ReMVVM_architecture_components.png) 
 
 ## Unidirectional Data Flow: 
-**Store** - contains your application state that can be modified only by dispatching an action. Every state change is notified to every store Subscriber.
+**```Store```** - contains your application state that can be modified only by dispatching an ```StoreAction```. Every state change is notified to every ```StateObserver```.
 
-**StoreState** - it’s immutable data structure that holds your application data. In *ReMVVM* it has to provide *ViewModelFactory* that will be used for creating View Models for your view(s).
+**```StoreState```** - it’s immutable data structure that holds your application data. In *ReMVVM* it has to provide *```ViewModelFactory```* that will be used for creating View Models for your view(s).
 
-**StoreAction** - describes state change and is handled by corresponding *Reducer*. 
+**```StoreAction```** - describes state change and is handled by corresponding *```Reducer```*. 
 
-**Middleware** - mechanism for enhance action’s dispatch functionality. It is usually used to simplify asynchronous dispatch and implement ‘side effects’ if required.
+**```Middleware```** - mechanism for enhance action’s dispatch functionality. It is usually used to simplify asynchronous dispatch and implement ‘side effects’ if required.
 
-**Reducer** - provides pure function that returns new state based on current state and the action. 
+**```Reducer```** - provides pure function that returns new state based on current state and the action. 
 
-**_Note:_** *There is a small difference between Redux implementation and ReMVVM. In Redux one reducer can handle any type of action. Because of that we can see a lot of switch blocks inside reducers and it’s not clear where the action is finally handled. In ReMVVM reducer can handle exactly one type of the action. Action handling is separated into different reducers what makes the code more clean.* 
+**_Note:_** *There is a small difference between Redux implementation and ReMVVM. In Redux one reducer can handle any type of action. Because of that we can see a lot of switch blocks inside reducers and it’s not clear where the action is finally handled. In ReMVVM reducer can handle exactly one type of the action. Action handling is separated into different reducers what makes the code more clean. ```AnyReducer``` is used to compose multiple ```Reducer```s* 
 
 ## MVVM:
-**View Model** - is designed to store and manage UI related data for the view
+**```ViewModel```** - is designed to store and manage UI related data for the view
 
-**View Model Provider** - provides View Model(s) for the context (View)
+**```ViewModelProvider```** - provides View Model(s) for the context (View)
 
-**View Model Factory** - creates View Model instances
+**```ViewModelFactory```** - creates View Model instances
 
-*View Model* provided by *View Model Provider* lives as long as the context which was created for. For more detail please look at [MVVM library](https://github.com/dgrzeszczak/MVVM) which is a part of ReMVVM.
+*```ViewModel```* provided by *```ViewModelProvider```* lives as long as the context which was created for (for more detail please look at [MVVM library](https://github.com/dgrzeszczak/MVVM) which is a part of *ReMVVM*). *```ViewModel```* provided by *```ViewModelProvider```* may be also created without context but in that case developer is responsible for handling ```ViewModel``` life-cycle.
 
 # Example
 
 We will build application containing two screens. On the Login screen user may enter his first and second name. And greeting screen that presents values entered on previous screen.
 
-![](/images/LoginViewController_screenshot.png) |    | ![](/images/GreetingsViewController_screenshot.png)
+![](https://raw.githubusercontent.com/dgrzeszczak/ReMVVM/master/images/LoginViewController_screenshot.png) |    | ![](https://raw.githubusercontent.com/dgrzeszczak/ReMVVM/master/images/GreetingsViewController_screenshot.png)
 | - | --- | - |
 
 **_Note:_** *We use RxSwift/RxCocoa in the example because it's great fit to MVVM architecture but please remember there is no need to use any Reactive framework with ReMVVM and there is no dependency to Rx libarary.* 
@@ -73,19 +73,17 @@ struct User {
 }
 ```
 
-Let's create view models for our screens. ```LoginViewModel``` implements two protocols ```StoreSubscriber``` and ```Initializable```. 
+Let's create view models for our screens. ```LoginViewModel``` implements ```Initializable``` and it is used by ```InitializableViewModelFactory``` or ```CompositeViewModelFactory``` for creating View Models by using default/empty constructor. So it means you don't need to provide factory method for it. 
 
- ```Initializable``` is used by ```InitializableViewModelFactory``` and ```CompositeViewModelFactory``` for creating View Models by using default/empty constructor. So it means you don't need to provide factory method for it. 
-
- ```StoreSubscriber``` means that your view model will be automatically notified on any state changes in store. Here it's used for clearing first and second name values when user logs out.
+ ```StateObserver``` means that your view model will be automatically notified on any state changes in store. Here it's used for clearing first and second name values when user logs out.
 
 ```swift
-final class LoginViewModel: StoreSubscriber, Initializable {
+final class LoginViewModel: StateObserver, Initializable {
     let firstName = BehaviorSubject(value: "")
     let lastName = BehaviorSubject(value: "")
 
-    func didChange(state: AppState, oldState: AppState) {
-        if oldState.user != nil && state.user == nil {
+    func didChange(state: AppState, oldState: AppState?) {
+        if oldState?.user != nil && state.user == nil {
             // reset values on logout
             firstName.onNext("")
             lastName.onNext("")
@@ -93,6 +91,33 @@ final class LoginViewModel: StoreSubscriber, Initializable {
     }
 }
 ```
+
+But let's have a look how we can do it more reactive way. Instead of using ```StateObserver``` directly we can use combination of ```ReMVVMDriven``` with ```StateAssociated``` protocols. Marking object ```ReMVVMDriven``` means that it's implementation is based on *ReMVVM* framework and it gives us additional functionalities using ```ReMVVM``` object. It contains ```AnyStateSubject``` that provides current value of the state and allows registering  the ```StateObserver``` for state updates. Thanks to that we can write our own reactive extension (you can find it in the example's source code). It is worth to mention that you can easily inject ```MockStateSubject``` to your ```ViewModel``` and easily write unit tests for your view model. Implementation of LoginViewModel may look like that. 
+
+``` swift 
+struct LoginViewModel: ReMVVMDriven, StateAssociated, Initializable {
+
+    typealias State = AppState
+
+    let firstName = BehaviorSubject(value: "")
+    let lastName = BehaviorSubject(value: "")
+
+    init() {
+        self.init(stateSubject: Self.remvvm.stateSubject)
+    }
+
+    private let disposeBag = DisposeBag()
+    
+    // here you can inject MockStateSubject<AppState> in your unit tests
+    init(stateSubject: AnyStateSubject<AppState>) {
+        let state = stateSubject.rx.state // Observer<AppState>
+        state.map { $0.user?.firstName ?? "" }.bind(to: firstName).disposed(by: disposeBag)
+        state.map { $0.user?.lastName ?? "" }.bind(to: lastName).disposed(by: disposeBag)
+    }
+}
+```
+
+```GreetingsViewModel``` is really simple
 
 ```swift
 struct GreetingsViewModel {
@@ -104,7 +129,7 @@ struct GreetingsViewModel {
 }
 ```
 
-For the simplicyty of the example we will use one factory for all states. Other solution is to use seperate factories for each screen or module in the app. As alredy mentioned ```CompositeViewModelFactory``` by defauts are able to create ```Initializable``` View Models so we only need to add factory for ```GreetingsViewModel```. We will use helper method ```add()``` and it will look like:
+For the simplicyty of the example we will use one factory for all states. Other solution is to use seperate factories for each screen or module in the app. As alredy mentioned ```CompositeViewModelFactory``` by defauts are able to create ```Initializable``` View Models so we only need to add factory for ```GreetingsViewModel```. 
 
 ```swift
 let factory = CompositeViewModelFactory()
@@ -148,14 +173,13 @@ struct LogoutReducer: Reducer {
 We can initialize *ReMVVM* like that: 
 
 ```swift
-let store = Store(with: initialState, middleware: middleware)
-store.register(reducer: LoginReducer.self)
-store.register(reducer: LogoutReducer.self)
+let reducer = AnyReducer(with: [LoginReducer.any, LogoutReducer.any])
+let store = Store(with: initialState, reducer: reducer, middleware: middleware)
 
-ReMVVM.Config.initialize(with: store)
+ReMVVM.initialize(with: store)
 ```
 
-Now we can write ours view controllers. Please notice ```ReMVVMDriven``` protocol which gives us ```ReMVVM``` object to get view models and dispatch actions. 
+Now we can write ours view controllers. Please notice ```ReMVVMDriven``` protocol which gives us ```ReMVVM``` object to get view models and allows us to dispatch actions. 
 
 ```swift
 class LoginViewController: UIViewController, ReMVVMDriven {
@@ -168,7 +192,7 @@ class LoginViewController: UIViewController, ReMVVMDriven {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // get view model from remvvm
+        // inject view model from remvvm
         guard let viewModel: LoginViewModel = remvvm.viewModel(for: self) else { return }
 
         // bind view model to view
@@ -190,11 +214,16 @@ class LoginViewController: UIViewController, ReMVVMDriven {
 }
 ```
 
+Thanks to swift 5.1 we have possibility to use @propertyWrapper mechanism. Here you can see another way of getting view models and inject them to views by ```@Provided``` property wrapper. 
+
 ```swift
 class GreetingsViewController: UIViewController, ReMVVMDriven {
 
     @IBOutlet private var messageLabel: UILabel!
     @IBOutlet private var logoutButton: UIButton!
+
+    // get view model from remvvm
+    @Provided private var viewModel: GreetingsViewModel?
 
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
@@ -204,21 +233,20 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
         // without Rx: self.remvvm.dispatch(action: LogoutAction())
         logoutButton.rx.tap
             .map { LogoutAction() }
-            .bind(to: remvvm)
+            .bind(to: remvvm.rx)
             .disposed(by: disposeBag)
 
-        // get view model from remvvm and bind to the view
-        guard let viewModel: GreetingsViewModel = remvvm.viewModel(for: self) else { return }
-        viewModel.messageLabel.bind(to: messageLabel.rx.text).disposed(by: disposeBag)
+        // bind view model to the view
+        viewModel?.messageLabel.bind(to: messageLabel.rx.text).disposed(by: disposeBag)
     }
 }
 ```
 
-The last concept whould like to show is how we can handle navigation in the app using *ReMVVM*. We could have add navigation changes after dispatching each action in UIViewControllers but please notice we didn't handle it there. So where it is ? It's implemented in the component called *Middleware*. It's mechanism that can change dispatch of the action and is offten used for asynchronous requests and side effect (in our case side effect for state change is displaying new screen of the app). 
+The last concept whould like to show is how we can handle navigation in the app using *ReMVVM*. We could have add navigation changes after dispatching each action in UIViewControllers but please notice we didn't handle it there. So where it is ? It's implemented in the component called *```Middleware```*. It's mechanism that can change dispatch of the action and is offten used for asynchronous requests and side effect (in our case side effect for state change is displaying new screen of the app). 
 
-*Middleware* is a stack of objects and each action dispatched in the store is passed thorugh each element of that stack. It's done by calling ```next()``` method from dispatcher. On the end action is reduced in corresponding reducer and the state in the store is changed. After state is changed the completion block from ```next()``` is called in backward order. 
+*Middleware* is a stack of objects and each action dispatched in the store is passed thorugh each element of that stack. It's done by calling ```next()``` method from ```Interceptor```. On the end action is reduced in reducer and the state in the store is changed. After state is changed the completion block from ```next()``` is called in backward order. If you don't call ```next()``` method the action's dispatch will break and as a result reducer will not be called and state will not change. It can be intentional in some cases for example when you need to download some data asynchronously.
 
-In middleware you can also dispatch completly new action by calling ```dispatcher.dispatch(action:)```. If you don't call ```next()``` method the action's dispatch will break and as a result reducer will not be called and state will not change. It can be intentional in some cases for example when you need to download some data asynchronously.
+In middleware you can also dispatch completly new action by calling ```dispatch(action:)``` from ```Dispatcher```. 
 
 Let's back to our example and define really simple ```UIState``` that give us possibility to navigate through the app. 
 
@@ -247,12 +275,11 @@ And then we can define our middlewares.
 struct LoginMiddleware: Middleware {
     let uiState: UIState
 
-    func applyMiddleware(for state: AppState, action: LoginAction, dispatcher: Dispatcher<LoginAction, AppState>) {
-
+    func onNext(for state: AppState, action: LoginAction, interceptor: Interceptor<LoginAction, AppState>, dispatcher: Dispatcher) {
         // here you can do something asynchronously - like download user data
         // ....
 
-        dispatcher.next { state in
+        interceptor.next { state in
             // this closure is called after action is handled by reducer - can be used for side effects like that ;)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "LogoutViewController")
@@ -266,9 +293,8 @@ struct LoginMiddleware: Middleware {
 struct LogoutMiddleware: Middleware {
     let uiState: UIState
 
-    func applyMiddleware(for state: AppState, action: LogoutAction, dispatcher: Dispatcher<LogoutAction, AppState>) {
-
-        dispatcher.next { state in
+    func onNext(for state: AppState, action: LogoutAction, interceptor: Interceptor<LogoutAction, AppState>, dispatcher: Dispatcher) {
+        interceptor.next { state in
             self.uiState.dismissModal()
         }
     }
@@ -279,4 +305,4 @@ The biggest advantage is that UIViewControllers know nothing about each other. T
 
 # Summary
 
-The big advantages of the concept of *ReMVVM* architecture is great separation between layers. It's clear where to store model data, who and where creates view model and how it's passed to the view. It takes the biggest advantages of two different architectures and makes the code readable without introducing any boilerplate.
+*ReMVVM* architecture brings great separation between layers. It's clear where to store model data, who and where creates view model and how it's passed to the view. It takes the biggest advantages of two different architectures and makes the code readable without introducing any boilerplate.

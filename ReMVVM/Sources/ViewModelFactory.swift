@@ -12,6 +12,6 @@ public protocol ViewModelFactory {
     /// - Parameter type: view model's type to be created
     func creates<VM: ViewModel>(type: VM.Type) -> Bool
     /// Creates view model of specified type or returns nil if is not able
-    /// - Parameter key: view model's type to be created
+    /// - Parameter key: optional identifier
     func create<VM: ViewModel>(key: String?) -> VM?
 }

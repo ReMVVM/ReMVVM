@@ -10,6 +10,7 @@ import Foundation
 
 /// Marks object is driven by ReMVVM framework
 public protocol ReMVVMDriven {
+    /// type of the ReMVVMDriven object
     associatedtype Base
 
     /// ReMVVM object to be used by ReMVVMDriven
@@ -20,6 +21,8 @@ public protocol ReMVVMDriven {
 
 extension ReMVVMDriven {
 
+    /// ReMVVM object to be used by ReMVVMDriven
     public var remvvm: ReMVVM<Self> { ReMVVM() }
+    /// ReMVVM object to be used by ReMVVMDriven
     public static var remvvm: ReMVVM<Self> { ReMVVM() }
 }

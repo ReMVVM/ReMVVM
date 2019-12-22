@@ -15,6 +15,9 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
     @IBOutlet private var messageLabel: UILabel!
     @IBOutlet private var logoutButton: UIButton!
 
+    // inject view model from remvvm
+    @Provided private var viewModel: GreetingsViewModel?
+
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +29,7 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
             .bind(to: remvvm.rx)
             .disposed(by: disposeBag)
 
-        // get view model from remvvm and bind to the view
-        guard let viewModel: GreetingsViewModel = remvvm.viewModel(for: self) else { return }
-        viewModel.messageLabel.bind(to: messageLabel.rx.text).disposed(by: disposeBag)
+        // bind view model to the view
+        viewModel?.messageLabel.bind(to: messageLabel.rx.text).disposed(by: disposeBag)
     }
 }

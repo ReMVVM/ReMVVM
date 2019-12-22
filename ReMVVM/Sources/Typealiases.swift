@@ -8,7 +8,7 @@
 
 import MVVM
 
-/// ViewModel type - Any
+/// ViewModel type. It is tipealias for Any type.
 public typealias ViewModel = MVVM.ViewModel
 
 /// ViewModelContext type - eg. for iOS UIViewController, MacOS NSViewController
