@@ -7,13 +7,13 @@
 //
 
 /**
-Allows to initialize ReMVVM framework.
+Allows to initialize ReMVVM.
 
 Provides additional functionalities for ReMVVMDriven objects.
 
 #Example
 
- - initialize the framework
+ - initialize ReMVVM
 
 ```
      let store = Store<State>(with: state,
@@ -77,8 +77,8 @@ public struct ReMVVM<Base> {
 
 extension ReMVVM where Base: StoreState {
 
-    /// Initializes ReMVVM framework with the store. ReMVVM is Redux like framework and has the only one store for the app.
-    /// - Parameter store: store that will be used by ReMVVM framework.
+    /// Initializes ReMVVM with the store. ReMVVM similar to Redux has only one store for the app.
+    /// - Parameter store: store that will be used by ReMVVM.
     public static func initialize(with store: Store<Base>) {
         ReMVVM<Any>.initialize(with: store)
     }
@@ -97,7 +97,7 @@ extension ReMVVM where Base: ViewModelContext {
 
     /// Provides view model of specified type.
     /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by framework.
+    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? {
         return viewModelProvider.viewModel(for: context, with: key)
@@ -105,7 +105,7 @@ extension ReMVVM where Base: ViewModelContext {
 
     /// Provides view model of specified type and register it for state changes in the store.
     /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by framework.
+    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateObserver {
         return viewModelProvider.viewModel(for: context, with: key)

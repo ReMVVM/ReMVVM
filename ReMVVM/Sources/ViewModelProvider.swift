@@ -22,7 +22,7 @@ public struct ViewModelProvider {
 
     /// Provides view model of specified type.
     /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by framework.
+    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, with key: String? = nil) -> VM? {
 
@@ -31,7 +31,7 @@ public struct ViewModelProvider {
 
     /// Provides view model of specified type and register it for state changes in the store.
     /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by framework.
+    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, with key: String? = nil) -> VM? where VM: StateObserver {
 

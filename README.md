@@ -92,7 +92,7 @@ final class LoginViewModel: StateObserver, Initializable {
 }
 ```
 
-But let's have a look how we can do it more reactive way. Instead of using ```StateObserver``` directly we can use combination of ```ReMVVMDriven``` with ```StateAssociated``` protocols. Marking object ```ReMVVMDriven``` means that it's implementation is based on *ReMVVM* framework and it gives us additional functionalities using ```ReMVVM``` object. It contains ```AnyStateSubject``` that provides current value of the state and allows registering  the ```StateObserver``` for state updates. Thanks to that we can write our own reactive extension (you can find it in the example's source code). It is worth to mention that you can easily inject ```MockStateSubject``` to your ```ViewModel``` and easily write unit tests for your view model. Implementation of LoginViewModel may look like that. 
+But let's have a look how we can do it more reactive way. Instead of using ```StateObserver``` directly we can use combination of ```ReMVVMDriven``` with ```StateAssociated``` protocols. Marking object ```ReMVVMDriven``` means that it's implementation is based on *ReMVVM* and it gives us additional functionalities using ```ReMVVM``` object. It contains ```AnyStateSubject``` that provides current value of the state and allows registering  the ```StateObserver``` for state updates. Thanks to that we can write our own reactive extension (you can find it in the example's source code). It is worth to mention that you can easily inject ```MockStateSubject``` to your ```ViewModel``` and easily write unit tests for your view model. Implementation of LoginViewModel may look like that. 
 
 ``` swift 
 struct LoginViewModel: ReMVVMDriven, StateAssociated, Initializable {

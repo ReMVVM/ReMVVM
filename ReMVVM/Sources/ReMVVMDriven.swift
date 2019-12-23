@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Marks object is driven by ReMVVM framework
+/// Marks object is driven by ReMVVM
 public protocol ReMVVMDriven {
     /// type of the ReMVVMDriven object
     associatedtype Base
