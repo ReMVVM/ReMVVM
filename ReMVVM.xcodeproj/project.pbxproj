@@ -120,7 +120,7 @@
 				0832047E23B3A94800E18516 /* Store.swift */,
 			);
 			name = SwiftyRedux;
-			path = Sources/Submodules/SwiftyRedux/SwiftyRedux/SwiftyRedux;
+			path = Sources/Submodules/SwiftyRedux/SwiftyRedux/Sources;
 			sourceTree = "<group>";
 		};
 		0832046F23B3A94800E18516 /* Middleware */ = {

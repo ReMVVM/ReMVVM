@@ -23,7 +23,7 @@ let package = Package(
             dependencies: ["MVVM"],
             path: "ReMVVM/Sources",
             exclude: [
-                "Submodules/SwiftyRedux/SwiftyRedux/SwiftyRedux/StoreState.swift",
+                "Submodules/SwiftyRedux/SwiftyRedux/Sources/StoreState.swift",
                 "Submodules/SwiftyRedux/SwiftyReduxTests/"]),
 //        .testTarget(
 //            name: "ReMVVMTests",
