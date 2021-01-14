@@ -126,20 +126,22 @@ extension ReMVVM where Base: StateAssociated {
 
     /// state subject that can be used to observe state changes
     public var stateSubject: AnyStateSubject<State> {
-        return ReMVVMStateSubject<State>().any
+        return StoreStateSubject<State>().any
+    }
+}
+
+struct StoreStateSubject<State>: StateSubject {
+
+    let store: Dispatcher & Subject & AnyStateProvider = ReMVVM<Any>.store
+    var state: State? { store.anyState() }
+
+
+    func add<Observer>(observer: Observer) where Observer : StateObserver {
+        store.add(observer: observer)
     }
 
-    private struct ReMVVMStateSubject<State>: StateSubject {
-        let store: Dispatcher & Subject & AnyStateProvider = ReMVVM<Any>.store
-        var state: State? { store.anyState() }
-
-        func add<Observer>(observer: Observer) where Observer : StateObserver {
-            store.add(observer: observer)
-        }
-
-        func remove<Observer>(observer: Observer) where Observer : StateObserver {
-            store.remove(observer: observer)
-        }
+    func remove<Observer>(observer: Observer) where Observer : StateObserver {
+        store.remove(observer: observer)
     }
 }
 
