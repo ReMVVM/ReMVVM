@@ -135,7 +135,6 @@ struct StoreStateSubject<State>: StateSubject {
     let store: Dispatcher & Subject & AnyStateProvider = ReMVVM<Any>.store
     var state: State? { store.anyState() }
 
-
     func add<Observer>(observer: Observer) where Observer : StateObserver {
         store.add(observer: observer)
     }

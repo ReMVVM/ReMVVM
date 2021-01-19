@@ -43,6 +43,10 @@ extension StateSubjectInitializable {
     public init() {
         self.init(with: AnyStateSubject<State>.store)
     }
+
+    public init(mock state: State) {
+        self.init(with: .mock(state))
+    }
 }
 
 

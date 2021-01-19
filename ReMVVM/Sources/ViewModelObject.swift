@@ -31,13 +31,22 @@ public struct ViewModelObject<VM>: DynamicProperty where VM: ViewModel, VM: Obse
 
     /// Initializes property wrapper
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-    public init(wrappedValue: VM? = nil, defaultValue: @escaping @autoclosure () -> VM, key: String) {
-        _wrappedValue = wrappedValue ?? Provided(key: key).wrappedValue ?? defaultValue()
+    public init(wrappedValue: VM? = nil, defaultValue: @escaping @autoclosure () -> VM, key: String? = nil) {
+        _wrappedValue = wrappedValue
+            ?? (key == nil ? Provided() : Provided(key: key!)).wrappedValue
+            ?? defaultValue()
     }
 
-    /// Initializes property wrapper with no key
-    public init(wrappedValue: VM? = nil, defaultValue: @escaping @autoclosure () -> VM) {
-        _wrappedValue = wrappedValue ?? Provided().wrappedValue ?? defaultValue()
+    /// Initializes property wrapper
+    /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
+    public init(wrappedValue: VM? = nil, key: String? = nil) where VM: Initializable {
+        self.init(wrappedValue: wrappedValue, defaultValue: VM(), key: key)
+    }
+
+    /// Initializes property wrapper
+    /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
+    public init(wrappedValue: VM? = nil, mock: @escaping @autoclosure () -> VM.State, key: String? = nil) where VM: StateSubjectInitializable {
+        self.init(wrappedValue: wrappedValue, defaultValue: VM(mock: mock()), key: key)
     }
 
     public init(wrappedValue: VM) {
@@ -46,17 +55,5 @@ public struct ViewModelObject<VM>: DynamicProperty where VM: ViewModel, VM: Obse
 
     public var projectedValue: ObservedObject<VM>.Wrapper { $_wrappedValue }
 
-
-}
-
-@available(iOS 13.0, *)
-extension ViewModelObject where VM: Initializable {
-    public init(key: String) {
-        _wrappedValue = Provided(key: key).wrappedValue ?? VM()
-    }
-
-    public init() {
-        _wrappedValue = Provided().wrappedValue ?? VM()
-    }
 }
 #endif
