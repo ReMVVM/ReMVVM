@@ -64,7 +64,7 @@ Provides additional functionalities for ReMVVMDriven objects.
      }
 ```
  */
-public struct ReMVVM<Base> {
+public class ReMVVM<Base> {
 
     let store: Dispatcher & Subject & AnyStateProvider
     let viewModelProvider: ViewModelProvider
