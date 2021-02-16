@@ -4,7 +4,7 @@
 //
 //  Created by Dariusz Grzeszczak on 01/12/2020.
 //
-#if swift(>=5.1) && canImport(SwiftUI)
+#if swift(>=5.1) && canImport(SwiftUI) && canImport(Combine)
 import Foundation
 import SwiftUI
 
