@@ -57,7 +57,7 @@ Provides additional functionalities for ReMVVMDriven objects.
 
          // ...
 
-         init(with subject: AnyStateSubject<ApplicationState> = remvvm.stateSubject) {
+         init(with source: AnyStateSource<ApplicationState> = remvvm.stateSource) {
 
              // ...
          }
@@ -66,7 +66,7 @@ Provides additional functionalities for ReMVVMDriven objects.
  */
 public class ReMVVM<Base> {
 
-    let store: Dispatcher & Subject & AnyStateProvider
+    let store: Dispatcher & Source & AnyStateProvider
     let viewModelProvider: ViewModelProvider
 
     init() {
@@ -121,18 +121,18 @@ extension ReMVVM where Base: ViewModelContext {
 
 extension ReMVVM where Base: StateAssociated {
 
-    /// type of state in stateSubject
+    /// type of state in stateSource
     public typealias State = Base.State
 
-    /// state subject that can be used to observe state changes
-    public var stateSubject: AnyStateSubject<State> {
-        return StoreStateSubject<State>().any
+    /// state source that can be used to observe state changes
+    public var stateSource: AnyStateSource<State> {
+        return StoreStateSource<State>().any
     }
 }
 
-struct StoreStateSubject<State>: StateSubject {
+struct StoreStateSource<State>: StateSource {
 
-    let store: Dispatcher & Subject & AnyStateProvider = ReMVVM<Any>.store
+    let store: Dispatcher & Source & AnyStateProvider = ReMVVM<Any>.store
     var state: State? { store.anyState() }
 
     func add<Observer>(observer: Observer) where Observer : StateObserver {
@@ -146,7 +146,7 @@ struct StoreStateSubject<State>: StateSubject {
 
 extension ReMVVM where Base == Any {
 
-    static var store: (Dispatcher & Subject & AnyStateProvider)! = {
+    static var store: (Dispatcher & Source & AnyStateProvider)! = {
         guard initialized else {
             fatalError("ReMVVM has to be initialized first. Please use ReMVVM.initialize(with:) method.")
         }

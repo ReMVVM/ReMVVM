@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 @propertyWrapper
 public struct ViewModelObject<VM>: DynamicProperty where VM: ViewModel, VM: ObservableObject {
 
@@ -45,7 +45,7 @@ public struct ViewModelObject<VM>: DynamicProperty where VM: ViewModel, VM: Obse
 
     /// Initializes property wrapper
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-    public init(wrappedValue: VM? = nil, mock: @escaping @autoclosure () -> VM.State, key: String? = nil) where VM: StateSubjectInitializable {
+    public init(wrappedValue: VM? = nil, mock: @escaping @autoclosure () -> VM.State, key: String? = nil) where VM: StateSourceInitializable {
         self.init(wrappedValue: wrappedValue, defaultValue: VM(mock: mock()), key: key)
     }
 

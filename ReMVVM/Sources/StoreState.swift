@@ -11,3 +11,8 @@ public protocol StoreState {
     /// View model factory that will be used to create view models.
     var factory: ViewModelFactory { get }
 }
+
+extension AnyStateSource {
+
+    public static var store: AnyStateSource<State> { StoreStateSource<State>().any }
+}

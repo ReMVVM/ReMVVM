@@ -14,9 +14,6 @@
 		0832048323B3A94800E18516 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047423B3A94800E18516 /* Dispatcher.swift */; };
 		0832048423B3A94800E18516 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047523B3A94800E18516 /* Reducer.swift */; };
 		0832048523B3A94800E18516 /* StateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047623B3A94800E18516 /* StateObserver.swift */; };
-		0832048623B3A94800E18516 /* MockStateSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047823B3A94800E18516 /* MockStateSubject.swift */; };
-		0832048723B3A94800E18516 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047923B3A94800E18516 /* Subject.swift */; };
-		0832048823B3A94800E18516 /* StateSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047A23B3A94800E18516 /* StateSubject.swift */; };
 		0832048923B3A94800E18516 /* StateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047B23B3A94800E18516 /* StateMapper.swift */; };
 		0832048B23B3A94800E18516 /* StateAssociated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047D23B3A94800E18516 /* StateAssociated.swift */; };
 		0832048C23B3A94800E18516 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0832047E23B3A94800E18516 /* Store.swift */; };
@@ -31,6 +28,9 @@
 		08A3FCE921D94B4800DC601C /* ReMVVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A3FCE821D94B4800DC601C /* ReMVVM.swift */; };
 		08A6D606239F0F0B00EF2F44 /* ReMVVMDriven.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A6D605239F0F0B00EF2F44 /* ReMVVMDriven.swift */; };
 		08A6D60A239F0FC100EF2F44 /* Provided.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A6D609239F0FC100EF2F44 /* Provided.swift */; };
+		08ABCB1225E2719E00B8BEBB /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABCB0F25E2719E00B8BEBB /* Source.swift */; };
+		08ABCB1325E2719E00B8BEBB /* MockStateSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABCB1025E2719E00B8BEBB /* MockStateSource.swift */; };
+		08ABCB1425E2719E00B8BEBB /* StateSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABCB1125E2719E00B8BEBB /* StateSource.swift */; };
 		08ADCDA5229C2654004CD357 /* ReMVVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BA220B010D1008D93AA /* ReMVVMTests.swift */; };
 		08B99D052162C9D7005627E9 /* StoreState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D042162C9D7005627E9 /* StoreState.swift */; };
 		08B99D082162CA2F005627E9 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D072162CA2F005627E9 /* Typealiases.swift */; };
@@ -57,9 +57,6 @@
 		0832047423B3A94800E18516 /* Dispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		0832047523B3A94800E18516 /* Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		0832047623B3A94800E18516 /* StateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateObserver.swift; sourceTree = "<group>"; };
-		0832047823B3A94800E18516 /* MockStateSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockStateSubject.swift; sourceTree = "<group>"; };
-		0832047923B3A94800E18516 /* Subject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
-		0832047A23B3A94800E18516 /* StateSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateSubject.swift; sourceTree = "<group>"; };
 		0832047B23B3A94800E18516 /* StateMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMapper.swift; sourceTree = "<group>"; };
 		0832047D23B3A94800E18516 /* StateAssociated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateAssociated.swift; sourceTree = "<group>"; };
 		0832047E23B3A94800E18516 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -80,6 +77,9 @@
 		08A3FCE821D94B4800DC601C /* ReMVVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReMVVM.swift; sourceTree = "<group>"; };
 		08A6D605239F0F0B00EF2F44 /* ReMVVMDriven.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReMVVMDriven.swift; sourceTree = "<group>"; };
 		08A6D609239F0FC100EF2F44 /* Provided.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provided.swift; sourceTree = "<group>"; };
+		08ABCB0F25E2719E00B8BEBB /* Source.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Source.swift; sourceTree = "<group>"; };
+		08ABCB1025E2719E00B8BEBB /* MockStateSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockStateSource.swift; sourceTree = "<group>"; };
+		08ABCB1125E2719E00B8BEBB /* StateSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateSource.swift; sourceTree = "<group>"; };
 		08B99D042162C9D7005627E9 /* StoreState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreState.swift; sourceTree = "<group>"; };
 		08B99D072162CA2F005627E9 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
 		08FA075F23A3E58A00BC9D70 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -109,12 +109,12 @@
 		0832046E23B3A94800E18516 /* SwiftyRedux */ = {
 			isa = PBXGroup;
 			children = (
+				08ABCB0E25E2719E00B8BEBB /* Source */,
 				0832046F23B3A94800E18516 /* Middleware */,
 				0832047323B3A94800E18516 /* StoreAction.swift */,
 				0832047423B3A94800E18516 /* Dispatcher.swift */,
 				0832047523B3A94800E18516 /* Reducer.swift */,
 				0832047623B3A94800E18516 /* StateObserver.swift */,
-				0832047723B3A94800E18516 /* Subject */,
 				0832047B23B3A94800E18516 /* StateMapper.swift */,
 				0832047D23B3A94800E18516 /* StateAssociated.swift */,
 				0832047E23B3A94800E18516 /* Store.swift */,
@@ -131,16 +131,6 @@
 				0832047223B3A94800E18516 /* Middleware.swift */,
 			);
 			path = Middleware;
-			sourceTree = "<group>";
-		};
-		0832047723B3A94800E18516 /* Subject */ = {
-			isa = PBXGroup;
-			children = (
-				0832047823B3A94800E18516 /* MockStateSubject.swift */,
-				0832047923B3A94800E18516 /* Subject.swift */,
-				0832047A23B3A94800E18516 /* StateSubject.swift */,
-			);
-			path = Subject;
 			sourceTree = "<group>";
 		};
 		08491B8A20B010D1008D93AA = {
@@ -218,6 +208,16 @@
 				089426BD20B03D8200A4B6FF /* MVVM.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		08ABCB0E25E2719E00B8BEBB /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				08ABCB0F25E2719E00B8BEBB /* Source.swift */,
+				08ABCB1025E2719E00B8BEBB /* MockStateSource.swift */,
+				08ABCB1125E2719E00B8BEBB /* StateSource.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,19 +338,19 @@
 				08B99D082162CA2F005627E9 /* Typealiases.swift in Sources */,
 				08491BD920B01FA2008D93AA /* ViewModelFactory.swift in Sources */,
 				08A6D60A239F0FC100EF2F44 /* Provided.swift in Sources */,
-				0832048723B3A94800E18516 /* Subject.swift in Sources */,
 				0832048923B3A94800E18516 /* StateMapper.swift in Sources */,
 				08A3FCE921D94B4800DC601C /* ReMVVM.swift in Sources */,
 				0832048223B3A94800E18516 /* StoreAction.swift in Sources */,
 				08A6D606239F0F0B00EF2F44 /* ReMVVMDriven.swift in Sources */,
+				08ABCB1425E2719E00B8BEBB /* StateSource.swift in Sources */,
 				0832048023B3A94800E18516 /* Interceptor.swift in Sources */,
-				0832048623B3A94800E18516 /* MockStateSubject.swift in Sources */,
-				0832048823B3A94800E18516 /* StateSubject.swift in Sources */,
 				08B99D052162C9D7005627E9 /* StoreState.swift in Sources */,
 				0832047F23B3A94800E18516 /* AnyMiddleware.swift in Sources */,
 				0832048B23B3A94800E18516 /* StateAssociated.swift in Sources */,
+				08ABCB1225E2719E00B8BEBB /* Source.swift in Sources */,
 				08491BD720B01F78008D93AA /* ViewModelProvider.swift in Sources */,
 				086E214E2127F2A700EF3A20 /* InitializableViewModelFactory.swift in Sources */,
+				08ABCB1325E2719E00B8BEBB /* MockStateSource.swift in Sources */,
 				0832048323B3A94800E18516 /* Dispatcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

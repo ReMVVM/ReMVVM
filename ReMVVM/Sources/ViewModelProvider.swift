@@ -12,12 +12,12 @@ import MVVM
 public struct ViewModelProvider {
 
     private let state: () -> StoreState
-    private let subject: AnyStateProvider & Subject
+    private let source: AnyStateProvider & Source
     /// Initialize provider with the store
     /// - Parameter store: that will be used to get current view model factory
     public init<State: StoreState>(with store: Store<State>) {
         state = { store.state }
-        subject = store
+        source = store
     }
 
     /// Provides view model of specified type.
@@ -36,7 +36,7 @@ public struct ViewModelProvider {
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, with key: String? = nil) -> VM? where VM: StateObserver {
 
         guard let vm: VM = getViewModel(for: context, with: key) else { return nil }
-        subject.add(observer: vm)
+        source.add(observer: vm)
 
         return vm
     }

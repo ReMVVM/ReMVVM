@@ -32,16 +32,19 @@ public struct InitializableViewModelFactory: ViewModelFactory {
     }
 }
 
-public protocol StateSubjectInitializable: StateAssociated, Initializable {
+@available(*, deprecated, renamed: "StateSourceInitializable")
+public typealias StateSubjectInitializable = StateSourceInitializable
+
+public protocol StateSourceInitializable: StateAssociated, Initializable {
     associatedtype State = State
 
-    init(with subject: AnyStateSubject<State>)
+    init(with source: AnyStateSource<State>)
 }
 
-extension StateSubjectInitializable {
+extension StateSourceInitializable {
 
     public init() {
-        self.init(with: AnyStateSubject<State>.store)
+        self.init(with: AnyStateSource<State>.store)
     }
 
     public init(mock state: State) {

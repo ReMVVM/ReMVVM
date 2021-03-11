@@ -29,24 +29,49 @@
     }
  ```
  */
-@propertyWrapper
-public final class Provided<VM: ViewModel> {
-    private let key: String?
+//@propertyWrapper
+//public final class Provided<VM: ViewModel> {
+//    private let key: String?
+//
+//    /// wrapped value of view model
+//    public private(set) lazy var wrappedValue: VM? = {
+//        return ReMVVM<Any>.viewModelProvider.viewModel(with: key)
+//    }()
+//
+//    /// Initializes property wrapper
+//    /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
+//    public init(key: String) {
+//        self.key = key
+//    }
+//
+//    /// Initializes property wrapper with no key
+//    public init() {
+//        key = nil
+//    }
+//}
 
+@propertyWrapper
+public final class Provided<Object> {
+
+    private var closure: () -> Object
     /// wrapped value of view model
-    public private(set) lazy var wrappedValue: VM? = {
-        return ReMVVM<Any>.viewModelProvider.viewModel(with: key)
-    }()
+    public lazy var wrappedValue: Object = closure()
+
+    //return ReMVVM<Any>.viewModelProvider.viewModel(with: key)
 
     /// Initializes property wrapper
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-    public init(key: String) {
-        self.key = key
+    public init<T>(key: String) where Object == Optional<T>, T: ViewModel {
+        closure = { ReMVVM<Any>.viewModelProvider.viewModel(with: key) }
     }
 
     /// Initializes property wrapper with no key
-    public init() {
-        key = nil
+    public init<T>() where Object == Optional<T>, T: ViewModel  {
+        closure = { ReMVVM<Any>.viewModelProvider.viewModel() }
+    }
+
+    public init() where Object == Dispatcher {
+        closure = { ReMVVM<Any>.store }
     }
 }
 #endif
