@@ -125,7 +125,7 @@ extension ReMVVM where Base: StateAssociated {
     public typealias State = Base.State
 
     /// state source that can be used to observe state changes
-    public var stateSource: AnyStateSource<State> {
+    public var source: AnyStateSource<State> {
         return StoreStateSource<State>().any
     }
 }
