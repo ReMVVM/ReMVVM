@@ -50,6 +50,10 @@ extension StateSourceInitializable {
     public init(mock state: State) {
         self.init(with: .mock(state))
     }
+
+    public static func mock(_ state: State) -> Self {
+        .init(mock: state)
+    }
 }
 
 

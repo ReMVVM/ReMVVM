@@ -144,23 +144,32 @@ struct StoreStateSource<State>: StateSource {
     }
 }
 
+private class EmptyStore: Dispatcher & Source & AnyStateProvider {
+    func dispatch(action: StoreAction) {}
+
+    func add<Observer>(observer: Observer) where Observer : StateObserver { }
+
+    func remove<Observer>(observer: Observer) where Observer : StateObserver { }
+
+    func anyState<State>() -> State? { nil }
+
+    static let empty = EmptyStore()
+    static let emptyViewModelProvider = ViewModelProvider(with: EmptyStore.empty, factory: EmptyFactory.init)
+
+    class EmptyFactory: ViewModelFactory {
+        func creates<VM>(type: VM.Type) -> Bool { false }
+        func create<VM>(key: String?) -> VM? { nil }
+    }
+}
+
 extension ReMVVM where Base == Any {
 
-    static var store: (Dispatcher & Source & AnyStateProvider)! = {
-        guard initialized else {
-            fatalError("ReMVVM has to be initialized first. Please use ReMVVM.initialize(with:) method.")
-        }
+    static var _store: (Dispatcher & Source & AnyStateProvider)?
+    static var store: (Dispatcher & Source & AnyStateProvider) { _store ?? EmptyStore.empty }
 
-        return nil
-    }()
 
-    static var viewModelProvider: ViewModelProvider! = {
-        guard initialized else {
-            fatalError("ReMVVM has to be initialized first. Please use ReMVVM.initialize(with:) method.")
-        }
-
-        return nil
-    }()
+    static var _viewModelProvider: ViewModelProvider?
+    static var viewModelProvider: ViewModelProvider { _viewModelProvider ?? EmptyStore.emptyViewModelProvider }
 
     private static var initialized: Bool = false
     static func initialize<State: StoreState>(with store: Store<State>) {
@@ -170,7 +179,7 @@ extension ReMVVM where Base == Any {
             initialized = true
         }
 
-        Self.store = store
-        viewModelProvider = ViewModelProvider(with: store)
+        _store = store
+        _viewModelProvider = ViewModelProvider(with: store)
     }
 }

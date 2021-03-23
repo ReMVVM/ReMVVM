@@ -11,13 +11,18 @@ import MVVM
 /// Provides view models using current ViewModelFactory from the current state in the store.
 public struct ViewModelProvider {
 
-    private let state: () -> StoreState
+    private let factory: () -> ViewModelFactory
     private let source: AnyStateProvider & Source
     /// Initialize provider with the store
     /// - Parameter store: that will be used to get current view model factory
     public init<State: StoreState>(with store: Store<State>) {
-        state = { store.state }
+        factory = { store.state.factory }
         source = store
+    }
+
+    init(with source: AnyStateProvider & Source, factory: @escaping () -> ViewModelFactory) {
+        self.source = source
+        self.factory = factory
     }
 
     /// Provides view model of specified type.
@@ -44,11 +49,11 @@ public struct ViewModelProvider {
     /// Returns true if is able to provide view model of specified type.
     /// - Parameter type: view model's type that has to be provided
     public func creates<VM: ViewModel>(type: VM.Type) -> Bool {
-        return state().factory.creates(type: VM.self)
+        return factory().creates(type: VM.self)
     }
 
     private func getViewModel<VM: ViewModel>(for context: ViewModelContext?, with key: String?) -> VM? {
-        let factory = MVVMViewModelFactory(key: key, factory: state().factory)
+        let factory = MVVMViewModelFactory(key: key, factory: self.factory())
         guard let context = context else { return factory.create() }
 
         return ViewModelProviders.provider(for: context, with: factory).get(for: key)
