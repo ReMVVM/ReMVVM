@@ -31,29 +31,3 @@ public struct InitializableViewModelFactory: ViewModelFactory {
         return viewModelFactory.create()
     }
 }
-
-@available(*, deprecated, renamed: "StateSourceInitializable")
-public typealias StateSubjectInitializable = StateSourceInitializable
-
-public protocol StateSourceInitializable: StateAssociated, Initializable {
-    associatedtype State = State
-
-    init(with source: AnyStateSource<State>)
-}
-
-extension StateSourceInitializable {
-
-    public init() {
-        self.init(with: AnyStateSource<State>.store)
-    }
-
-    public init(mock state: State) {
-        self.init(with: .mock(state))
-    }
-
-    public static func mock(_ state: State) -> Self {
-        .init(mock: state)
-    }
-}
-
-

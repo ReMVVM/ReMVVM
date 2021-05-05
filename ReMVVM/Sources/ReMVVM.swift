@@ -70,8 +70,8 @@ public class ReMVVM<Base> {
     let viewModelProvider: ViewModelProvider
 
     init() {
-        store = ReMVVM<Any>.store
-        viewModelProvider = ReMVVM<Any>.viewModelProvider
+        store = ReMVVM<Any>.storeContainer.store
+        viewModelProvider = ReMVVM<Any>.storeContainer.viewModelProvider
     }
 }
 
@@ -132,7 +132,7 @@ extension ReMVVM where Base: StateAssociated {
 
 struct StoreStateSource<State>: StateSource {
 
-    let store: Dispatcher & Source & AnyStateProvider = ReMVVM<Any>.store
+    let store: Dispatcher & Source & AnyStateProvider = ReMVVM<Any>.storeContainer.store
     var state: State? { store.anyState() }
 
     func add<Observer>(observer: Observer) where Observer : StateObserver {
@@ -162,14 +162,29 @@ private class EmptyStore: Dispatcher & Source & AnyStateProvider {
     }
 }
 
+class StoreAndViewModelProvider {
+
+    let store: Dispatcher & Source & AnyStateProvider
+    let viewModelProvider: ViewModelProvider
+
+    init(store: Dispatcher & Source & AnyStateProvider, viewModelProvider: ViewModelProvider) {
+        self.store = store
+        self.viewModelProvider = viewModelProvider
+    }
+
+    init<State>(store: Store<State>) where State: StoreState {
+        self.store = store
+        viewModelProvider = ViewModelProvider(with: store)
+    }
+
+    static let empty = StoreAndViewModelProvider(store: EmptyStore.empty, viewModelProvider: EmptyStore.emptyViewModelProvider)
+}
+
 extension ReMVVM where Base == Any {
 
-    static var _store: (Dispatcher & Source & AnyStateProvider)?
-    static var store: (Dispatcher & Source & AnyStateProvider) { _store ?? EmptyStore.empty }
 
-
-    static var _viewModelProvider: ViewModelProvider?
-    static var viewModelProvider: ViewModelProvider { _viewModelProvider ?? EmptyStore.emptyViewModelProvider }
+    static var _storeContainer: StoreAndViewModelProvider?
+    static var storeContainer: StoreAndViewModelProvider { _storeContainer ?? .empty}
 
     private static var initialized: Bool = false
     static func initialize<State: StoreState>(with store: Store<State>) {
@@ -179,7 +194,6 @@ extension ReMVVM where Base == Any {
             initialized = true
         }
 
-        _store = store
-        _viewModelProvider = ViewModelProvider(with: store)
+        _storeContainer = .init(store: store)
     }
 }

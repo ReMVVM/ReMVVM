@@ -13,6 +13,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
+        //.package(path: "../MVVM")
         .package(url: "https://github.com/dgrzeszczak/MVVM", from: "1.0.0"),
     ],
     targets: [

@@ -62,16 +62,16 @@ public final class Provided<Object> {
     /// Initializes property wrapper
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
     public init<T>(key: String) where Object == Optional<T>, T: ViewModel {
-        closure = { ReMVVM<Any>.viewModelProvider.viewModel(with: key) }
+        closure = { ReMVVM<Any>.storeContainer.viewModelProvider.viewModel(with: key) }
     }
 
     /// Initializes property wrapper with no key
     public init<T>() where Object == Optional<T>, T: ViewModel  {
-        closure = { ReMVVM<Any>.viewModelProvider.viewModel() }
+        closure = { ReMVVM<Any>.storeContainer.viewModelProvider.viewModel() }
     }
 
     public init() where Object == Dispatcher {
-        closure = { ReMVVM<Any>.store }
+        closure = { ReMVVM<Any>.storeContainer.store }
     }
 }
 #endif

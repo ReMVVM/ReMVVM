@@ -12,7 +12,7 @@ import MVVM
 public struct ViewModelProvider {
 
     private let factory: () -> ViewModelFactory
-    private let source: AnyStateProvider & Source
+    private let source: Source & AnyStateProvider
     /// Initialize provider with the store
     /// - Parameter store: that will be used to get current view model factory
     public init<State: StoreState>(with store: Store<State>) {
@@ -20,7 +20,7 @@ public struct ViewModelProvider {
         source = store
     }
 
-    init(with source: AnyStateProvider & Source, factory: @escaping () -> ViewModelFactory) {
+    init(with source: Source & AnyStateProvider, factory: @escaping () -> ViewModelFactory) {
         self.source = source
         self.factory = factory
     }
