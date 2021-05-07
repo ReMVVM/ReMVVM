@@ -14,5 +14,12 @@ public protocol StoreState {
 
 extension AnyStateSource {
 
+    /// Mock source factory
+    public static func mock(_ state: State) -> AnyStateSource<State> { MockStateSource(state: state).any }
+}
+
+extension AnyStateSource {
+
+    /// Store source facory
     public static var store: AnyStateSource<State> { StoreStateSource<State>().any }
 }

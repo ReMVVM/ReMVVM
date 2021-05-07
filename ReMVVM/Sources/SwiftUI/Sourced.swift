@@ -12,36 +12,36 @@ import Combine
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-class EmptyStoreUpdatable: StoreUpdatable {
-
-    var store: Dispatcher & Source & AnyStateProvider
-
-    init(store: Dispatcher & Source & AnyStateProvider) {
-        self.store = store
-    }
-
-    func update(store:  Dispatcher & Source & AnyStateProvider) {
-        guard store !== self.store else { return }
-        self.store = store
-        storeChanged()
-    }
-
-    func storeChanged() {
-
-    }
-}
-
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 @propertyWrapper
+/**
+A property wrapper that serves the State from the Store and delivers any State change via the Publisher
+
+ ##Example
+
+ ```
+ class DetailsViewModel: ObservableObject, Initializable {
+
+     @Published private(set) var numberFromState: Int = -1
+
+     @Sourced private var state: SwiftUITestState?
+
+     required init() {
+
+         $state.map(\.number).assign(to: &$numberFromState)
+     }
+ }
+ ```
+ */
 public struct Sourced<State>: DynamicProperty {
 
     @Environment(\.storeContainer) private var storeContainer
 
+    /// current value of the State
     public var wrappedValue: State? { wrapper.subject.value }
 
     private var wrapper: Wrapper
 
+    /// Creates the Sourced instance.
     public init() {
         wrapper = .init(store: StoreAndViewModelProvider.empty.store)
         wrapper.update(store: storeContainer.store)
@@ -52,11 +52,15 @@ public struct Sourced<State>: DynamicProperty {
 //        //storeSubjectContainer.update(store: source)
 //    }
 
+
+    /// Updates the underlying value of the stored value.
     public func update() {
         wrapper.update(store: storeContainer.store)
     }
 
+    /// publisher type
     public typealias Publisher = Publishers.CompactMap<CurrentValueSubject<State?, Never>, State>
+    /// publishes every change of the State
     public var projectedValue: Publisher { wrapper.subject.compactMap { $0 } }
 
     class Wrapper: EmptyStoreUpdatable {
@@ -116,6 +120,26 @@ public struct Sourced<State>: DynamicProperty {
 //Rename to source ?
 protocol StoreUpdatable {
     func update(store: Dispatcher & Source & AnyStateProvider)
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+class EmptyStoreUpdatable: StoreUpdatable {
+
+    var store: Dispatcher & Source & AnyStateProvider
+
+    init(store: Dispatcher & Source & AnyStateProvider) {
+        self.store = store
+    }
+
+    func update(store:  Dispatcher & Source & AnyStateProvider) {
+        guard store !== self.store else { return }
+        self.store = store
+        storeChanged()
+    }
+
+    func storeChanged() {
+
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)

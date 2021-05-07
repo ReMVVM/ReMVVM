@@ -11,13 +11,50 @@ import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 @propertyWrapper
-public struct SourcedViewModel<VM>: DynamicProperty where VM: ViewModel, VM: ObservableObject {
+/**
+A property wrapper that serves observable view model object.
+
+ ##Example
+
+ ```
+struct DetailsView: View {
+
+    @SourcedDispatcher var dispatcher
+    @SourcedViewModel private var viewModel: DetailsViewModel
+
+    var body: some View {
+        VStack {
+            Text("state number: \(viewModel.numberFromState)")
+            Button(action: dispatcher[NumberAction.increase(by: 1)]) {
+                Text("Increase by 1")
+            }
+            Button(action: dispatcher[NumberAction.decrease(by: 1)]) {
+                Text("Decrease by 1")
+            }
+        }
+    }
+}
+
+class DetailsViewModel: ObservableObject, Initializable {
+
+    @Published private(set) var numberFromState: Int = -1
+
+    @Sourced private var state: AppState?
+
+    required init() {
+
+        $state.map(\.number).assign(to: &$numberFromState)
+    }
+}
+ ```
+ */
+
+    public struct SourcedViewModel<VM>: DynamicProperty where VM: ViewModel, VM: ObservableObject {
 
     @Environment(\.storeContainer) private var storeContainer
 
     class Wrapper: EmptyStoreUpdatable, ObservableObject {
 
-        //private let _objectWillChange = ObservableObjectPublisher()
         var objectWillChange = ObservableObjectPublisher()
 
         var wrappedValue: VM {
@@ -82,27 +119,29 @@ public struct SourcedViewModel<VM>: DynamicProperty where VM: ViewModel, VM: Obs
 
     @ObservedObject private var wrapper: Wrapper
 
+    /// The underlying value referenced by the observed object.
     public var wrappedValue: VM  {
         get { wrapper.wrappedValue }
         nonmutating set { wrapper.wrappedValue = newValue }
     }
 
+    /// A projection of the observed object that creates bindings to its
+    /// properties using dynamic member lookup.
+    public var projectedValue: ObservedObject<VM>.Wrapper { wrapper.projectedValue }
+
+    /// Updates the underlying value of the stored value.
     public mutating func update() {
         wrapper.update(store: storeContainer.store)
     }
 
+    /// Creates an observed view model object with an initial wrapped value.
     public init(wrappedValue: VM) {
         wrapper = Wrapper(store: StoreAndViewModelProvider.empty.store, object: wrappedValue)
         wrapper.update(store: storeContainer.store)
     }
 
-    public init(wrappedValue: VM) where VM: Initializable {
-        wrapper = Wrapper(store: StoreAndViewModelProvider.empty.store, object: wrappedValue)
-        wrapper.update(store: storeContainer.store)
-    }
-
-
     /// Initializes property wrapper
+    /// - Parameter defaultValue: closure that creates the default value in case the ViewModelProvider cannot create appropriate view model.
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
     public init(defaultValue: @escaping @autoclosure () -> VM, key: String? = nil) {
         wrapper = Wrapper(store: StoreAndViewModelProvider.empty.store, key: key, defaultFactory: defaultValue)
@@ -110,12 +149,11 @@ public struct SourcedViewModel<VM>: DynamicProperty where VM: ViewModel, VM: Obs
     }
 
     /// Initializes property wrapper
+    /// - Parameter defaultValue: closure that creates the default value in case the ViewModelProvider cannot create appropriate view model.
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
     public init(defaultValue: @escaping @autoclosure () -> VM = VM(), key: String? = nil) where VM: Initializable {
         wrapper = Wrapper(store: StoreAndViewModelProvider.empty.store, key: key, defaultFactory: defaultValue)
         wrapper.update(store: storeContainer.store)
     }
-
-    public var projectedValue: ObservedObject<VM>.Wrapper { wrapper.projectedValue }
 }
 #endif
