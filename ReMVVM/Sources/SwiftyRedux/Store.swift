@@ -38,17 +38,40 @@ public class Store<State: StoreState>: Dispatcher, Source {
     /// - Parameter action: action to dospatch
     public func dispatch(action: StoreAction) {
 
-        let dispatcher = MiddlewareInterceptor<State>(store: self,
-                                                     completion: nil,
-                                                     middleware: middleware,
-                                                     reduce: { [weak self] in
-                                                        self?.reduce(with: action)
-                                                     })
-
-        Interceptor<StoreAction, State> { act, completion in
-            dispatcher.next(action: act ?? action, completion: completion)
-        }.next()
+        next(index: 0, action: action) { _ in }
+        //    let semaphore = DispatchSemaphore(value: 0)
+        //
+        //    let t = Thread {
+        //        self.go(index: 0, callback: { _ in }, action: action)
+        //        semaphore.signal()
+        //    }
+        //    t.stackSize = 200*1024*1024
+        //    t.start()
+        //    semaphore.wait()
     }
+
+
+    private func next(index: Int, action: StoreAction, callback: @escaping (State) -> Void) {
+
+
+        guard index < self.middleware.count else {
+                self.reduce(with: action)
+                callback(self.state)
+                return
+        }
+
+        let interceptor =  Interceptor<StoreAction, State> { [weak self] act, completion in
+
+            self?.next(index: index + 1, action: act ?? action) { state in
+                completion?(state)
+                callback(state)
+            }
+        }
+
+        self.middleware[index].onNext(for: self.state, action: action, interceptor: interceptor, dispatcher: self)
+    }
+
+
 
     private func reduce(with action: StoreAction) {
         let oldState = state
