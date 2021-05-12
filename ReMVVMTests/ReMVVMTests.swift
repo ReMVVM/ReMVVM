@@ -8,55 +8,59 @@
 import XCTest
 import ReMVVM
 
-struct AppState: StoreState {
-    var factory: ViewModelFactory = CompositeViewModelFactory()
+struct State: StoreState {
+    let factory: ViewModelFactory = CompositeViewModelFactory()
 
-
-}
-
-struct Action: StoreAction {
-
-}
-
-class AppStoreObserver: StateObserver {
-
-    func didChange(state: AppState, oldState: AppState?) {
-        print("tested")
+    let substate: Substate
+    init(substate: Substate) {
+        self.substate = substate
     }
 }
 
-struct SomeState {
-    var someInt: Int
-
-    static var dupaTest: Int! = {
-        print("dupa")
-        return nil
-    }()
+struct Substate {
+    let array: [Int]
+    init(array: [Int]) {
+        self.array = array
+    }
 }
-struct VM: StateAssociated, ReMVVMDriven, Initializable {
 
+//enum CalcAction: StoreAction {
+//    case add(number: Int)
+//}
 
-    typealias State = SomeState
+class CalcAction: StoreAction {
+    let number: Int
 
+    init(number: Int) {
+        self.number = number
+    }
+}
 
+enum CalcReducer: Reducer {
+
+    static func reduce(state: Substate, with action: CalcAction) -> Substate {
+//        switch action {
+//        case .add(let number):
+        return Substate(array: state.array + [action.number])
+//        }
+    }
+}
+
+class CalcMiddleware: Middleware {
+    static var numOfMiddlewares = 0
+    let id: Int
     init() {
-        self.init(with: Self.remvvm.stateSubject)
+        id = Self.numOfMiddlewares
+        Self.numOfMiddlewares += 1
     }
 
-    init<S: StateSubject>(with subject: S)  {
-
-    }
-
-    func willChange(state: SomeState) {
-        print("will change: \(state)")
-    }
-
-    func didChange(state: SomeState, oldState: SomeState?) {
-        print("did change: \(state) \(oldState)")
+    func onNext(for state: Substate, action: CalcAction, interceptor: Interceptor<CalcAction, Substate>, dispatcher: Dispatcher) {
+        //print("before next \(id)")
+        interceptor.next() { _ in
+            //print("after next \(id)")
+        }
     }
 }
-
-
 
 class ReMVVMTests: XCTestCase {
     
@@ -71,43 +75,37 @@ class ReMVVMTests: XCTestCase {
     }
     
     func testExample() {
+        let array = Range(1...100000).map { $0 }
+        let substate = Substate(array: array)
+        let state = State(substate: substate)
+        let reducer = AnyReducer<State> { state, action in
+            State(substate: CalcReducer.any.reduce(state: state.substate, with: action))
 
-        let state = AppState()
-        let store = Store(with: state, reducer: EmptyReducer<Action, AppState>.any)
-
-        let observer = AppStoreObserver()
-        store.add(observer: observer)
-        let d = 3
-    }
-
-    func testReMVVMInit() {
-        var state = SomeState(someInt: 3)
-
-        SomeState.dupaTest = 4
-        let val: Int = SomeState.dupaTest
-        print(val)
-
-        var mockSubject = MockStateSubject(state: state)
-        let vm = VM(with: mockSubject)
-
-        // test initial ??
-
-        // update state
-        state.someInt = 4
-        mockSubject.updateState(state: state)
-
-        // test updated
-
-        //mockSubject.add(subscriber: vm)
-
-        print("dupa")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
         }
+
+        //dupa(int: 0)
+
+
+        let middleware = Range(1...1000).map { _ in CalcMiddleware().any }
+        let stateMappers = [StateMapper<State> { $0.substate }]
+
+        let store = Store(with: state,
+                          reducer: reducer,
+                          middleware: middleware,
+                          stateMappers: stateMappers)
+
+        self.measure {
+            store.dispatch(action: CalcAction(number: 3))
+        }
+
     }
+
+    
+//    func testPerformanceExample() {
+//        // This is an example of a performance test case.
+////        self.measure {
+////            // Put the code you want to measure the time of here.
+////        }
+//    }
     
 }
