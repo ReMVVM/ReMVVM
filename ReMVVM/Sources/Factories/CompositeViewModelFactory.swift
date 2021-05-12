@@ -27,10 +27,12 @@ import MVVM
  */
 public final class CompositeViewModelFactory: ViewModelFactory {
 
-    private var factories: [ViewModelFactory] = [InitializableViewModelFactory()]
+    private static let initializable = InitializableViewModelFactory()
+
+    private var factories: [ViewModelFactory] = [CompositeViewModelFactory.initializable]
 
     /// Initialize empty factory that creates Initializable view models. Other factories may be added by add() method.
-    public init() { }
+    public init() {}
 
     /// Initialize factory with other factories
     /// - Parameter factories: factories to be used
