@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let factory = CompositeViewModelFactory()
         let initialState = AppState(factory: factory, user: nil)
 
-        let middleware = [LoginMiddleware(uiState: uiState), LogoutMiddleware(uiState: uiState)] as [AnyMiddleware]
+        let middleware: [AnyMiddlewareConvertible] = [LoginMiddleware(uiState: uiState), LogoutMiddleware(uiState: uiState)]
         let reducer = AnyReducer(with: [LoginReducer.any, LogoutReducer.any])
 
         let store = Store(with: initialState, reducer: reducer, middleware: middleware)

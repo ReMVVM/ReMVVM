@@ -18,12 +18,12 @@ struct LoginViewModel: ReMVVMDriven, StateAssociated, Initializable {
 
     private let disposeBag = DisposeBag()
     init() {
-        self.init(stateSubject: Self.remvvm.stateSubject)
+        self.init(source: Self.remvvm.source)
     }
 
     // here you can inject MockStateSubject<AppState> in your unit tests
-    init(stateSubject: AnyStateSubject<AppState>) {
-        let state = stateSubject.rx.state // Observer<AppState>
+    init(source: AnyStateSource<AppState>) {
+        let state = source.rx.state // Observer<AppState>
         state.map { $0.user?.firstName ?? "" }.bind(to: firstName).disposed(by: disposeBag)
         state.map { $0.user?.lastName ?? "" }.bind(to: lastName).disposed(by: disposeBag)
     }

@@ -7,6 +7,7 @@
 //
 
 import ReMVVM
+import UIKit
 
 struct AppState: StoreState {
     let factory: ViewModelFactory

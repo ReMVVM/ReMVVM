@@ -10,13 +10,14 @@ import UIKit
 import ReMVVM
 import RxSwift
 
-class GreetingsViewController: UIViewController, ReMVVMDriven {
+class GreetingsViewController: UIViewController {
 
     @IBOutlet private var messageLabel: UILabel!
     @IBOutlet private var logoutButton: UIButton!
 
     // inject view model from remvvm
     @Provided private var viewModel: GreetingsViewModel?
+    @ProvidedDispatcher private var dispatcher
 
     private let disposeBag = DisposeBag()
     override func viewDidLoad() {
@@ -26,7 +27,7 @@ class GreetingsViewController: UIViewController, ReMVVMDriven {
         // without Rx: self.remvvm.dispatch(action: LogoutAction())
         logoutButton.rx.tap
             .map { LogoutAction() }
-            .bind(to: remvvm.rx)
+            .bind(to: $dispatcher)
             .disposed(by: disposeBag)
 
         // bind view model to the view
