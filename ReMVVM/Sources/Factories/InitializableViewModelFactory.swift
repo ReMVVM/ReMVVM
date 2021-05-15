@@ -12,7 +12,7 @@ import MVVM
 public typealias Initializable = MVVM.Initializable
 
 /// ViewModelFactory that creates view models using empty constructor (Initializable view models)
-public struct InitializableViewModelFactory: ViewModelFactory {
+public final class InitializableViewModelFactory: ViewModelFactory {
 
     private let viewModelFactory = MVVM.InitializableViewModelFactory()
 

@@ -13,13 +13,13 @@ import Foundation
 
  Notifies observers of every state change.
  */
-public class Store<State: StoreState>: Dispatcher, Source {
+public final class Store<State: StoreState>: Dispatcher, Source {
 
     /// Current state value
     private(set) public var state: State
     private var middleware: [AnyMiddleware]
     private let reducer: AnyReducer<State>
-    private let source: StoreSource<State>
+    let source: StoreSource<State>
 
     /// Initializes the store
     /// - Parameters:
@@ -27,9 +27,12 @@ public class Store<State: StoreState>: Dispatcher, Source {
     ///   - reducer: reducer used to generate new app state based on dispatched action and current state
     ///   - middleware:middleware used to enchance action's dispatch functionality
     ///   - stateMappers: application state mappers used to observe application's 'substates'
-    public init(with state: State, reducer: AnyReducer<State>, middleware: [AnyMiddleware] = [], stateMappers: [StateMapper<State>] = []) {
+    public init(with state: State,
+                reducer: AnyReducer<State>,
+                middleware: [AnyMiddlewareConvertible] = [],
+                stateMappers: [StateMapper<State>] = []) {
         self.state = state
-        self.middleware = middleware.map { AnyMiddleware(middleware: $0, mappers: stateMappers) }
+        self.middleware = middleware.map { AnyMiddleware(middleware: $0.any, mappers: stateMappers) }
         self.reducer = reducer
         source = StoreSource(stateMappers: stateMappers)
     }
@@ -39,20 +42,21 @@ public class Store<State: StoreState>: Dispatcher, Source {
     public func dispatch(action: StoreAction) {
 
         next(index: 0, action: action) { _ in }
-        //    let semaphore = DispatchSemaphore(value: 0)
-        //
-        //    let t = Thread {
-        //        self.go(index: 0, callback: { _ in }, action: action)
-        //        semaphore.signal()
-        //    }
-        //    t.stackSize = 200*1024*1024
-        //    t.start()
-        //    semaphore.wait()
+//        let semaphore = DispatchSemaphore(value: 0)
+//        let t = Thread(target: self, selector: #selector(Store.handle), object: (action, semaphore))
+//        t.stackSize = 1024*1024*1024
+//        t.start()
+//        semaphore.wait()
     }
+
+//    @objc private func handle(action: Any) {
+//        let action = action as! (StoreAction, DispatchSemaphore)
+//        next(index: 0, action: action.0) { _ in }
+//        action.1.signal()
+//    }
 
 
     private func next(index: Int, action: StoreAction, callback: @escaping (State) -> Void) {
-
 
         guard index < self.middleware.count else {
                 self.reduce(with: action)
@@ -98,17 +102,6 @@ public class Store<State: StoreState>: Dispatcher, Source {
 }
 
 // ------
-
-// class is only for use === operator (may be changed if needed)
-protocol AnyStateProvider: AnyObject {
-    func anyState<State>() -> State?
-}
-
-extension Store: AnyStateProvider {
-    func anyState<State>() -> State? {
-        return source.anyState(state: state)
-    }
-}
 
 final class StoreSource<State> {
 

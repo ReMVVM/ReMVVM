@@ -39,6 +39,9 @@
 		08A6D60A239F0FC100EF2F44 /* Provided.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A6D609239F0FC100EF2F44 /* Provided.swift */; };
 		08ADCDA5229C2654004CD357 /* ReMVVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08491BA220B010D1008D93AA /* ReMVVMTests.swift */; };
 		08B99D082162CA2F005627E9 /* Typealiases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B99D072162CA2F005627E9 /* Typealiases.swift */; };
+		08D0CB71264ECEA3006BAE9B /* ConvertMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D0CB70264ECEA3006BAE9B /* ConvertMiddleware.swift */; };
+		08FE00BC264E12F4008E59CA /* AnyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE00BB264E12F4008E59CA /* AnyStore.swift */; };
+		08FE00BF264E130A008E59CA /* ReMVVM+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FE00BE264E130A008E59CA /* ReMVVM+Rx.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,7 +94,10 @@
 		08A6D605239F0F0B00EF2F44 /* ReMVVMDriven.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReMVVMDriven.swift; sourceTree = "<group>"; };
 		08A6D609239F0FC100EF2F44 /* Provided.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provided.swift; sourceTree = "<group>"; };
 		08B99D072162CA2F005627E9 /* Typealiases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typealiases.swift; sourceTree = "<group>"; };
+		08D0CB70264ECEA3006BAE9B /* ConvertMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertMiddleware.swift; sourceTree = "<group>"; };
 		08FA075F23A3E58A00BC9D70 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		08FE00BB264E12F4008E59CA /* AnyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyStore.swift; sourceTree = "<group>"; };
+		08FE00BE264E130A008E59CA /* ReMVVM+Rx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReMVVM+Rx.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +166,7 @@
 		08491BB920B01127008D93AA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				08FE00BD264E130A008E59CA /* RxSwift */,
 				08948CF42645B7CA005FD24F /* SwiftUI */,
 				08948CE32645B7CA005FD24F /* SwiftyRedux */,
 				08491BDE20B0202D008D93AA /* Factories */,
@@ -203,6 +210,7 @@
 				08948CF02645B7CA005FD24F /* StateMapper.swift */,
 				08948CF12645B7CA005FD24F /* StoreState.swift */,
 				08948CF22645B7CA005FD24F /* StateAssociated.swift */,
+				08FE00BB264E12F4008E59CA /* AnyStore.swift */,
 				08948CF32645B7CA005FD24F /* Store.swift */,
 			);
 			path = SwiftyRedux;
@@ -214,6 +222,7 @@
 				08948CE52645B7CA005FD24F /* AnyMiddleware.swift */,
 				08948CE62645B7CA005FD24F /* Interceptor.swift */,
 				08948CE72645B7CA005FD24F /* Middleware.swift */,
+				08D0CB70264ECEA3006BAE9B /* ConvertMiddleware.swift */,
 			);
 			path = Middleware;
 			sourceTree = "<group>";
@@ -238,6 +247,14 @@
 				08948CF92645B7CA005FD24F /* ReMVVM+View.swift */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		08FE00BD264E130A008E59CA /* RxSwift */ = {
+			isa = PBXGroup;
+			children = (
+				08FE00BE264E130A008E59CA /* ReMVVM+Rx.swift */,
+			);
+			path = RxSwift;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -365,6 +382,8 @@
 				08948CFB2645B7CA005FD24F /* Interceptor.swift in Sources */,
 				08948D012645B7CA005FD24F /* Source.swift in Sources */,
 				08948D082645B7CA005FD24F /* SourcedObservedObject.swift in Sources */,
+				08D0CB71264ECEA3006BAE9B /* ConvertMiddleware.swift in Sources */,
+				08FE00BF264E130A008E59CA /* ReMVVM+Rx.swift in Sources */,
 				08948D0A2645B7CA005FD24F /* SourcedDispatcher.swift in Sources */,
 				08948D002645B7CA005FD24F /* StateObserver.swift in Sources */,
 				08A6D60A239F0FC100EF2F44 /* Provided.swift in Sources */,
@@ -373,6 +392,7 @@
 				08948CFD2645B7CA005FD24F /* StoreAction.swift in Sources */,
 				08948D042645B7CA005FD24F /* StateMapper.swift in Sources */,
 				08A3FCE921D94B4800DC601C /* ReMVVM.swift in Sources */,
+				08FE00BC264E12F4008E59CA /* AnyStore.swift in Sources */,
 				08A6D606239F0F0B00EF2F44 /* ReMVVMDriven.swift in Sources */,
 				08948CFC2645B7CA005FD24F /* Middleware.swift in Sources */,
 				08491BD720B01F78008D93AA /* ViewModelProvider.swift in Sources */,

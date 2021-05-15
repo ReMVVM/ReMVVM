@@ -69,7 +69,7 @@ extension Reducer {
      }
     ```
  */
-public struct AnyReducer<State> {
+public final class AnyReducer<State> {
 
     private var reducer: (_ state: State, _ action: StoreAction) -> State
 
@@ -106,7 +106,7 @@ public struct AnyReducer<State> {
 }
 
 /// Reducer that doesn't change the state.
-public struct EmptyReducer<Action: StoreAction, State>: Reducer {
+public final class EmptyReducer<Action: StoreAction, State>: Reducer {
 
     /// Returns not changed state.
     /// - Parameters:

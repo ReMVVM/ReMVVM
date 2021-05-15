@@ -57,7 +57,7 @@ public struct SourcedDispatcher: DynamicProperty {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension SourcedDispatcher: StoreUpdatable {
-    func update(store:  Dispatcher & Source & AnyStateProvider) {
+    func update(store:  AnyStore) {
         wrapper.update(store: store)
     }
 }

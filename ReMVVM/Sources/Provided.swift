@@ -7,6 +7,9 @@
 //
 
 #if swift(>=5.1)
+#if canImport(RxSwift)
+import RxSwift
+#endif
 
 /**
  Provides view model of specified type.
@@ -29,49 +32,43 @@
     }
  ```
  */
-//@propertyWrapper
-//public final class Provided<VM: ViewModel> {
-//    private let key: String?
-//
-//    /// wrapped value of view model
-//    public private(set) lazy var wrappedValue: VM? = {
-//        return ReMVVM<Any>.viewModelProvider.viewModel(with: key)
-//    }()
-//
-//    /// Initializes property wrapper
-//    /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-//    public init(key: String) {
-//        self.key = key
-//    }
-//
-//    /// Initializes property wrapper with no key
-//    public init() {
-//        key = nil
-//    }
-//}
-
 @propertyWrapper
-public final class Provided<Object> {
+public final class Provided<VM: ViewModel> {
+    private let key: String?
 
-    private var closure: () -> Object
     /// wrapped value of view model
-    public lazy var wrappedValue: Object = closure()
-
-    //return ReMVVM<Any>.viewModelProvider.viewModel(with: key)
+    public private(set) lazy var wrappedValue: VM? = {
+        return ReMVVM<Any>.storeContainer.viewModelProvider.viewModel(with: key)
+    }()
 
     /// Initializes property wrapper
     /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-    public init<T>(key: String) where Object == Optional<T>, T: ViewModel {
-        closure = { ReMVVM<Any>.storeContainer.viewModelProvider.viewModel(with: key) }
+    public init(key: String) {
+        self.key = key
     }
 
     /// Initializes property wrapper with no key
-    public init<T>() where Object == Optional<T>, T: ViewModel  {
-        closure = { ReMVVM<Any>.storeContainer.viewModelProvider.viewModel() }
-    }
-
-    public init() where Object == Dispatcher {
-        closure = { ReMVVM<Any>.storeContainer.store }
+    public init() {
+        key = nil
     }
 }
+
+@propertyWrapper
+public final class ProvidedDispatcher: Dispatcher {
+
+    /// wrapped value of view model
+    public lazy var wrappedValue: Dispatcher = ReMVVM<Any>.storeContainer.store
+
+    /// Initializes property wrapper
+    public init()  { }
+
+    public func dispatch(action: StoreAction) {
+        wrappedValue.dispatch(action: action)
+    }
+
+    #if canImport(RxSwift)
+    public var projectedValue: Reactive<ProvidedDispatcher> { rx }
+    #endif
+}
+
 #endif

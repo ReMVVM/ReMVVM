@@ -34,7 +34,7 @@ public extension StateObserver {
 
 // ------
 
-class AnyWeakStoreObserver<State>: StateObserver {
+final class AnyWeakStoreObserver<State>: StateObserver {
 
     private let _willChange: ((_ state: Any) -> Void)
     private let _didChange: ((_ state: Any, _ oldState: Any?) -> Void)

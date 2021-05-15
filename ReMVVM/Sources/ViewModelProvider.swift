@@ -9,18 +9,18 @@
 import MVVM
 
 /// Provides view models using current ViewModelFactory from the current state in the store.
-public struct ViewModelProvider {
+public final class ViewModelProvider {
 
     private let factory: () -> ViewModelFactory
-    private let source: Source & AnyStateProvider
+    private let source: AnyStore
     /// Initialize provider with the store
     /// - Parameter store: that will be used to get current view model factory
     public init<State: StoreState>(with store: Store<State>) {
         factory = { store.state.factory }
-        source = store
+        source = store.any
     }
 
-    init(with source: Source & AnyStateProvider, factory: @escaping () -> ViewModelFactory) {
+    init(with source: AnyStore, factory: @escaping () -> ViewModelFactory) {
         self.source = source
         self.factory = factory
     }
@@ -63,6 +63,13 @@ public struct ViewModelProvider {
     /// - Parameter context: context that should be cleared
     public func clear(context: ViewModelContext) {
         ViewModelStores.store(for: context).clear()
+    }
+
+    static let empty: ViewModelProvider = ViewModelProvider(with: AnyStore.empty, factory: { emptyFactory } )
+    static private let emptyFactory = EmptyFactory()
+    private final class EmptyFactory: ViewModelFactory {
+        func creates<VM>(type: VM.Type) -> Bool { false }
+        func create<VM>(key: String?) -> VM? { nil }
     }
 }
 

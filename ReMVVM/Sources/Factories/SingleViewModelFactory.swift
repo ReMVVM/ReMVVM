@@ -16,7 +16,7 @@ import MVVM
     let factory = SingleViewModelFactory { return LoginViewModel(username: username) }
  ```
  */
-public struct SingleViewModelFactory<SVM: ViewModel>: ViewModelFactory {
+public final class SingleViewModelFactory<SVM: ViewModel>: ViewModelFactory {
 
     private let factory: (String?) -> SVM?
 

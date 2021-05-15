@@ -25,7 +25,7 @@ import Combine
 
 //public typealias StateSourced<State> = AnyStateSource<State>.Sourced
 /// Type erased StateSource
-public class AnyStateSource<State>: StateSource {
+public final class AnyStateSource<State>: StateSource {
 
     private let source: Source
     /// Current state value
@@ -50,7 +50,7 @@ public class AnyStateSource<State>: StateSource {
         _state = .init(from: source)
     }
 
-    init(source: Source & AnyStateProvider) {
+    init(source: AnyStore) {
         self.source = source
         _state = .init(source: source)
     }
@@ -97,7 +97,7 @@ public class AnyStateSource<State>: StateSource {
             }
         }
 
-        init(source: Source & AnyStateProvider) {
+        init(source: AnyStore) {
             if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
                 let subject = CurrentValueSubject<State?, Never>(nil)
                 anyCurrentValueSubject = subject
@@ -117,7 +117,7 @@ public class AnyStateSource<State>: StateSource {
 }
 #else
 /// Type erased StateSource
-public class AnyStateSource<State>: StateSource {
+public final class AnyStateSource<State>: StateSource {
 
     private let _state: () -> State?
     private let source: Source
@@ -142,6 +142,11 @@ public class AnyStateSource<State>: StateSource {
     public init<S: StateSource>(source: S) where S.State == State {
         self.source = source
         _state = { source.state }
+    }
+
+    init(source: AnyStore) {
+        self.source = source
+        _state = .init(source: source)
     }
 }
 #endif

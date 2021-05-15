@@ -69,7 +69,7 @@ public struct Sourced<State>: DynamicProperty {
         var cancellable: Cancellable?
         var source: AnyStateSource<State>?
 
-        override init(store: Dispatcher & Source & AnyStateProvider) {
+        override init(store: AnyStore) {
             let state: State? = store.anyState()
             subject = CurrentValueSubject<State?, Never>(state)
             super.init(store: store)
@@ -119,19 +119,19 @@ public struct Sourced<State>: DynamicProperty {
 
 //Rename to source ?
 protocol StoreUpdatable {
-    func update(store: Dispatcher & Source & AnyStateProvider)
+    func update(store: AnyStore)
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 class EmptyStoreUpdatable: StoreUpdatable {
 
-    var store: Dispatcher & Source & AnyStateProvider
+    var store: AnyStore
 
-    init(store: Dispatcher & Source & AnyStateProvider) {
+    init(store: AnyStore) {
         self.store = store
     }
 
-    func update(store:  Dispatcher & Source & AnyStateProvider) {
+    func update(store:  AnyStore) {
         guard store !== self.store else { return }
         self.store = store
         storeChanged()
@@ -144,7 +144,7 @@ class EmptyStoreUpdatable: StoreUpdatable {
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Sourced: StoreUpdatable {
-    func update(store:  Dispatcher & Source & AnyStateProvider) {
+    func update(store:  AnyStore) {
         wrapper.update(store: store)
     }
 }

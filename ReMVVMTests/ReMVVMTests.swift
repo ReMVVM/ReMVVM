@@ -54,12 +54,24 @@ class CalcMiddleware: Middleware {
         Self.numOfMiddlewares += 1
     }
 
-    func onNext(for state: Substate, action: CalcAction, interceptor: Interceptor<CalcAction, Substate>, dispatcher: Dispatcher) {
+    func onNext(for state: Substate, action: StoreAction, interceptor: Interceptor<StoreAction, Substate>, dispatcher: Dispatcher) {
         //print("before next \(id)")
         interceptor.next() { _ in
-            //print("after next \(id)")
+            //print("after next \(self.id)")
         }
     }
+}
+
+enum SecondAction: StoreAction {
+    case first
+}
+
+class Convert: ConvertMiddleware {
+
+    func onNext(for state: Substate, action: SecondAction, dispatcher: Dispatcher) {
+        dispatcher.dispatch(action: CalcAction(number: 3))
+    }
+
 }
 
 class ReMVVMTests: XCTestCase {
@@ -75,7 +87,7 @@ class ReMVVMTests: XCTestCase {
     }
     
     func testExample() {
-        let array = Range(1...100000).map { $0 }
+        let array = Range(1...1000000).map { $0 }
         let substate = Substate(array: array)
         let state = State(substate: substate)
         let reducer = AnyReducer<State> { state, action in
@@ -86,8 +98,16 @@ class ReMVVMTests: XCTestCase {
         //dupa(int: 0)
 
 
-        let middleware = Range(1...1000).map { _ in CalcMiddleware().any }
+        var middleware: [AnyMiddlewareConvertible] = Range(1...1000).map { _ in CalcMiddleware() }
         let stateMappers = [StateMapper<State> { $0.substate }]
+
+//        let d = AnyMiddleware { CalcMiddleware()
+//            [CalcMiddleware(), CalcMiddleware() ]; CalcMiddleware()
+//        }
+
+
+        //middleware[1000] = Convert().any
+        
 
         let store = Store(with: state,
                           reducer: reducer,
@@ -95,7 +115,7 @@ class ReMVVMTests: XCTestCase {
                           stateMappers: stateMappers)
 
         self.measure {
-            store.dispatch(action: CalcAction(number: 3))
+        store.dispatch(action: SecondAction.first)
         }
 
     }

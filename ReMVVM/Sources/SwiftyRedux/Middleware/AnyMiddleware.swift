@@ -23,7 +23,7 @@ or
  AnyMiddleware(ProfileActionMiddleware())
  ```
 */
-public struct AnyMiddleware {
+public final class AnyMiddleware {
 
     private let mapper: Any?
     private let _onNext: (SAIDProvider) -> Bool
@@ -43,6 +43,23 @@ public struct AnyMiddleware {
 
         stateType = M.State.self
         mapper = nil
+    }
+
+    public init<M>(middleware: M) where M: ConvertMiddleware {
+        _onNext = { provider in
+            guard let said: SAID<M.State, M.Action> = provider.get() else { return false }
+
+            middleware.onNext(for: said.state, action: said.action, dispatcher: said.dispatcher)
+
+            return false
+        }
+
+        stateType = M.State.self
+        mapper = nil
+    }
+
+    public init(@MiddlewareBuilder _ builder: () -> [AnyMiddleware]) {
+        fatalError()
     }
 
     /// Method will be called during dispatch process.
@@ -84,11 +101,18 @@ public struct AnyMiddleware {
     }
 }
 
-private struct SAID<State, Action> { //state, action, interceptor, dispatcher
+private final class SAID<State, Action> { //state, action, interceptor, dispatcher
     let state: State
     let action: Action
     let interceptor: Interceptor<Action, State>
     let dispatcher: Dispatcher
+
+    init(state: State, action: Action, interceptor: Interceptor<Action, State>, dispatcher: Dispatcher) {
+        self.state = state
+        self.action = action
+        self.interceptor = interceptor
+        self.dispatcher = dispatcher
+    }
 }
 
 private class SAIDProvider {
@@ -119,7 +143,7 @@ private class SAIDProvider {
     }
 }
 
-private class SAIDMapperProvider<S>: SAIDProvider {
+private final class SAIDMapperProvider<S>: SAIDProvider {
     let mapper: StateMapper<S>
 
     init<State>(said: SAID<State, StoreAction>, mapper: StateMapper<S>) {

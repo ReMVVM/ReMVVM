@@ -22,7 +22,7 @@ import Foundation
 
      let userStateMapper = StateMapper<ApplicationState> { $0.userState }
  */
-public struct StateMapper<State> {
+public final class StateMapper<State> {
 
     let newStateType: Any.Type
     private let _map: (State) -> Any
@@ -35,7 +35,7 @@ public struct StateMapper<State> {
 
     /// Initialize mapper with keyPath to substate
     /// - Parameter keyPath: property key path to substate
-    public init<NewState>(for keyPath: KeyPath<State, NewState>) {
+    public convenience init<NewState>(for keyPath: KeyPath<State, NewState>) {
         self.init { $0[keyPath: keyPath] }
     }
 

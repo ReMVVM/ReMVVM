@@ -66,7 +66,7 @@ Provides additional functionalities for ReMVVMDriven objects.
  */
 public class ReMVVM<Base> {
 
-    let store: Dispatcher & Source & AnyStateProvider
+    let store: AnyStore
     let viewModelProvider: ViewModelProvider
 
     init() {
@@ -132,7 +132,7 @@ extension ReMVVM where Base: StateAssociated {
 
 struct StoreStateSource<State>: StateSource {
 
-    let store: Dispatcher & Source & AnyStateProvider = ReMVVM<Any>.storeContainer.store
+    let store: AnyStore = ReMVVM<Any>.storeContainer.store
     var state: State? { store.anyState() }
 
     func add<Observer>(observer: Observer) where Observer : StateObserver {
@@ -144,40 +144,23 @@ struct StoreStateSource<State>: StateSource {
     }
 }
 
-private class EmptyStore: Dispatcher & Source & AnyStateProvider {
-    func dispatch(action: StoreAction) {}
 
-    func add<Observer>(observer: Observer) where Observer : StateObserver { }
+final class StoreAndViewModelProvider {
 
-    func remove<Observer>(observer: Observer) where Observer : StateObserver { }
-
-    func anyState<State>() -> State? { nil }
-
-    static let empty = EmptyStore()
-    static let emptyViewModelProvider = ViewModelProvider(with: EmptyStore.empty, factory: EmptyFactory.init)
-
-    class EmptyFactory: ViewModelFactory {
-        func creates<VM>(type: VM.Type) -> Bool { false }
-        func create<VM>(key: String?) -> VM? { nil }
-    }
-}
-
-class StoreAndViewModelProvider {
-
-    let store: Dispatcher & Source & AnyStateProvider
+    let store: AnyStore
     let viewModelProvider: ViewModelProvider
 
-    init(store: Dispatcher & Source & AnyStateProvider, viewModelProvider: ViewModelProvider) {
+    init(store: AnyStore, viewModelProvider: ViewModelProvider) {
         self.store = store
         self.viewModelProvider = viewModelProvider
     }
 
     init<State>(store: Store<State>) where State: StoreState {
-        self.store = store
+        self.store = store.any
         viewModelProvider = ViewModelProvider(with: store)
     }
 
-    static let empty = StoreAndViewModelProvider(store: EmptyStore.empty, viewModelProvider: EmptyStore.emptyViewModelProvider)
+    static let empty = StoreAndViewModelProvider(store: AnyStore.empty, viewModelProvider: .empty)
 }
 
 extension ReMVVM where Base == Any {

@@ -10,7 +10,7 @@ import Foundation
 
 /// Intercepts call of next(action:completion:) method to the custom function. Used by Middleware to intercept the action to the next middleware in the stack.
 /// May be used in UnitTests to test if middleware intercepts an action properly.
-public struct Interceptor<Action, State> {
+public final class Interceptor<Action, State> {
 
     private let _next: InterceptorNextFunction<Action, State>
     /// Initialize interceptor with custom function.

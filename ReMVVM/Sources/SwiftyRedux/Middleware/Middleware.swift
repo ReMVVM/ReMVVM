@@ -42,7 +42,7 @@ import Foundation
          }
      }
  */
-public protocol Middleware {
+public protocol Middleware: AnyMiddlewareConvertible {
     /// type of action handled by this Middleware
     associatedtype Action
     /// type of state handled by this Middleware
@@ -57,9 +57,29 @@ public protocol Middleware {
     func onNext(for state: State, action: Action, interceptor: Interceptor<Action, State>, dispatcher: Dispatcher)
 }
 
+/**
+
+ A middleware type that can be erased to AnyMiddleware.
+**/
+public protocol AnyMiddlewareConvertible {
+
+    /// AnyMiddleware factory
+    var any: AnyMiddleware { get }
+}
+
 extension Middleware {
 
+    /// AnyMiddleware factory
     public var any: AnyMiddleware {
         AnyMiddleware(middleware: self)
+    }
+}
+
+@resultBuilder
+public struct MiddlewareBuilder {
+    public init() { }
+    public static func buildBlock(_ items: AnyMiddlewareConvertible...) -> [AnyMiddleware] {
+        fatalError()
+        //return items.map { "Hello \($0)" }
     }
 }
