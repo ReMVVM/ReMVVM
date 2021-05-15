@@ -50,7 +50,7 @@ public final class AnyStateSource<State>: StateSource {
         _state = .init(from: source)
     }
 
-    init(source: AnyStore) {
+    init(source: AnyStateStore) {
         self.source = source
         _state = .init(source: source)
     }
@@ -97,7 +97,7 @@ public final class AnyStateSource<State>: StateSource {
             }
         }
 
-        init(source: AnyStore) {
+        init(source: AnyStateStore) {
             if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
                 let subject = CurrentValueSubject<State?, Never>(nil)
                 anyCurrentValueSubject = subject
@@ -144,7 +144,7 @@ public final class AnyStateSource<State>: StateSource {
         _state = { source.state }
     }
 
-    init(source: AnyStore) {
+    init(source: AnyStateStore) {
         self.source = source
         _state = .init(source: source)
     }

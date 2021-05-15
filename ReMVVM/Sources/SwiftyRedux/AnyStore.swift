@@ -47,7 +47,7 @@ public final class AnyStore: Dispatcher, Source {
     }
 }
 
-//typealias AnyStore = Dispatcher & Source & AnyStateProvider & AnyObject
+typealias AnyStateStore = Dispatcher & Source & AnyStateProvider & AnyObject
 
 protocol AnyStateProvider {
     func anyState<State>() -> State?
@@ -61,4 +61,4 @@ extension Store: AnyStateProvider {
     }
 }
 
-//extension AnyStore: AnyStateProvider { }
+extension AnyStore: AnyStateProvider { }

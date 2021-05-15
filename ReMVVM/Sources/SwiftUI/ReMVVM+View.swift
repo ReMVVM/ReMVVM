@@ -24,6 +24,11 @@ extension View {
     public func source(from dispatcher: SourcedDispatcher) -> some View {
         return self.environment(\.storeContainer, dispatcher.storeContainer)
     }
+
+// TODO add view source from mock
+//    public func source<Base>(with mock: MockStateSource<Base>) {
+//        self.environment(\.storeContainer, StoreAndViewModelProvider(store: mock, viewModelProvider: ViewModelProvider(with: mock, factory: CompositeViewModelFactory())))
+//    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)

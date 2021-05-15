@@ -57,7 +57,7 @@ public struct SourcedObservedObject<Object>: DynamicProperty where Object: Obser
 
         var object: ObservedObject<Object>
 
-        init(store: AnyStore, object: Object) {
+        init(store: AnyStateStore, object: Object) {
             self.object = .init(wrappedValue: object)
             super.init(store: store)
             updateObject(object: self.object)

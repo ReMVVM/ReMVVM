@@ -12,15 +12,15 @@ import MVVM
 public final class ViewModelProvider {
 
     private let factory: () -> ViewModelFactory
-    private let source: AnyStore
+    private let source: AnyStateStore
     /// Initialize provider with the store
     /// - Parameter store: that will be used to get current view model factory
     public init<State: StoreState>(with store: Store<State>) {
         factory = { store.state.factory }
-        source = store.any
+        source = store
     }
 
-    init(with source: AnyStore, factory: @escaping () -> ViewModelFactory) {
+    init(with source: AnyStateStore, factory: @escaping () -> ViewModelFactory) {
         self.source = source
         self.factory = factory
     }

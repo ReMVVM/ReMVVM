@@ -9,32 +9,6 @@
 #if canImport(RxSwift)
 import RxSwift
 
-//TODO move AnyStore to ReMVVM ?
-//extension Store {
-//    public var any: AnyStore { AnyStore(store: self) }
-//}
-//
-//public class AnyStore: Dispatcher, Source, ReactiveCompatible {
-//
-//    private let store: Dispatcher & Source
-//
-//    public func dispatch(action: StoreAction) {
-//        store.dispatch(action: action)
-//    }
-//
-//    public func add<Observer>(observer: Observer) where Observer : StateObserver {
-//        store.add(observer: observer)
-//    }
-//
-//    public func remove<Observer>(observer: Observer) where Observer : StateObserver {
-//        store.remove(observer: observer)
-//    }
-//
-//    public init<State>(store: Store<State>) {
-//        self.store = store
-//    }
-//}
-
 extension ProvidedDispatcher: ReactiveCompatible { }
 extension ReMVVM: ReactiveCompatible { }
 extension Store: ReactiveCompatible { }

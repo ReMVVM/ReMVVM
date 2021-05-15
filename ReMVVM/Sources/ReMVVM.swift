@@ -66,7 +66,7 @@ Provides additional functionalities for ReMVVMDriven objects.
  */
 public class ReMVVM<Base> {
 
-    let store: AnyStore
+    let store: AnyStateStore
     let viewModelProvider: ViewModelProvider
 
     init() {
@@ -132,7 +132,7 @@ extension ReMVVM where Base: StateAssociated {
 
 struct StoreStateSource<State>: StateSource {
 
-    let store: AnyStore = ReMVVM<Any>.storeContainer.store
+    let store: AnyStateStore = ReMVVM<Any>.storeContainer.store
     var state: State? { store.anyState() }
 
     func add<Observer>(observer: Observer) where Observer : StateObserver {
@@ -147,16 +147,16 @@ struct StoreStateSource<State>: StateSource {
 
 final class StoreAndViewModelProvider {
 
-    let store: AnyStore
+    let store: AnyStateStore
     let viewModelProvider: ViewModelProvider
 
-    init(store: AnyStore, viewModelProvider: ViewModelProvider) {
+    init(store: AnyStateStore, viewModelProvider: ViewModelProvider) {
         self.store = store
         self.viewModelProvider = viewModelProvider
     }
 
     init<State>(store: Store<State>) where State: StoreState {
-        self.store = store.any
+        self.store = store
         viewModelProvider = ViewModelProvider(with: store)
     }
 

@@ -81,13 +81,13 @@ class DetailsViewModel: ObservableObject, Initializable {
         private let key: String?
         private let defaultFactory: () -> VM
 
-        init(store: AnyStore, key: String?, defaultFactory: @escaping () -> VM) {
+        init(store: AnyStateStore, key: String?, defaultFactory: @escaping () -> VM) {
             self.key = key
             self.defaultFactory = defaultFactory
             super.init(store: store)
         }
 
-        init(store: AnyStore, object: VM) {
+        init(store: AnyStateStore, object: VM) {
             defaultFactory = { object }
             key = nil
             super.init(store: store)
