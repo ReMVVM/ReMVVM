@@ -62,3 +62,9 @@ extension Store: AnyStateProvider {
 }
 
 extension AnyStore: AnyStateProvider { }
+
+extension MockStateSource: AnyStateProvider {
+    func anyState<State>() -> State? {
+        state as? State
+    }
+}
