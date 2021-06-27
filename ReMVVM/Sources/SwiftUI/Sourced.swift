@@ -11,8 +11,6 @@ import Foundation
 import Combine
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-@propertyWrapper
 /**
 A property wrapper that serves the State from the Store and delivers any State change via the Publisher
 
@@ -32,6 +30,8 @@ A property wrapper that serves the State from the Store and delivers any State c
  }
  ```
  */
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@propertyWrapper
 public struct Sourced<State>: DynamicProperty {
 
     @Environment(\.storeContainer) private var storeContainer
@@ -122,7 +122,6 @@ protocol StoreUpdatable {
     func update(store: AnyStateStore)
 }
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 class EmptyStoreUpdatable: StoreUpdatable {
 
     var store: AnyStateStore
@@ -131,7 +130,7 @@ class EmptyStoreUpdatable: StoreUpdatable {
         self.store = store
     }
 
-    func update(store:  AnyStateStore) {
+    func update(store: AnyStateStore) {
         guard store !== self.store else { return }
         self.store = store
         storeChanged()

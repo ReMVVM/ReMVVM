@@ -74,6 +74,13 @@ class Convert: ConvertMiddleware {
 
 }
 
+enum StateReducer: Reducer {
+
+    static func reduce(state: State, with action: StoreAction) -> State {
+        State(substate: CalcReducer.reduce(state: state.substate, with: action))
+    }
+}
+
 class ReMVVMTests: XCTestCase {
     
     override func setUp() {
@@ -90,15 +97,11 @@ class ReMVVMTests: XCTestCase {
         let array = Range(1...1000000).map { $0 }
         let substate = Substate(array: array)
         let state = State(substate: substate)
-        let reducer = AnyReducer<State> { state, action in
-            State(substate: CalcReducer.any.reduce(state: state.substate, with: action))
-
-        }
 
         //dupa(int: 0)
 
 
-        var middleware: [AnyMiddlewareConvertible] = Range(1...1000).map { _ in CalcMiddleware() }
+        var middleware: [AnyMiddlewareConvertible] = Range(1...2000).map { _ in CalcMiddleware() }
         let stateMappers = [StateMapper<State> { $0.substate }]
 
 //        let d = AnyMiddleware { CalcMiddleware()
@@ -110,7 +113,7 @@ class ReMVVMTests: XCTestCase {
         
 
         let store = Store(with: state,
-                          reducer: reducer,
+                          reducer: StateReducer.self,
                           middleware: middleware,
                           stateMappers: stateMappers)
 

@@ -18,7 +18,7 @@ public final class Store<State: StoreState>: Dispatcher, Source {
     /// Current state value
     private(set) public var state: State
     private var middleware: [AnyMiddleware]
-    private let reducer: AnyReducer<State>
+    private let reduce: (State, StoreAction) -> State//AnyReducer<State>
     let source: StoreSource<State>
 
     /// Initializes the store
@@ -27,13 +27,13 @@ public final class Store<State: StoreState>: Dispatcher, Source {
     ///   - reducer: reducer used to generate new app state based on dispatched action and current state
     ///   - middleware:middleware used to enchance action's dispatch functionality
     ///   - stateMappers: application state mappers used to observe application's 'substates'
-    public init(with state: State,
-                reducer: AnyReducer<State>,
-                middleware: [AnyMiddlewareConvertible] = [],
-                stateMappers: [StateMapper<State>] = []) {
+    public init<R>(with state: State,
+                   reducer: R.Type,
+                   middleware: [AnyMiddlewareConvertible] = [],
+                   stateMappers: [StateMapper<State>] = []) where R: Reducer, R.Action == StoreAction, R.State == State {
         self.state = state
         self.middleware = middleware.map { AnyMiddleware(middleware: $0.any, mappers: stateMappers) }
-        self.reducer = reducer
+        self.reduce = reducer.reduce
         source = StoreSource(stateMappers: stateMappers)
     }
 
@@ -80,7 +80,7 @@ public final class Store<State: StoreState>: Dispatcher, Source {
     private func reduce(with action: StoreAction) {
         let oldState = state
         source.notifyStateWillChange(oldState: oldState)
-        state = reducer.reduce(state: oldState, with: action)
+        state = reduce(oldState, action)
         source.notifyStateDidChange(state: state, oldState: oldState)
     }
 

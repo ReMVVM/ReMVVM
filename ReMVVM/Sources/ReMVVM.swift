@@ -66,12 +66,10 @@ Provides additional functionalities for ReMVVMDriven objects.
  */
 public class ReMVVM<Base> {
 
-    let store: AnyStateStore
-    let viewModelProvider: ViewModelProvider
+    let storeContainer: StoreAndViewModelProvider
 
     init() {
-        store = ReMVVM<Any>.storeContainer.store
-        viewModelProvider = ReMVVM<Any>.storeContainer.viewModelProvider
+        storeContainer = ReMVVM<Any>.storeContainer
     }
 }
 
@@ -89,7 +87,7 @@ extension ReMVVM: Dispatcher {
     /// Dispatches action in the store.
     /// - Parameter action: action to dispatch
     public func dispatch(action: StoreAction) {
-        store.dispatch(action: action)
+        storeContainer.store.dispatch(action: action)
     }
 }
 
@@ -100,7 +98,7 @@ extension ReMVVM where Base: ViewModelContext {
     ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? {
-        return viewModelProvider.viewModel(for: context, with: key)
+        return storeContainer.viewModelProvider.viewModel(for: context, with: key)
     }
 
     /// Provides view model of specified type and register it for state changes in the store.
@@ -108,14 +106,14 @@ extension ReMVVM where Base: ViewModelContext {
     ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateObserver {
-        return viewModelProvider.viewModel(for: context, with: key)
+        return storeContainer.viewModelProvider.viewModel(for: context, with: key)
     }
 
 
     /// Clears all view models created for specified context.
     /// - Parameter context: context that should be cleared
     public func clear(context: ViewModelContext) {
-        viewModelProvider.clear(context: context)
+        storeContainer.viewModelProvider.clear(context: context)
     }
 }
 

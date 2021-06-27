@@ -4,12 +4,10 @@
 //
 //  Created by Dariusz Grzeszczak on 22/04/2021.
 //
+
 #if swift(>=5.1) && canImport(SwiftUI) && canImport(Combine)
 import Combine
 import SwiftUI
-
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-@propertyWrapper
 
 /**
  A property wrapper that serves Dispatcher object
@@ -31,17 +29,26 @@ import SwiftUI
  }
  ```
  */
-public struct SourcedDispatcher: DynamicProperty {
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@propertyWrapper
+public struct SourcedDispatcher: DynamicProperty, Dispatcher {
 
     @Environment(\.storeContainer) var storeContainer
+
     private(set) var wrapper: Wrapper
 
     /// Dispatcher object that can be used for Action dispatch
-    public var wrappedValue: Dispatcher { wrapper }
+    public var wrappedValue: Dispatcher {
+        get { wrapper }
+        set { wrapper.dispatcher = newValue }
+    }
 
     class Wrapper: EmptyStoreUpdatable, Dispatcher {
+        var dispatcher: Dispatcher?
+        
         func dispatch(action: StoreAction) {
-            store.dispatch(action: action)
+            (dispatcher ?? store).dispatch(action: action)
         }
     }
 
@@ -53,6 +60,10 @@ public struct SourcedDispatcher: DynamicProperty {
     public func update() {
         wrapper.update(store: storeContainer.store)
     }
+
+    public func dispatch(action: StoreAction) {
+        wrappedValue.dispatch(action: action)
+    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
@@ -61,5 +72,4 @@ extension SourcedDispatcher: StoreUpdatable {
         wrapper.update(store: store)
     }
 }
-
 #endif

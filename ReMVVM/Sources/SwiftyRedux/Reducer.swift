@@ -22,7 +22,7 @@ import Foundation
  */
 public protocol Reducer {
     /// type of action handled by this Reducer
-    associatedtype Action: StoreAction
+    associatedtype Action//: StoreAction
     /// type of state handled by this Reducer
     associatedtype State
 
@@ -35,78 +35,55 @@ public protocol Reducer {
 
 extension Reducer {
 
-    /// Returns type erasured reducer
-    public static var any: AnyReducer<State> { return AnyReducer(reducer: self) }
+    /// Default reduce function implementation for any StoreAction
+    /// - Parameters:
+    ///   - state: current state
+    ///   - action: action used for creating new state
+    public static func reduce(state: State, with action: StoreAction) -> State {
+        guard Action.self == StoreAction.self || Action.self == type(of: action)
+        else { return state }
+
+        return reduce(state: state, with: action as! Action)
+    }
+
+
+    /// Combine reducer with other reducer for the same State type.
+    /// - Parameters:
+    ///   - reducer: reducer to combine with
+    public static func combine<R>(_ reduce: R.Type) -> CombinedReducer<Self, R>.Type  where R: Reducer, State == R.State {
+        return CombinedReducer<Self, R>.self
+    }
 }
 
-/**
- Type erasured reducer. Used to make composition of pure reducers into more complicated state reducers.
+/** Reducer that combines other reducers for the same state but different Actions
 
- #Examples
+ #Example
 
- - Convert Reducer to AnyReducer
-    ```
-    let anyLoginReducer = LoginReducer.any // AnyReducer<UserState>
-    ```
+ public enum NavigationReducer: Reducer {
 
- - Compose reducers for the same State
-    ```
-    let userReducer = AnyReducer(with: [LoginReducer.any, LogoutReducer.any]) // AnyReducer<UserState>
-    ```
+     static let combined = PushReducer
+         .combine(PopReducer.self)
+         .combine(ShowReducer.self)
 
- - Create reducer for complex state that contains couple of 'subStates'
-    ```
-     let applicationReducer = AnyReducer { state, action -> ApplicationState in
-
-        let userReducer = AnyReducer(with: [LoginReducer.any, LogoutReducer.any])
-        // ...
-        return ApplicationState(
-             userState: userReducer.reduce(state: state.userState, with: action),
-             favouritesState: favouriteReducer.reduce(state: state.favouritesState, with: action),
-
-            // ...
-        )
+     public static func reduce(state: Navigation, with action: StoreAction) -> Navigation {
+         return combined.reduce(state: state, with: action)
      }
-    ```
+ }
  */
-public final class AnyReducer<State> {
+public enum CombinedReducer<R1, R2>: Reducer where R1: Reducer, R2: Reducer, R1.State == R2.State  {
 
-    private var reducer: (_ state: State, _ action: StoreAction) -> State
-
-    init<Action, R: Reducer>(reducer: R.Type) where R.Action == Action, R.State == State {
-        self.reducer = { state, action in
-            guard type(of: action) == Action.self, let action = action as? Action else { return state }
-            return reducer.reduce(state: state, with: action)
-        }
-    }
-
-    /// Initialize reducer with an array of reducers to compose
-    /// - Parameter reducers: array of reducers to compose
-    public init(with reducers: [AnyReducer<State>]) {
-        self.reducer = { state, action in
-            return reducers.reduce(state) { state, reducer in
-                return reducer.reduce(state: state, with: action)
-            }
-        }
-    }
-
-    /// Initialize reducer with pure function
-    /// - Parameter reducer: pure function that will be used to reduce state
-    public init(reducer: @escaping (_ state: State, _ action: StoreAction) -> State) {
-        self.reducer = reducer
-    }
-
-    /// Reduce the state - returns new state base on current state and action.
+    /// Pure function that returns new state based on current state and the action
     /// - Parameters:
-    ///   - state: current state to reduce
-    ///   - action: action
-    public func reduce(state: State, with action: StoreAction) -> State {
-        return self.reducer(state, action)
+    ///   - state: current state
+    ///   - action: action used for creating new state
+    public static func reduce(state: R1.State, with action: StoreAction) -> R1.State {
+        let state = R1.reduce(state: state, with: action)
+        return R2.reduce(state: state, with: action)
     }
 }
 
 /// Reducer that doesn't change the state.
-public final class EmptyReducer<Action: StoreAction, State>: Reducer {
+public enum EmptyReducer<Action: StoreAction, State>: Reducer {
 
     /// Returns not changed state.
     /// - Parameters:
