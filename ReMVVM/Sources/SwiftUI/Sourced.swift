@@ -7,6 +7,31 @@
 
 import Foundation
 
+//Rename to source ?
+protocol StoreUpdatable {
+    func update(store: AnyStateStore)
+}
+
+class EmptyStoreUpdatable: StoreUpdatable {
+
+    var store: AnyStateStore
+
+    init(store: AnyStateStore) {
+        self.store = store
+    }
+
+    func update(store: AnyStateStore) {
+        guard store !== self.store else { return }
+        self.store = store
+        storeChanged()
+    }
+
+    func storeChanged() {
+
+    }
+}
+
+
 #if swift(>=5.1) && canImport(Combine) && canImport(SwiftUI)
 import Combine
 import SwiftUI
@@ -115,30 +140,6 @@ public struct Sourced<State>: DynamicProperty {
 //
 //        public var projectedValue: Binding<Object> { $wrappedValue }
 //    }
-}
-
-//Rename to source ?
-protocol StoreUpdatable {
-    func update(store: AnyStateStore)
-}
-
-class EmptyStoreUpdatable: StoreUpdatable {
-
-    var store: AnyStateStore
-
-    init(store: AnyStateStore) {
-        self.store = store
-    }
-
-    func update(store: AnyStateStore) {
-        guard store !== self.store else { return }
-        self.store = store
-        storeChanged()
-    }
-
-    func storeChanged() {
-
-    }
 }
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)

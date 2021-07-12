@@ -64,73 +64,74 @@ Provides additional functionalities for ReMVVMDriven objects.
      }
 ```
  */
-public class ReMVVM<Base> {
-
-    let storeContainer: StoreAndViewModelProvider
-
-    init() {
-        storeContainer = ReMVVM<Any>.storeContainer
-    }
-}
-
-extension ReMVVM where Base: StoreState {
-
-    /// Initializes ReMVVM with the store. ReMVVM similar to Redux has only one store for the app.
-    /// - Parameter store: store that will be used by ReMVVM.
-    public static func initialize(with store: Store<Base>) {
-        ReMVVM<Any>.initialize(with: store)
-    }
-}
-
-extension ReMVVM: Dispatcher {
-
-    /// Dispatches action in the store.
-    /// - Parameter action: action to dispatch
-    public func dispatch(action: StoreAction) {
-        storeContainer.store.dispatch(action: action)
-    }
-}
-
-extension ReMVVM where Base: ViewModelContext {
-
-    /// Provides view model of specified type.
-    /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
-    ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? {
-        return storeContainer.viewModelProvider.viewModel(for: context, with: key)
-    }
-
-    /// Provides view model of specified type and register it for state changes in the store.
-    /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
-    ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
-    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateObserver {
-        return storeContainer.viewModelProvider.viewModel(for: context, with: key)
-    }
-
-
-    /// Clears all view models created for specified context.
-    /// - Parameter context: context that should be cleared
-    public func clear(context: ViewModelContext) {
-        storeContainer.viewModelProvider.clear(context: context)
-    }
-}
-
-extension ReMVVM where Base: StateAssociated {
-
-    /// type of state in stateSource
-    public typealias State = Base.State
-
-    /// state source that can be used to observe state changes
-    public var source: AnyStateSource<State> {
-        return StoreStateSource<State>().any
-    }
-}
+//public class ReMVVM<Base> {
+//
+//    let storeContainer: StoreAndViewModelProvider
+//
+//    init() {
+//        storeContainer = ReMVVM<Any>.storeContainer
+//    }
+//}
+//
+//extension ReMVVM where Base: StoreState {
+//
+//    /// Initializes ReMVVM with the store. ReMVVM similar to Redux has only one store for the app.
+//    /// - Parameter store: store that will be used by ReMVVM.
+//    public static func initialize(with store: Store<Base>) {
+//        ReMVVM<Any>.initialize(with: store)
+//    }
+//}
+//
+//extension ReMVVM: Dispatcher {
+//
+//    /// Dispatches action in the store.
+//    /// - Parameter action: action to dispatch
+//    public func dispatch(action: StoreAction) {
+//        storeContainer.store.dispatch(action: action)
+//    }
+//}
+//
+//extension ReMVVM where Base: ViewModelContext {
+//
+//    /// Provides view model of specified type.
+//    /// - Parameters:
+//    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
+//    ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
+//    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? {
+//        return storeContainer.viewModelProvider.viewModel(for: context, with: key)
+//    }
+//
+//    /// Provides view model of specified type and register it for state changes in the store.
+//    /// - Parameters:
+//    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
+//    ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
+//    public func viewModel<VM: ViewModel>(for context: ViewModelContext? = nil, for key: String? = nil) -> VM? where VM: StateObserver {
+//        return storeContainer.viewModelProvider.viewModel(for: context, with: key)
+//    }
+//
+//
+//    /// Clears all view models created for specified context.
+//    /// - Parameter context: context that should be cleared
+//    public func clear(context: ViewModelContext) {
+//        storeContainer.viewModelProvider.clear(context: context)
+//    }
+//}
+//
+//extension ReMVVM where Base: StateAssociated {
+//
+//    /// type of state in stateSource
+//    public typealias State = Base.State
+//
+//    /// state source that can be used to observe state changes
+//    public var source: AnyStateSource<State> {
+//        return StoreStateSource<State>().any
+//    }
+//}
 
 struct StoreStateSource<State>: StateSource {
 
-    let store: AnyStateStore = ReMVVM<Any>.storeContainer.store
+    //let store: AnyStateStore = ReMVVM<Any>.storeContainer.store
+    let store: AnyStateStore = storeContainer.store
     var state: State? { store.anyState() }
 
     func add<Observer>(observer: Observer) where Observer : StateObserver {
@@ -161,14 +162,14 @@ final class StoreAndViewModelProvider {
     static let empty = StoreAndViewModelProvider(store: AnyStore.empty, viewModelProvider: .empty)
 }
 
-extension ReMVVM where Base == Any {
+//extension ReMVVM where Base == Any {
 
 
-    static var _storeContainer: StoreAndViewModelProvider?
-    static var storeContainer: StoreAndViewModelProvider { _storeContainer ?? .empty}
+    var _storeContainer: StoreAndViewModelProvider?
+    var storeContainer: StoreAndViewModelProvider { _storeContainer ?? .empty}
 
-    private static var initialized: Bool = false
-    static func initialize<State: StoreState>(with store: Store<State>) {
+    private var initialized: Bool = false
+    public func initialize<State: StoreState>(with store: Store<State>) {
         if initialized {
             print("ReMVVM already initialized. Are you sure ?")
         } else {
@@ -177,4 +178,4 @@ extension ReMVVM where Base == Any {
 
         _storeContainer = .init(store: store)
     }
-}
+//}

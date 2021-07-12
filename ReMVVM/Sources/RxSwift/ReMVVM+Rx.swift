@@ -9,8 +9,9 @@
 #if canImport(RxSwift)
 import RxSwift
 
+extension ProvidedState: ReactiveCompatible { }
 extension ProvidedDispatcher: ReactiveCompatible { }
-extension ReMVVM: ReactiveCompatible { }
+//extension ReMVVM: ReactiveCompatible { }
 extension Store: ReactiveCompatible { }
 extension AnyStore: ReactiveCompatible { }
 extension AnyStateSource: ReactiveCompatible { }

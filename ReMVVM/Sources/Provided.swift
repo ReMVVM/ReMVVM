@@ -38,7 +38,7 @@ public final class Provided<VM: ViewModel> {
 
     /// wrapped value of view model
     public private(set) lazy var wrappedValue: VM? = {
-        return ReMVVM<Any>.storeContainer.viewModelProvider.viewModel(with: key)
+        return storeContainer.viewModelProvider.viewModel(with: key)
     }()
 
     /// Initializes property wrapper
@@ -57,7 +57,7 @@ public final class Provided<VM: ViewModel> {
 public final class ProvidedDispatcher: Dispatcher {
 
     /// wrapped value of view model
-    public lazy var wrappedValue: Dispatcher = ReMVVM<Any>.storeContainer.store
+    public lazy var wrappedValue: Dispatcher = storeContainer.store
 
     /// Initializes property wrapper
     public init()  { }
@@ -65,10 +65,41 @@ public final class ProvidedDispatcher: Dispatcher {
     public func dispatch(action: StoreAction) {
         wrappedValue.dispatch(action: action)
     }
+}
+
+@propertyWrapper
+public final class ProvidedState<State> {
+
+
+    private var storeContainer: StoreAndViewModelProvider { ReMVVM.storeContainer }
+
+    /// wrapped value of view model
+    public var wrappedValue: State? //{ storeContainer.store.anyState() }
+
+    /// Initializes property wrapper
+    public init(wrappedValue: State? = nil)  {
+        self.wrappedValue = wrappedValue
+    }
+
 
     #if canImport(RxSwift)
-    public var projectedValue: Reactive<ProvidedDispatcher> { rx }
+    //public var projectedValue: Reactive<ProvidedDispatcher> { rx }
     #endif
+}
+
+extension ProvidedState: StateSource {
+
+    public var state: State? { wrappedValue }
+
+    public func add<Observer>(observer: Observer) where Observer : StateObserver {
+        storeContainer.store.add(observer: observer)
+    }
+
+    public func remove<Observer>(observer: Observer) where Observer : StateObserver {
+        storeContainer.store.remove(observer: observer)
+    }
+
+
 }
 
 #endif
