@@ -16,7 +16,11 @@ extension ReMVVM {
         public lazy var wrappedValue: ReMVVMCore.Dispatcher = ReMVVMConfig.shared.store
 
         /// Initializes property wrapper
-        public init()  { }
+        public init(with dispatcher: ReMVVMCore.Dispatcher? = nil)  {
+            if let dispatcher = dispatcher {
+                wrappedValue = dispatcher
+            }
+        }
 
         public func dispatch(action: StoreAction) {
             wrappedValue.dispatch(action: action)

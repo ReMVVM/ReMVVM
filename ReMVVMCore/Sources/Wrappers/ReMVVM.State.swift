@@ -18,7 +18,11 @@ extension ReMVVM {
         public var wrappedValue: StateType? { store.state }
 
         /// Initializes property wrapper
-        public init()  { }
+        public init(with store: Store<StateType?>? = nil)  {
+            if let store = store {
+                self.store = store
+            }
+        }
     }
 }
 
