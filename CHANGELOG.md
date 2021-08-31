@@ -1,3 +1,8 @@
+## [2.1.0](https://github.com/dgrzeszczak/ReMVVM/releases/tag/2.0.1)
+
+#### New
+- Changes required to support RxSwift 6
+
 ## [2.0.0](https://github.com/dgrzeszczak/ReMVVM/releases/tag/2.0.0)
 
 #### New
