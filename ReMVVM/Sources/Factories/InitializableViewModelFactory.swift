@@ -31,3 +31,22 @@ public struct InitializableViewModelFactory: ViewModelFactory {
         return viewModelFactory.create()
     }
 }
+
+public protocol StateSubjectInitializable: StateAssociated, Initializable {
+    associatedtype State = State
+
+    init(with subject: AnyStateSubject<State>)
+}
+
+extension StateSubjectInitializable {
+
+    public init() {
+        self.init(with: AnyStateSubject<State>.store)
+    }
+
+    public init(mock state: State) {
+        self.init(with: .mock(state))
+    }
+}
+
+
