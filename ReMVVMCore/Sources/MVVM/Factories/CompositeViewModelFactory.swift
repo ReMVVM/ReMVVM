@@ -65,25 +65,25 @@ public final class CompositeViewModelFactory: ViewModelFactory {
     /// Adds factory to composite view model factory
     /// - Parameter factory: factory to be added
     public func add(factory: ViewModelFactory) {
-        factories.append(factory)
+        factories.insert(factory, at: 0)
     }
 
     /// Adds factory to composite view model factory
     /// - Parameter factory: factory to be added
     public func add<VM>(factory: @escaping () -> VM) where VM: ViewModel {
-        factories.append(SingleViewModelFactory(with: { _ in factory() }))
+        factories.insert(SingleViewModelFactory(with: { _ in factory() }), at: 0)
     }
 
     /// Adds factory to composite view model factory
     /// - Parameter factory: factory to be added
     public func add<VM>(factory: @escaping () -> VM?) where VM: ViewModel {
-        factories.append(SingleViewModelFactory(with: { _ in factory() }))
+        factories.insert(SingleViewModelFactory(with: { _ in factory() }), at: 0)
     }
 
     /// Adds factory to composite view model factory
     /// - Parameter factory: factory to be added
     public func add<VM>(factory: @escaping (String?) -> VM?) where VM: ViewModel {
-        factories.append(SingleViewModelFactory(with: factory))
+        factories.insert(SingleViewModelFactory(with: factory), at: 0)
     }
 
     /// Returns true if is able to create view model of specified type

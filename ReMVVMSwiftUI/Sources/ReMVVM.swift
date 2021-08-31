@@ -9,15 +9,21 @@ import Foundation
 import ReMVVMCore
 
 public typealias Initializable = ReMVVMCore.Initializable
+//public typealias MockSource = ReMVVMCore.MockSource
 
-//@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public enum ReMVVM {
-    public static func initialize<State: StoreState>(with store: Store<State>) {
-        ReMVVMCore.ReMVVM.initialize(with: store)
-    }
 
-//    public typealias State<State> = ProvidedState<State>
-//    public typealias Dispatcher = ProvidedDispatcher
-//    public typealias ViewModel = ProvidedViewModel
-//    public typealias ObservedObject<Object> =  ProvidedObservedObject<Object> where Object: ObservableObject
+}
+
+
+
+extension Mirror {
+    
+    func remvvm_updateStoreUpdatableChildren(store: AnyStore) {
+        for child in children {
+            if let updatable = child.value as? StoreUpdatable {
+                updatable.update(store: store)
+            }
+        }
+    }
 }

@@ -8,34 +8,6 @@
 import Foundation
 import ReMVVMCore
 
-//Rename to source ?
-protocol StoreUpdatable {
-    func update(store: AnyStore)
-}
-
-class StoreUpdatableBase<State>: StoreUpdatable {
-
-    var store: Store<State?>
-    var anyStore: AnyStore
-
-    init(store: AnyStore) {
-        self.anyStore = store
-        self.store = store.mapped()
-    }
-
-    func update(store: AnyStore) {
-        guard store !== self.anyStore else { return }
-        self.anyStore = store
-        self.store = store.mapped()
-        storeChanged()
-    }
-
-    func storeChanged() {
-
-    }
-}
-
-
 
 #if canImport(Combine) && canImport(SwiftUI)
 import Combine
@@ -67,43 +39,42 @@ A property wrapper that serves the State from the Store and delivers any State c
     public struct State<State>: DynamicProperty {
 
         @Environment(\.remvvmConfig) private var remvvmConfig
+        private var userProvidedStore: AnyStore?
+        private var wrapper: Wrapper
 
         /// current value of the State
         public var wrappedValue: State? { wrapper.store.state }
 
-        private var wrapper: Wrapper
-
         /// Creates the Sourced instance.
-        public init() {
-            wrapper = .init(store: ReMVVMConfig.empty.store)
-            wrapper.update(store: remvvmConfig.store)
+        public init(with store: AnyStore? = nil) {
+            userProvidedStore = store
+            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                wrapper = .init(store: userProvidedStore)
+            } else {
+                wrapper = .init(store: ReMVVMConfig.empty.store)
+                wrapper.update(store: remvvmConfig.store)
+            }
         }
-
-    //    public init<S: StateSource>(source: S) where S.State == State {
-    //        fatalError()
-    //        //storeSubjectContainer.update(store: source)
-    //    }
-
 
         /// Updates the underlying value of the stored value.
         public func update() {
-            wrapper.update(store: remvvmConfig.store)
+            if userProvidedStore == nil { // do not update store when provided by user
+                wrapper.update(store: remvvmConfig.store)
+            }
         }
 
         /// publisher type
         public typealias Publisher = Publishers.CompactMap<AnyPublisher<State?, Never>, State>
         /// publishes every change of the State
-        public var projectedValue: Publisher {
-            wrapper.subject.eraseToAnyPublisher().compactMap { $0 } } //todo
+        public var projectedValue: Publisher { wrapper.subject.eraseToAnyPublisher().compactMap { $0 } } 
 
-        class Wrapper: StoreUpdatableBase<State>, StateObserver {
+        private class Wrapper: StoreUpdatableBase<State>, StateObserver {
 
             var subject: CurrentValueSubject<State?, Never>
             var cancellable: Cancellable?
-    //        var source: AnyStateSource<State>?
 
             override init(store: AnyStore) {
-                let state: State? = store.mapped().state //todo mapped state
+                let state: State? = store.mapped().state //todo (?) mapped state
                 subject = CurrentValueSubject<State?, Never>(state)
                 super.init(store: store)
 
@@ -113,10 +84,8 @@ A property wrapper that serves the State from the Store and delivers any State c
             override func storeChanged() {
                 if store === ReMVVMConfig.empty.store {
                     cancellable = nil
-                    //source = nil
                 } else {
                     cancellable = nil
-                    //source = AnyStateSource<State>(source: store)
                     cancellable = store.$state.sink { [unowned subject] state in
                         subject.send(state)
                     }
@@ -158,10 +127,13 @@ extension ReMVVM.State: StoreUpdatable {
     }
 }
 
-//@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-//extension ReMVVM {
-//
-//    public typealias State<State> = ProvidedState<State>
-//}
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension ReMVVM.State: ReMVVMConfigProvider {
+    var userProvidedConfig: ReMVVMConfig? {
+        guard let userProvidedStore = userProvidedStore else { return nil }
+        return ReMVVMConfig(store: userProvidedStore)
+    }
 
+    var config: ReMVVMConfig { userProvidedConfig ?? remvvmConfig }
+}
 #endif

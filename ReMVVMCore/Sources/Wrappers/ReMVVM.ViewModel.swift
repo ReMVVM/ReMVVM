@@ -41,13 +41,19 @@ extension ReMVVM {
 
         /// Initializes property wrapper
         /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-        public init(key: String) {
+        public init(key: String, store: AnyStore? = nil) {
             self.key = key
+            if let store = store {
+                wrappedValue = ViewModelProvider(with: store).viewModel(with: key)
+            }
         }
 
         /// Initializes property wrapper with no key
-        public init() {
+        public init(store: AnyStore? = nil) {
             key = nil
+            if let store = store {
+                wrappedValue = ViewModelProvider(with: store).viewModel()
+            }
         }
     }
 }

@@ -20,22 +20,28 @@ extension View {
         self.environment(\.remvvmConfig, ReMVVMConfig(store: store))
     }
 
-    /// Sets up the ReMVVM source
-    /// - parameter dispatcher: whoose store that will be used for the source
-    public func source(from dispatcher: ReMVVM.Dispatcher) -> some View { //todo
-        return self.environment(\.remvvmConfig, dispatcher.remvvmConfig)
+    public func source(with store: AnyStore) -> some View {
+        self.environment(\.remvvmConfig, ReMVVMConfig(store: store))
     }
 
-//TODO 
-//    public func source<Base>(with mock: MockStateSource<Base>, factory: ViewModelFactory = CompositeViewModelFactory(), dispatcher: Dispatcher? = nil) -> some View {
-//
-//        let mock = Mock(source: mock, dispatcher: dispatcher ?? AnyStore.empty)
-//        let viewModelProvider = ViewModelProvider(with: mock, factory: { factory })
-//        let store = StoreAndViewModelProvider(store: mock, viewModelProvider: viewModelProvider)
-//        return self.environment(\.remvvmConfig, store)
-//    }
-}
+    /// Sets up the ReMVVM source
+    /// - parameter dispatcher: whoose store that will be used for the source
+    public func source(from dispatcher: ReMVVM.Dispatcher) -> some View {
+        environment(\.remvvmConfig, dispatcher.config)
+    }
 
+    public func source<ViewModel>(from viewModel: ReMVVM.ViewModel<ViewModel>) -> some View {
+        environment(\.remvvmConfig, viewModel.config)
+    }
+
+    public func source<Observable>(from observedObject: ReMVVM.ObservedObject<Observable>) -> some View {
+        environment(\.remvvmConfig, observedObject.config)
+    }
+
+    public func source<State>(from state: ReMVVM.State<State>) -> some View {
+        environment(\.remvvmConfig, state.config)
+    }
+}
 //private final class MockStore: Dispatcher, Source {
 //    private let dispatcher: Dispatcher
 //

@@ -36,7 +36,7 @@ public final class Store<State>: Dispatcher, StateSource {
         _state = .init(with: state, reducer: reducer, middleware: middleware, stateMappers: stateMappers)
     }
 
-    public init(with mock: MockSource<State>) {
+    init(with mock: MockSource) where State == MockState {
         _state = .init(with: mock)
     }
 
@@ -47,7 +47,6 @@ public final class Store<State>: Dispatcher, StateSource {
     init<S1, S2>(with store: Store<S1>) where State == Optional<S2> {
         _state = .init(with: store._state.source)
     }
-
 
     /// Dishpatches actions in the store. Actions go through middleware and are reduced at the end.
     /// - Parameter action: action to dospatch
@@ -140,11 +139,11 @@ public final class Store<State>: Dispatcher, StateSource {
             store.add(observer: observer)
         }
 
-        init(with source: MockSource<State>) {
+        init(with source: MockSource) where State == MockState {
             self.source = source
             #if canImport(Combine)
             if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
-                _state = CurrentValueSubject<State, Never>(source.state)
+                _state = CurrentValueSubject<MockState, Never>(source.state)
             } else {
                 _state = source.state
             }
@@ -197,7 +196,6 @@ public final class Store<State>: Dispatcher, StateSource {
     }
 }
 
-//TODO proably remove
 public typealias AnyStore = Store<Any>
 
 extension Store {
@@ -209,8 +207,29 @@ extension Store {
         .init(with: self)
     }
 
-    public static func mock(with state: State) -> Store<State> {
-        .init(with: .init(state: state))
+    public static func mock<State>(state: State, factory: ViewModelFactory = CompositeViewModelFactory(), onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore {
+        let source = MockSource(factory: factory, onDispatch: onDispatch)
+        source.set(state: state)
+        return .mock(source: source)
+    }
+
+    public static func mock<State, VM>(state: State, viewModel: VM, onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore where VM: ViewModel {
+        let factory = CompositeViewModelFactory { viewModel }
+        return mock(state: state, factory: factory, onDispatch: onDispatch)
+    }
+
+    public static func mock<VM>(viewModel: VM, onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore where VM: ViewModel {
+        let factory = CompositeViewModelFactory { _ -> VM? in viewModel }
+        return mock(factory: factory, onDispatch: onDispatch)
+    }
+
+    public static func mock(factory: ViewModelFactory = CompositeViewModelFactory(), onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore {
+        let source = MockSource(factory: factory, onDispatch: onDispatch)
+        return .mock(source: source)
+    }
+
+    public static func mock(source: MockSource) -> AnyStore {
+        return Store<MockState>(with: source).any
     }
 }
 

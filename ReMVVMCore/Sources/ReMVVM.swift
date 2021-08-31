@@ -41,6 +41,11 @@ public final class ReMVVMConfig {
         viewModelProvider = ViewModelProvider(with: store)
     }
 
+    public init(store: AnyStore) {
+        self.store = store.any
+        viewModelProvider = ViewModelProvider(with: store)
+    }
+
     public static let empty = ReMVVMConfig(store: Store.empty, viewModelProvider: .empty)
     public static var shared: ReMVVMConfig { ReMVVM._shared ?? .empty}
 }

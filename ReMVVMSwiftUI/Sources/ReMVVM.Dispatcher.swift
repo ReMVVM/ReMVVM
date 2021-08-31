@@ -36,35 +36,38 @@ extension ReMVVM {
     @propertyWrapper
     public struct Dispatcher: DynamicProperty, ReMVVMCore.Dispatcher {
 
-        @Environment(\.remvvmConfig) var remvvmConfig
-
-        private(set) var wrapper: Wrapper
+        @Environment(\.remvvmConfig) private var remvvmConfig
+        private var userProvidedStore: AnyStore?
+        private var wrapper: Wrapper
 
         /// Dispatcher object that can be used for Action dispatch
-        public var wrappedValue: ReMVVMCore.Dispatcher {
-            get { wrapper }
-            set { wrapper.dispatcher = newValue }
-        }
+        public var wrappedValue: ReMVVMCore.Dispatcher { wrapper } 
 
-        class Wrapper: StoreUpdatableBase<Any>, ReMVVMCore.Dispatcher {
-            var dispatcher: ReMVVMCore.Dispatcher?
-
-            func dispatch(action: StoreAction) {
-                (dispatcher ?? store).dispatch(action: action)
+        public init(store: AnyStore? = nil) {
+            userProvidedStore = store
+            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                wrapper = .init(store: userProvidedStore)
+            } else {
+                wrapper = .init(store: ReMVVMConfig.empty.store)
+                wrapper.update(store: remvvmConfig.store)
             }
         }
 
-        public init() {
-            wrapper = .init(store: ReMVVMConfig.empty.store)
-            wrapper.update(store: remvvmConfig.store)
-        }
-
         public func update() {
-            wrapper.update(store: remvvmConfig.store)
+            if userProvidedStore == nil { // do not update store when provided by user
+                wrapper.update(store: remvvmConfig.store)
+            }
         }
 
         public func dispatch(action: StoreAction) {
             wrappedValue.dispatch(action: action)
+        }
+
+        private class Wrapper: StoreUpdatableBase<Any>, ReMVVMCore.Dispatcher {
+
+            func dispatch(action: StoreAction) {
+                store.dispatch(action: action)
+            }
         }
     }
 }
@@ -76,9 +79,13 @@ extension ReMVVM.Dispatcher: StoreUpdatable {
     }
 }
 
-//@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-//extension ReMVVM {
-//
-//    public typealias Dispatcher = ProvidedDispatcher
-//}
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension ReMVVM.Dispatcher: ReMVVMConfigProvider {
+    var userProvidedConfig: ReMVVMConfig? {
+        guard let userProvidedStore = userProvidedStore else { return nil }
+        return ReMVVMConfig(store: userProvidedStore)
+    }
+
+    var config: ReMVVMConfig { userProvidedConfig ?? remvvmConfig }
+}
 #endif

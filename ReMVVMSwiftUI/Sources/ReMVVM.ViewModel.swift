@@ -55,114 +55,127 @@ class DetailsViewModel: ObservableObject, Initializable {
 
         @Environment(\.remvvmConfig) private var remvvmConfig
 
-        class Wrapper: StoreUpdatableBase<Any>, ObservableObject {
+        private var userProvidedStore: AnyStore?
+        @SwiftUI.ObservedObject private var wrapper: Wrapper
+
+        /// The underlying value referenced by the observed object.
+        public var wrappedValue: VM?  {
+            wrapper.wrappedValue
+        }
+
+        /// A projection of the observed object that creates bindings to its
+        /// properties using dynamic member lookup.
+        public var projectedValue: SwiftUI.ObservedObject<VM>.Wrapper {
+            guard let projectedValue = wrapper.projectedValue else {
+                fatalError("ViewModel of type: \(VM.self) not created")
+            }
+            return projectedValue
+        }
+
+        /// Updates the underlying value of the stored value.
+        public func update() {
+            if userProvidedStore == nil { // do not update store when provided by user
+                wrapper.update(store: remvvmConfig.store)
+            }
+        }
+
+        /// Initializes property wrapper
+        /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
+        public init(key: String? = nil, store: AnyStore? = nil) {
+            userProvidedStore = store
+            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                wrapper = .init(store: userProvidedStore, key: key)
+            } else {
+                wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
+                wrapper.update(store: remvvmConfig.store)
+            }
+        }
+
+        private class Wrapper: StoreUpdatableBase<Any>, ObservableObject {
 
             var objectWillChange = ObservableObjectPublisher()
 
-            var wrappedValue: VM {
-                get { object.wrappedValue }
-                set { object.wrappedValue = newValue }
-            }
+            var wrappedValue: VM? { object?.wrappedValue }
 
-            var projectedValue: SwiftUI.ObservedObject<VM>.Wrapper { object.projectedValue }
+            var projectedValue: SwiftUI.ObservedObject<VM>.Wrapper? { object?.projectedValue }
 
-            private lazy var object: SwiftUI.ObservedObject<VM> = { //var object: ObservedObject<VM>! withhout initialized flag with error
-                let viewModel: VM? = ViewModelProvider(with: anyStore).viewModel(with: key)
-    //            if let stateStore: StoreState = store.mapped().state { //todo mapped()  ?
-    //                let viewModelProvider = ViewModelProvider(with: anyStore, factory: { stateStore.factory } )
-    //                viewModel = viewModelProvider.viewModel(with: key)
-    //            } else {
-    //                viewModel = nil
-    //            }
+            private var mirror: Mirror?
 
-                let object = SwiftUI.ObservedObject<VM>(wrappedValue: viewModel ?? defaultFactory())
-                updateObject(object: object)
+            private let key: String?
+            private lazy var object: SwiftUI.ObservedObject<VM>? = { //var object: ObservedObject<VM>! withhout initialized flag with error
+                guard let viewModel: VM = ViewModelProvider(with: anyStore).viewModel(with: key) else {
+                    return nil
+                }
+                let object = SwiftUI.ObservedObject<VM>(wrappedValue: viewModel)
+                let mirror = Mirror(reflecting: viewModel)
+                updateObject(object: object, mirror: mirror)
+                self.mirror = mirror
                 return object
             }()
 
-            private let key: String?
-            private let defaultFactory: () -> VM
-
-            init(store: AnyStore, key: String?, defaultFactory: @escaping () -> VM) {
+            init(store: AnyStore, key: String?) {
                 self.key = key
-                self.defaultFactory = defaultFactory
                 super.init(store: store)
-            }
-
-            init(store: AnyStore, object: VM) {
-                defaultFactory = { object }
-                key = nil
-                super.init(store: store)
-                self.object = .init(wrappedValue: object)
-                updateObject(object: self.object)
             }
 
             override func storeChanged() {
-                updateObject(object: object)
+
+                guard let mirror = mirror, let object = object else { return }
+                updateObject(object: object, mirror: mirror)
             }
 
             private var cancellable: Cancellable?
-            private func updateObject(object: SwiftUI.ObservedObject<VM>) {
+            private func updateObject(object: SwiftUI.ObservedObject<VM>, mirror: Mirror) {
 
                 cancellable = nil
 
-                let mirror = Mirror(reflecting: object.wrappedValue)
-                for child in mirror.children {
-                    if let updatable = child.value as? StoreUpdatable {
-                        updatable.update(store: anyStore)
-                    }
-                }
+                mirror.remvvm_updateStoreUpdatableChildren(store: anyStore)
 
                 cancellable = object.wrappedValue.objectWillChange.sink { [unowned objectWillChange] _ in
                     objectWillChange.send()
                 }
             }
         }
-
-        @SwiftUI.ObservedObject private var wrapper: Wrapper
-
-        /// The underlying value referenced by the observed object.
-        public var wrappedValue: VM  {
-            get { wrapper.wrappedValue }
-            nonmutating set { wrapper.wrappedValue = newValue }
-        }
-
-        /// A projection of the observed object that creates bindings to its
-        /// properties using dynamic member lookup.
-        public var projectedValue: SwiftUI.ObservedObject<VM>.Wrapper { wrapper.projectedValue }
-
-        /// Updates the underlying value of the stored value.
-        public mutating func update() {
-            wrapper.update(store: remvvmConfig.store)
-        }
-
-        /// Creates an observed view model object with an initial wrapped value.
-        public init(wrappedValue: VM) {
-            wrapper = Wrapper(store: ReMVVMConfig.empty.store, object: wrappedValue)
-            wrapper.update(store: remvvmConfig.store)
-        }
-
-        /// Initializes property wrapper
-        /// - Parameter defaultValue: closure that creates the default value in case the ViewModelProvider cannot create appropriate view model.
-        /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-        public init(defaultValue: @escaping @autoclosure () -> VM, key: String? = nil) {
-            wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key, defaultFactory: defaultValue)
-            wrapper.update(store: remvvmConfig.store)
-        }
-
-        /// Initializes property wrapper
-        /// - Parameter defaultValue: closure that creates the default value in case the ViewModelProvider cannot create appropriate view model.
-        /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-        public init(defaultValue: @escaping @autoclosure () -> VM = VM(), key: String? = nil) where VM: Initializable {
-            wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key, defaultFactory: defaultValue)
-            wrapper.update(store: remvvmConfig.store)
-        }
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension ReMVVM.ViewModel: ReMVVMConfigProvider {
+    var userProvidedConfig: ReMVVMConfig? {
+        guard let userProvidedStore = userProvidedStore else { return nil }
+        return ReMVVMConfig(store: userProvidedStore)
+    }
+
+    var config: ReMVVMConfig { userProvidedConfig ?? remvvmConfig }
+}
+
 //@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-//extension ReMVVM {
+//public protocol ViewModelDrivenView: View {
 //
-//    public typealias ViewModel = ProvidedViewModel
+//    associatedtype ViewModel: ReMVVMCore.ViewModel
+//    var viewModel: ViewModel? { get }
+//
+//    associatedtype ViewModelBody: View
+//    @ViewBuilder func body(with viewMode: ViewModel) -> Self.ViewModelBody
+//
+//    associatedtype NoViewModelBody: View
+//    @ViewBuilder var noViewModelBody: Self.NoViewModelBody { get }
+//}
+//
+//@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+//extension ViewModelDrivenView {
+//
+//    public var noViewModelBody: some View {
+//        Text("No view model")
+//    }
+//
+//    @ViewBuilder
+//    public var body: some View {
+//        if let viewModel = viewModel {
+//            body(with: viewModel)
+//        } else {
+//            noViewModelBody
+//        }
+//    }
 //}
 #endif

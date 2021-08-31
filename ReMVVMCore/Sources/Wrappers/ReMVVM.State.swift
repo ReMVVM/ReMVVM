@@ -5,6 +5,9 @@
 //  Created by Dariusz Grzeszczak on 20/08/2021.
 //
 
+#if canImport(Combine)
+import Combine
+#endif
 import Foundation
 
 extension ReMVVM {
@@ -16,6 +19,14 @@ extension ReMVVM {
 
         /// wrapped value of view model
         public var wrappedValue: StateType? { store.state }
+
+        #if canImport(Combine)
+        @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+        public typealias Publisher = Publishers.CompactMap<AnyPublisher<StateType?, Never>, StateType>
+
+        @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+        public var projectedValue: Publisher { store.$state.compactMap { $0 } }
+        #endif
 
         /// Initializes property wrapper
         public init(with store: Store<StateType?>? = nil)  {

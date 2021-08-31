@@ -46,54 +46,24 @@ public struct DetailsView: View {
     public struct ObservedObject<Object>: DynamicProperty where Object: ObservableObject {
 
         @Environment(\.remvvmConfig) private var remvvmConfig
-
-        class Wrapper: StoreUpdatableBase<Any>, ObservableObject {
-
-            var objectWillChange = ObservableObjectPublisher()
-
-            var wrappedValue: Object {
-                get { object.wrappedValue }
-                set { object.wrappedValue = newValue } // TODO check update is needed ?
-            }
-
-            var projectedValue: SwiftUI.ObservedObject<Object>.Wrapper { object.projectedValue }
-
-            var object: SwiftUI.ObservedObject<Object>
-
-            init(store: AnyStore, object: Object) {
-                self.object = .init(wrappedValue: object)
-                super.init(store: store)
-                updateObject(object: self.object)
-            }
-
-            override func storeChanged() {
-                updateObject(object: object)
-            }
-
-            private var cancellable: Cancellable?
-            private func updateObject(object: SwiftUI.ObservedObject<Object>) {
-
-                cancellable = nil
-
-                let mirror = Mirror(reflecting: object.wrappedValue)
-                for child in mirror.children {
-                    if let updatable = child.value as? StoreUpdatable {
-                        updatable.update(store: anyStore)
-                    }
-                }
-
-                cancellable = object.wrappedValue.objectWillChange.sink { [unowned objectWillChange] _ in
-                    objectWillChange.send()
-                }
-            }
-        }
-
+        private var userProvidedStore: AnyStore?
         @SwiftUI.ObservedObject private var wrapper: Wrapper
 
         /// The underlying value referenced by the observed object.
         public var wrappedValue: Object  {
             get { wrapper.wrappedValue }
-            set { wrapper.wrappedValue = newValue }
+            /*nonmutating*/set { wrapper.wrappedValue = newValue }
+        }
+
+        /// Creates an observed object with an initial wrapped value.
+        public init(wrappedValue: Object, store: AnyStore? = nil) {
+            userProvidedStore = store
+            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                wrapper = .init(store: userProvidedStore, object: wrappedValue)
+            } else {
+                wrapper = .init(store: ReMVVMConfig.empty.store, object: wrappedValue)
+                wrapper.update(store: remvvmConfig.store)
+            }
         }
 
         /// A projection of the observed object that creates bindings to its
@@ -102,20 +72,61 @@ public struct DetailsView: View {
 
         /// Updates the underlying value of the stored value.
         public mutating func update() {
-            wrapper.update(store: remvvmConfig.store)
+            if userProvidedStore == nil { // do not update store when provided by user
+                wrapper.update(store: remvvmConfig.store)
+            }
         }
 
-        /// Creates an observed object with an initial wrapped value.
-        public init(wrappedValue: Object) {
-            wrapper = .init(store: ReMVVMConfig.empty.store, object: wrappedValue)
-            wrapper.update(store: remvvmConfig.store)
+        private class Wrapper: StoreUpdatableBase<Any>, ObservableObject {
+
+            var objectWillChange = ObservableObjectPublisher()
+
+            var projectedValue: SwiftUI.ObservedObject<Object>.Wrapper { object.projectedValue }
+
+            var wrappedValue: Object {
+                get { object.wrappedValue }
+                set {
+                    object.wrappedValue = newValue
+                    mirror = Mirror(reflecting: newValue)
+                    updateObject()
+                }
+            }
+
+            private var object: SwiftUI.ObservedObject<Object>
+            private lazy var mirror: Mirror = Mirror(reflecting: wrappedValue)
+
+            init(store: AnyStore, object: Object) {
+                self.object = .init(wrappedValue: object)
+                super.init(store: store)
+                updateObject()
+            }
+
+            override func storeChanged() {
+                updateObject()
+            }
+
+            private var cancellable: Cancellable?
+            private func updateObject() {
+
+                cancellable = nil
+
+                mirror.remvvm_updateStoreUpdatableChildren(store: anyStore)
+
+                cancellable = object.wrappedValue.objectWillChange.sink { [unowned objectWillChange] _ in
+                    objectWillChange.send()
+                }
+            }
         }
     }
 }
 
-//@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-//extension ReMVVM {
-//
-//    public typealias ObservedObject<Object> = ProvidedObservedObject<Object> where Object: ObservableObject
-//}
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension ReMVVM.ObservedObject: ReMVVMConfigProvider {
+    var userProvidedConfig: ReMVVMConfig? {
+        guard let userProvidedStore = userProvidedStore else { return nil }
+        return ReMVVMConfig(store: userProvidedStore)
+    }
+
+    var config: ReMVVMConfig { userProvidedConfig ?? remvvmConfig }
+}
 #endif
