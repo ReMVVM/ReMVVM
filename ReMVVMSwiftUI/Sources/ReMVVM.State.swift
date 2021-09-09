@@ -45,7 +45,8 @@ A property wrapper that serves the State from the Store and delivers any State c
         /// current value of the State
         public var wrappedValue: State? { wrapper.store.state }
 
-        /// Creates the Sourced instance.
+        /// Initializes property wrapper
+        /// - Parameter store: user provided store that will be used intsted of ReMVVM provided
         public init(with store: AnyStore? = nil) {
             userProvidedStore = store
             if let userProvidedStore = userProvidedStore { // do not update store when provided by user

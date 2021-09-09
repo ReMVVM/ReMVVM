@@ -7,7 +7,7 @@
 
 import Foundation
 
-/** Reducer that combines other reducers for the same state but different Actions
+/** Reducer that combines other reducers for the same State but different Actions
 
  #Example
 

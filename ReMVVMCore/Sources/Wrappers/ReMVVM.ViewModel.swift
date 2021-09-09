@@ -9,14 +9,14 @@
 
 extension ReMVVM {
 /**
- Provides view model of specified type.
+ A property wrapper that serves view model of specified type.
 
  #Example
  ```
     class GreetingsViewController: UIViewController {
 
      // inject view model from remvvm
-     @Provided private var viewModel: GreetingsViewModel?
+     @ReMVVM.ViewModel private var viewModel: GreetingsViewModel?
 
      private let disposeBag = DisposeBag()
      override func viewDidLoad() {
@@ -32,27 +32,30 @@ extension ReMVVM {
 
     @propertyWrapper
     public final class ViewModel<VM: ReMVVMCore.ViewModel> {
-        private let key: String?
-
         /// wrapped value of view model
-        public private(set) lazy var wrappedValue: VM? = {
-            return ReMVVMConfig.shared.viewModelProvider.viewModel(with: key)
-        }()
+        public private(set) lazy var wrappedValue: VM? = getViewModel()
+
+        private let getViewModel: () -> VM?
 
         /// Initializes property wrapper
-        /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
-        public init(key: String, store: AnyStore? = nil) {
-            self.key = key
+        /// - Parameters
+        /// - key: optional identifier that will be used to create view model by ViewModelProvider
+        /// - store: user provided store that will be used intsted of ReMVVM provided 
+        public init(key: String? = nil, store: AnyStore? = nil) {
+            getViewModel = { ReMVVMConfig.shared.viewModelProvider.viewModel(with: key) }
             if let store = store {
                 wrappedValue = ViewModelProvider(with: store).viewModel(with: key)
             }
         }
 
-        /// Initializes property wrapper with no key
-        public init(store: AnyStore? = nil) {
-            key = nil
+        /// Initializes property wrapper
+        /// - Parameters
+        /// - key: optional identifier that will be used to create view model by ViewModelProvider
+        /// - store: user provided store that will be used intsted of ReMVVM provided
+        public init(key: String? = nil, store: AnyStore? = nil) where VM: StateObserver {
+            getViewModel = { ReMVVMConfig.shared.viewModelProvider.viewModel(with: key) }
             if let store = store {
-                wrappedValue = ViewModelProvider(with: store).viewModel()
+                wrappedValue = ViewModelProvider(with: store).viewModel(with: key)
             }
         }
     }

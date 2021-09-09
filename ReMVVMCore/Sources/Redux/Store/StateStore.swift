@@ -80,7 +80,7 @@ final class StateStore<State>: AnyStateSource {
     /// - Parameter observer: application's state/substate observer. Weak reference is made for the observer so you have to keep the reference by yourself and observer will be automatically removed.
     func add<Observer>(observer: Observer) where Observer: StateObserver {
         if let subscriber = source.add(observer: observer) { // new subcriber added with success
-            subscriber.didChange(state: state, oldState: nil)
+            subscriber.didReduce(state: state, oldState: nil)
         }
     }
 
@@ -155,11 +155,11 @@ final class StoreSource<State> {
     }
 
     func notifyStateWillChange(oldState: State) {
-        activeObservers.forEach { $0.willChange(state: oldState) }
+        activeObservers.forEach { $0.willReduce(state: oldState) }
     }
 
     func notifyStateDidChange(state: State, oldState: State) {
-        activeObservers.forEach { $0.didChange(state: state, oldState: oldState) }
+        activeObservers.forEach { $0.didReduce(state: state, oldState: oldState) }
     }
 }
 

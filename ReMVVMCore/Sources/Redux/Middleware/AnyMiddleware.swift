@@ -14,7 +14,7 @@ Middleware enchances action's dispatch functionality and may be applied in the s
 
 #Rules
 - Middleware intercepts an action to the next middleware in the stack.
-- Action will be reduced in the store only if it leaves last middleware in the stack.
+- Action will be reduced by the store only if it is intercepted by the last middleware in the stack.
 - Middleware may 'block' action's dispatch by not intercepting it to the next middleware.
 - Middleware also may dispatch completely new action. New action will go through whole middleware stack.
 
@@ -24,7 +24,7 @@ Middleware enchances action's dispatch functionality and may be applied in the s
 
          let printDebugInfo: Bool
 
-         public func onNext<State>(for state: State, action: StoreAction, interceptor: Interceptor<StoreAction, State>, dispatcher: Dispatcher) where State : StoreState {
+         public func onNext<State>(for state: State, action: StoreAction, interceptor: Interceptor<StoreAction, State>, dispatcher: Dispatcher) {
 
              // debug disabled - just intercept the action
              guard printDebugInfo else { interceptor.next() }

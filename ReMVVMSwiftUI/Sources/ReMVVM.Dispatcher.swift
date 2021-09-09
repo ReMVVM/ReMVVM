@@ -19,7 +19,7 @@ extension ReMVVM {
  ```
  struct DetailsView: View {
 
-     @SourcedDispatcher var dispatcher
+     @ReMVVM.Dispatcher var dispatcher
 
      var body: some View {
             VStack {
@@ -43,6 +43,8 @@ extension ReMVVM {
         /// Dispatcher object that can be used for Action dispatch
         public var wrappedValue: ReMVVMCore.Dispatcher { wrapper } 
 
+        /// Initializes property wrapper
+        /// - Parameter store: user provided store that will be used intsted of ReMVVM provided
         public init(store: AnyStore? = nil) {
             userProvidedStore = store
             if let userProvidedStore = userProvidedStore { // do not update store when provided by user
@@ -53,12 +55,15 @@ extension ReMVVM {
             }
         }
 
+        /// Updates the underlying value of the stored value.
         public func update() {
             if userProvidedStore == nil { // do not update store when provided by user
                 wrapper.update(store: remvvmConfig.store)
             }
         }
 
+        /// Dishpatches an action.
+        /// - Parameter action: action to dispach
         public func dispatch(action: StoreAction) {
             wrappedValue.dispatch(action: action)
         }

@@ -6,8 +6,6 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-///// Requires empty constructor
-//public typealias Initializable = MVVM.Initializable
 
 /// ViewModelFactory that creates view models using empty constructor (Initializable view models)
 public final class InitializableViewModelFactory: ViewModelFactory {

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Dariusz Grzeszczak. All rights reserved.
 //
 
-/// Provides view models using current ViewModelFactory from the current state in the store.
+/// Provides view models using ViewModelFactory from the current state in the store.
 public final class ViewModelProvider {
 
     private let factory: () -> ViewModelFactory
@@ -38,7 +38,7 @@ public final class ViewModelProvider {
 
     /// Provides view model of specified type and register it for state changes in the store.
     /// - Parameters:
-    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
+//    ///   - context: context that viewModel's lifecycle will be assigned with. Nil means that viewModel's lifecycle will be managed by developer not by ReMVVM.
     ///   - key: optional key that identifies ViewModel type and is used by ViewModelFactory.
     public func viewModel<VM: ViewModel>(/*for context: ViewModelContext? = nil,*/ with key: String? = nil) -> VM? where VM: StateObserver {
 
@@ -75,16 +75,3 @@ public final class ViewModelProvider {
         func create<VM>(key: String?) -> VM? { nil }
     }
 }
-
-//private struct MVVMViewModelFactory: MVVM.ViewModelFactory {
-//    let key: String?
-//    let factory: ViewModelFactory
-//    func create<VM>() -> VM? {
-//        return factory.create(key: key)
-//    }
-//
-//    init(key: String?, factory: ViewModelFactory) {
-//        self.key = key
-//        self.factory = factory
-//    }
-//}

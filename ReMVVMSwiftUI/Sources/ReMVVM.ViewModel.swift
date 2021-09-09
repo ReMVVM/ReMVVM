@@ -80,7 +80,9 @@ class DetailsViewModel: ObservableObject, Initializable {
         }
 
         /// Initializes property wrapper
-        /// - Parameter key: optional identifier that will be used to create view model by ViewModelProvider
+        /// - Parameters
+        /// - key: optional identifier that will be used to create view model by ViewModelProvider
+        /// - store: user provided store that will be used intsted of ReMVVM provided
         public init(key: String? = nil, store: AnyStore? = nil) {
             userProvidedStore = store
             if let userProvidedStore = userProvidedStore { // do not update store when provided by user
@@ -91,7 +93,21 @@ class DetailsViewModel: ObservableObject, Initializable {
             }
         }
 
-        private class Wrapper: StoreUpdatableBase<Any>, ObservableObject {
+        /// Initializes property wrapper
+        /// - Parameters
+        /// - key: optional identifier that will be used to create view model by ViewModelProvider
+        /// - store: user provided store that will be used intsted of ReMVVM provided
+        public init(key: String? = nil, store: AnyStore? = nil) where VM: StateObserver {
+            userProvidedStore = store
+            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                wrapper = .init(store: userProvidedStore, key: key)
+            } else {
+                wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
+                wrapper.update(store: remvvmConfig.store)
+            }
+        }
+
+        fileprivate class Wrapper: StoreUpdatableBase<Any>, ObservableObject {
 
             var objectWillChange = ObservableObjectPublisher()
 
@@ -102,10 +118,8 @@ class DetailsViewModel: ObservableObject, Initializable {
             private var mirror: Mirror?
 
             private let key: String?
-            private lazy var object: SwiftUI.ObservedObject<VM>? = { //var object: ObservedObject<VM>! withhout initialized flag with error
-                guard let viewModel: VM = ViewModelProvider(with: anyStore).viewModel(with: key) else {
-                    return nil
-                }
+            private lazy var object = { () -> SwiftUI.ObservedObject<VM>? in//var object: ObservedObject<VM>! withhout initialized flag with error
+                guard let viewModel: VM = getViewModel() else { return nil }
                 let object = SwiftUI.ObservedObject<VM>(wrappedValue: viewModel)
                 let mirror = Mirror(reflecting: viewModel)
                 updateObject(object: object, mirror: mirror)
@@ -113,9 +127,18 @@ class DetailsViewModel: ObservableObject, Initializable {
                 return object
             }()
 
+            private var getViewModel: (() -> VM?)!
+
             init(store: AnyStore, key: String?) {
                 self.key = key
                 super.init(store: store)
+                getViewModel = { [unowned self] in ViewModelProvider(with: self.anyStore).viewModel(with: key) }
+            }
+
+            init(store: AnyStore, key: String?) where VM: StateObserver {
+                self.key = key
+                super.init(store: store)
+                getViewModel = { [unowned self] in ViewModelProvider(with: self.anyStore).viewModel(with: key) }
             }
 
             override func storeChanged() {
@@ -148,6 +171,8 @@ extension ReMVVM.ViewModel: ReMVVMConfigProvider {
 
     var config: ReMVVMConfig { userProvidedConfig ?? remvvmConfig }
 }
+
+
 
 //@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 //public protocol ViewModelDrivenView: View {

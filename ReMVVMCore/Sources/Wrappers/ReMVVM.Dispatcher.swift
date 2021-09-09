@@ -9,6 +9,9 @@ import Foundation
 
 extension ReMVVM {
 
+    /**
+     A property wrapper that serves Dispatcher object.
+    */
     @propertyWrapper
     public final class Dispatcher: ReMVVMCore.Dispatcher {
 
@@ -16,6 +19,7 @@ extension ReMVVM {
         public lazy var wrappedValue: ReMVVMCore.Dispatcher = ReMVVMConfig.shared.store
 
         /// Initializes property wrapper
+        /// - Parameter dispatcher: user provided dispatcher that will be used intsted of ReMVVM provided
         public init(with dispatcher: ReMVVMCore.Dispatcher? = nil)  {
             if let dispatcher = dispatcher {
                 wrappedValue = dispatcher

@@ -9,10 +9,24 @@ import Foundation
 import ReMVVMCore
 
 public typealias Initializable = ReMVVMCore.Initializable
-//public typealias MockSource = ReMVVMCore.MockSource
+public typealias StateObserver = ReMVVMCore.StateObserver
+public typealias Store = ReMVVMCore.Store
+public typealias AnyStore = ReMVVMCore.AnyStore
+public typealias Reducer = ReMVVMCore.Reducer
+public typealias Middleware = ReMVVMCore.Middleware
+public typealias StateMapper = ReMVVMCore.StateMapper
+public typealias MockSource = ReMVVMCore.MockSource
+
+//todo add rest
+//todo exension initialize instead of ReMVVMExtension AND CHANGE ORDER TO THE SAME AS STORE
+
+
 
 public enum ReMVVM {
-
+    /// Initialize ReMVVM with the store. By default .empty store is used.
+    public static func initialize<State: StoreState>(with store: Store<State>) {
+        ReMVVMCore.ReMVVM.initialize(with: store)
+    }
 }
 
 

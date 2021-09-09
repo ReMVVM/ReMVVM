@@ -55,7 +55,10 @@ public struct DetailsView: View {
             /*nonmutating*/set { wrapper.wrappedValue = newValue }
         }
 
-        /// Creates an observed object with an initial wrapped value.
+        /// Initializes property wrapper
+        /// - Parameters:
+        /// - wrappedValue:  initial wrapped value
+        /// - store: user provided store that will be used intsted of ReMVVM provided
         public init(wrappedValue: Object, store: AnyStore? = nil) {
             userProvidedStore = store
             if let userProvidedStore = userProvidedStore { // do not update store when provided by user

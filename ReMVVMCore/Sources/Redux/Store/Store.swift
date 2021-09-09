@@ -75,7 +75,7 @@ public final class Store<State>: Dispatcher, StateSource {
                 self.closure = closure
             }
 
-            func didChange(state: St, oldState: St?) {
+            func didReduce(state: St, oldState: St?) {
                 closure(state)
             }
         }
@@ -199,35 +199,64 @@ public final class Store<State>: Dispatcher, StateSource {
 public typealias AnyStore = Store<Any>
 
 extension Store {
+
+    /// Converts to AnyStore
     public var any: Store<Any> {
         .init(with: self)
     }
 
+    /// Converts to Store with specific state type using mappers provided in initialization phase.
     public func mapped<State>() -> Store<State?> {
         .init(with: self)
     }
 
+    /// Creates  Store with  mock (should be used for test purposes only)
+    /// - Parameters
+    /// - state: initial State
+    /// - factory: ViewModelFactory that will be used for ViewModels creation
+    /// - onDispatch: closure that will be called when Action is dispatched
+    /// - Returns AnyStore instance
     public static func mock<State>(state: State, factory: ViewModelFactory = CompositeViewModelFactory(), onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore {
         let source = MockSource(factory: factory, onDispatch: onDispatch)
         source.set(state: state)
         return .mock(source: source)
     }
 
+    /// Creates  Store with  mock (should be used for test purposes only)
+    /// - Parameters
+    /// - state: initial State
+    /// - viewModel: ViewModel instance that is used for tests
+    /// - onDispatch: closure that will be called when Action is dispatched
+    /// - Returns AnyStore instance
     public static func mock<State, VM>(state: State, viewModel: VM, onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore where VM: ViewModel {
         let factory = CompositeViewModelFactory { viewModel }
         return mock(state: state, factory: factory, onDispatch: onDispatch)
     }
 
+    /// Creates  Store with  mock (should be used for test purposes only)
+    /// - Parameters
+    /// - viewModel: ViewModel instance that is used for tests
+    /// - onDispatch: closure that will be called when Action is dispatched
+    /// - Returns AnyStore instance
     public static func mock<VM>(viewModel: VM, onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore where VM: ViewModel {
         let factory = CompositeViewModelFactory { _ -> VM? in viewModel }
         return mock(factory: factory, onDispatch: onDispatch)
     }
 
+    /// Creates  Store with  mock (should be used for test purposes only)
+    /// - Parameters
+    /// - factory: ViewModelFactory that will be used for ViewModels creation
+    /// - onDispatch: closure that will be called when Action is dispatched
+    /// - Returns AnyStore instance
     public static func mock(factory: ViewModelFactory = CompositeViewModelFactory(), onDispatch: MockSource.OnDispatchClosure? = nil) -> AnyStore {
         let source = MockSource(factory: factory, onDispatch: onDispatch)
         return .mock(source: source)
     }
 
+    /// Creates  Store with  mock (should be used for test purposes only)
+    /// - Parameters
+    /// - source: feeds the Store with mock data.
+    /// - Returns AnyStore instance
     public static func mock(source: MockSource) -> AnyStore {
         return Store<MockState>(with: source).any
     }

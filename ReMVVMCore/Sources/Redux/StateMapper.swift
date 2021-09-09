@@ -9,7 +9,7 @@
 import Foundation
 
 /**
- Maps application state to any other 'substate' that may be observed in the store.
+ Maps state to any other 'substate' that may be observed in the store, used in Reducers and Middlewares. All mapers has to be added during Store initialization.
 
  #Example
      struct ApplicationState: StoreState {
@@ -20,7 +20,11 @@ import Foundation
         let factory: ViewModelFactory
      }
 
+     let userStateMapper1 = StateMapper<ApplicationState>(for: \.userState)
+     // or
      let userStateMapper = StateMapper<ApplicationState> { $0.userState }
+
+
  */
 public final class StateMapper<State> { //TODO array extension ? 
 

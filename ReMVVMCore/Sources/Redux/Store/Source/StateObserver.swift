@@ -13,26 +13,26 @@ public protocol StateObserver: AnyObject, StateAssociated {
 
     /// type of state to observe
     associatedtype State
-    /// Notifies that state is going to be changed. Implementation of this method is optional ie. empty implemetation is provided.
+    /// Notifies that state is going to be reduced. Implementation of this method is optional ie. empty implemetation is provided.
     /// - Parameter state: state the is going to be changed
-    func willChange(state: State)
-    /// Norifies the state did changed or initial value provided while adding to source. Implementation of this method is optional ie. empty implemetation is provided.
+    func willReduce(state: State)
+    /// Norifies the state is reduced or initial value is provided while adding to source. Implementation of this method is optional ie. empty implemetation is provided.
     /// - Parameters:
     ///   - state: new state after reduce
     ///   - oldState: previous state or nil when initial value is provided
-    func didChange(state: State, oldState: State?)
+    func didReduce(state: State, oldState: State?)
 }
 
 public extension StateObserver {
-    func willChange(state: State) { }
-    func didChange(state: State, oldState: State?) { }
+    func willReduce(state: State) { }
+    func didReduce(state: State, oldState: State?) { }
 }
 
 // ------
 final class AnyWeakStoreObserver<State>: StateObserver {
 
-    private let _willChange: ((_ state: Any) -> Void)
-    private let _didChange: ((_ state: Any, _ oldState: Any?) -> Void)
+    private let _willReduce: ((_ state: Any) -> Void)
+    private let _didReduce: ((_ state: Any, _ oldState: Any?) -> Void)
 
     private(set) weak var observer: AnyObject?
 
@@ -40,21 +40,21 @@ final class AnyWeakStoreObserver<State>: StateObserver {
 
         self.observer = observer
 
-        _willChange = { [weak observer] state in
+        _willReduce = { [weak observer] state in
             guard   let observer = observer,
                     let state = state as? Observer.State
             else { return }
 
-            observer.willChange(state: state )
+            observer.willReduce(state: state )
         }
 
-        _didChange = { [weak observer] state, oldState in
+        _didReduce = { [weak observer] state, oldState in
             guard   let observer = observer,
                     let state = state as? Observer.State
             else { return }
 
             let oldState = oldState as? Observer.State
-            observer.didChange(state: state, oldState: oldState)
+            observer.didReduce(state: state, oldState: oldState)
         }
     }
 
@@ -63,21 +63,21 @@ final class AnyWeakStoreObserver<State>: StateObserver {
 
         self.observer = observer
 
-        _willChange = { [weak observer] state in
+        _willReduce = { [weak observer] state in
             guard   let observer = observer,
                     let state: Observer.State = mapper.map(state: state as! State)
             else { return }
 
-            observer.willChange(state: state )
+            observer.willReduce(state: state )
         }
 
-        _didChange = { [weak observer] state, oldState in
+        _didReduce = { [weak observer] state, oldState in
             guard   let observer = observer,
                     let state: Observer.State = mapper.map(state: state as! State)
             else { return }
 
             guard oldState != nil else {
-                observer.didChange(state: state, oldState: nil)
+                observer.didReduce(state: state, oldState: nil)
                 return
             }
 
@@ -85,15 +85,15 @@ final class AnyWeakStoreObserver<State>: StateObserver {
                 return
             }
 
-            observer.didChange(state: state, oldState: oldState)
+            observer.didReduce(state: state, oldState: oldState)
         }
     }
 
-    func willChange(state: State) {
-        _willChange(state)
+    func willReduce(state: State) {
+        _willReduce(state)
     }
 
-    func didChange(state: State, oldState: State?) {
-        _didChange(state, oldState)
+    func didReduce(state: State, oldState: State?) {
+        _didReduce(state, oldState)
     }
 }

@@ -7,7 +7,7 @@
 //
 /**
 
- Special type of middleware that converts one action to another. Source action will never be reduced.
+ Special type of middleware that converts one action to the another. Source action will never be reduced.
  */
 public protocol ConvertMiddleware: Middleware {
     /// type of action handled by this Middleware

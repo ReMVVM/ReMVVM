@@ -12,6 +12,12 @@ public protocol StoreState {
     var factory: ViewModelFactory { get }
 }
 
+private let compositeFactory = CompositeViewModelFactory()
+extension StoreState {
+
+    public var factory: ViewModelFactory { compositeFactory }
+}
+
 //TODO ?
 //extension AnyStateSource {
 //
