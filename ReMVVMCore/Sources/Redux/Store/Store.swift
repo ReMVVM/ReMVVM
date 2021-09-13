@@ -260,5 +260,59 @@ extension Store {
     public static func mock(source: MockSource) -> AnyStore {
         return Store<MockState>(with: source).any
     }
+
+    public static func test<R>(with state: R.State,
+                               reducer: R.Type,
+                               middleware: [AnyMiddleware] = [],
+                               stateMappers: [StateMapper<R.State>] = [],
+                               factory: ViewModelFactory = CompositeViewModelFactory(),
+                               onDispatch: ((_ action: StoreAction) -> Void)? = nil) -> AnyStore where R: Reducer, State == Any {
+
+        let state = TestState(factory: factory, state: state)
+        let midd: [AnyMiddleware]
+        if let onDispatch = onDispatch {
+            midd = [TestMiddleware<R.State>(onDispatch: onDispatch)] + middleware
+        } else {
+            midd = middleware
+        }
+        let mappers = [StateMapper<TestState<R.State>>(for: \.state)] + stateMappers.map { $0.map(with: \.state) }
+
+        let store = Store<TestState<R.State>>(with: state,
+                                              reducer: TestReducer<R>.self,
+                                              middleware: midd, stateMappers: mappers)
+
+
+
+        return store.any
+    }
 }
 
+struct TestState<S>: StoreState {
+    let factory: ViewModelFactory
+    let state: S
+}
+
+enum TestReducer<R>: Reducer where R: Reducer {
+
+    static func reduce(state: TestState<R.State>, with action: StoreAction) -> TestState<R.State> {
+        return TestState(
+            factory: state.factory,
+            state: R.reduce(state: state.state, with: action)
+        )
+    }
+}
+
+final class TestMiddleware<State>: Middleware {
+    let onDispatch: (_ action: StoreAction) -> Void
+
+    init(onDispatch: @escaping (_ action: StoreAction) -> Void) {
+        self.onDispatch = onDispatch
+    }
+
+    func onNext(for state: State, action: StoreAction, interceptor: Interceptor<StoreAction, State>, dispatcher: Dispatcher) {
+        onDispatch(action)
+        interceptor.next()
+    }
+
+
+}
