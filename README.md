@@ -1,5 +1,6 @@
 [![Documentation](https://img.shields.io/badge/Documentation-geen)](https://dgrzeszczak.github.io/ReMVVM)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)
 
 # ReMVVM
  
@@ -196,7 +197,7 @@ Basically import ReMVVMSwiftUI when using SwiftUI, import ReMVVMCore otherwise.
 
 Sneak peak for navigation implemented with ReMVVM. 
 
-```CounterView``` has no navigation logic added. The view contains couple additional buttons that only send appropriete actions.
+```CounterView``` has no additional view navigation logic implemented. The view contains additional buttons that just send appropriate actions.
 
 ![](img/NavigationTest.gif) 
 
@@ -256,12 +257,11 @@ struct CounterView: View {
 
 For the example code please have a look here: [ReMVVMSampleSwiftUI](https://github.com/ReMVVM/ReMVVMSampleSwiftUI)
 
-We are working on extensions to handle navigation in the app on separate projects within ReMVVM repository. 
+[ReMVVMExtUIKit](https://github.com/ReMVVM/ReMVVMExtUIKit) navigation implementation used in couple live applications available in AppStore. 
 
-[ReMVVMExtUIKit](https://github.com/ReMVVM/ReMVVMExtUIKit) is used in couple live applications available in AppStore. 
+[ReMVVMExtSwiftUI](https://github.com/ReMVVM/ReMVVMExtSwiftUI) is a concept of navigation implementation in pure SwiftUI. 
 
-[ReMVVMExtSwiftUI](https://github.com/ReMVVM/ReMVVMExtSwiftUI) is a concept that prooves that it is possible to build navigation mechanism in pure SwiftUI. 
- 
+[ReMVVMSample-iOS](https://github.com/ReMVVM/ReMVVMSample-iOS) is UIKit with RxSwift sample that use [ReMVVMExtUIKit](https://github.com/ReMVVM/ReMVVMExtUIKit).
 </details>
 
 # Summary
