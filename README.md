@@ -25,7 +25,7 @@ But… what about making a mix of two architectures ? Can we implement “global
 
 # Components 
 
-For the simplicity, you can think that *Unidirectional Data Flow* part stores global data model state of the app. *View Model* may take that data, listens and reacts on the data change and of course converts and serves it for the *View* layer.
+For the simplicity, you can think that *Unidirectional Data Flow* part stores global data model in state of the app. *View Model* may take that data, listens and reacts on the data change and of course converts and serves it for the *View* layer.
 
 We can divide components on two groups related with *Unidirectional Data Flow* and *MVVM*. 
 
