@@ -1,3 +1,17 @@
+## [3.0.0](https://github.com/dgrzeszczak/ReMVVM/releases/tag/3.0.0)
+
+#### New
+- dependencies removed
+- ReMVVMCore and ReMVVMSwiftUI introduced 
+- Combine support added - projected publisher for state 
+- Store rebuilt
+- mock source 
+- ReMVVMDriven removed in favor property wrappers
+- @Provided changed to @ReMVVM.ViewModel
+- @ReMVVM.Dispatcher, @ReMVVM.ViewModel, @ReMVVM.State, @ReMVVM.ObservedObject (ReMVVMSwiftUI) added
+- willChange/didChange renamed to willReduce/didReduce
+
+
 ## [2.1.0](https://github.com/dgrzeszczak/ReMVVM/releases/tag/2.0.1)
 
 #### New
