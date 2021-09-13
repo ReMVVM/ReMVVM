@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MockSource Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/MockSource" class="dashAnchor"></a>
+    <a title="MockSource Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (89% documented)</p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        MockSource Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/CompositeViewModelFactory.html">CompositeViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InitializableViewModelFactory.html">InitializableViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Interceptor.html">Interceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MockSource.html">MockSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReMVVMConfig.html">ReMVVMConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SingleViewModelFactory.html">SingleViewModelFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StateMapper.html">StateMapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Store/StateWrapper.html">– StateWrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ViewModelProvider.html">ViewModelProvider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ComposedReducer.html">ComposedReducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/EmptyReducer.html">EmptyReducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReMVVM.html">ReMVVM</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReMVVM/Dispatcher.html">– Dispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReMVVM/State.html">– State</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReMVVM/ViewModel.html">– ViewModel</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/AnyMiddleware.html">AnyMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ConvertMiddleware.html">ConvertMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Dispatcher.html">Dispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Initializable.html">Initializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Source.html">Source</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateAssociated.html">StateAssociated</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateObserver.html">StateObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StateSource.html">StateSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:10ReMVVMCore11StoreActionP">StoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StoreState.html">StoreState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ViewModelFactory.html">ViewModelFactory</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10ReMVVMCore8AnyStorea">AnyStore</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10ReMVVMCore23InterceptorNextFunctiona">InterceptorNextFunction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10ReMVVMCore9ViewModela">ViewModel</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>MockSource</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">MockSource</span></code></pre>
+
+                </div>
+              </div>
+            <p>Source that is used to feed the Store with mock data, used for testing purposes.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10ReMVVMCore10MockSourceC17OnDispatchClosurea"></a>
+                    <a name="//apple_ref/swift/Alias/OnDispatchClosure" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10ReMVVMCore10MockSourceC17OnDispatchClosurea">OnDispatchClosure</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">OnDispatchClosure</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:10ReMVVMCore11StoreActionP">StoreAction</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">MockSource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10ReMVVMCore10MockSourceC7factory10onDispatchAcA16ViewModelFactory_p_yAA11StoreAction_p_ACtcSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(factory:onDispatch:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10ReMVVMCore10MockSourceC7factory10onDispatchAcA16ViewModelFactory_p_yAA11StoreAction_p_ACtcSgtcfc">init(factory:<wbr>onDispatch:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the source</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">factory</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ViewModelFactory.html">ViewModelFactory</a></span> <span class="o">=</span> <span class="kt"><a href="../Classes/CompositeViewModelFactory.html">CompositeViewModelFactory</a></span><span class="p">(),</span> <span class="nv">onDispatch</span><span class="p">:</span> <span class="kt"><a href="../Classes/MockSource.html#/s:10ReMVVMCore10MockSourceC17OnDispatchClosurea">OnDispatchClosure</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>factory</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>ViewModelFactory that will be used for ViewModels creation</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>onDispatch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>closure that will be called when Action is dispatched</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10ReMVVMCore10MockSourceC3set5stateyx_tlF"></a>
+                    <a name="//apple_ref/swift/Method/set(state:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10ReMVVMCore10MockSourceC3set5stateyx_tlF">set(state:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the State that will be served by MockSource</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="k">set</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>state</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>state of the specific type. You can set multiple states with different type if needed.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10ReMVVMCore10MockSourceC3add8observeryx_tAA13StateObserverRzlF"></a>
+                    <a name="//apple_ref/swift/Method/add(observer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10ReMVVMCore10MockSourceC3add8observeryx_tAA13StateObserverRzlF">add(observer:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds state observer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">add</span><span class="o">&lt;</span><span class="kt">Observer</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">observer</span><span class="p">:</span> <span class="kt">Observer</span><span class="p">)</span> <span class="k">where</span> <span class="kt">Observer</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/StateObserver.html">StateObserver</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>observer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>observer to be notified on state changes</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10ReMVVMCore10MockSourceC6remove8observeryx_tAA13StateObserverRzlF"></a>
+                    <a name="//apple_ref/swift/Method/remove(observer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10ReMVVMCore10MockSourceC6remove8observeryx_tAA13StateObserverRzlF">remove(observer:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes state observer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">remove</span><span class="o">&lt;</span><span class="kt">Observer</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">observer</span><span class="p">:</span> <span class="kt">Observer</span><span class="p">)</span> <span class="k">where</span> <span class="kt">Observer</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/StateObserver.html">StateObserver</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>observer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>observer to remove</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10ReMVVMCore10MockSourceC8dispatch6actionyAA11StoreAction_p_tF"></a>
+                    <a name="//apple_ref/swift/Method/dispatch(action:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10ReMVVMCore10MockSourceC8dispatch6actionyAA11StoreAction_p_tF">dispatch(action:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Dishpatches an action.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">dispatch</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:10ReMVVMCore11StoreActionP">StoreAction</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>action to dispach</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="noopener" rel="external"></a>. All rights reserved. (Last updated: 2021-09-13)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="noopener" rel="external">jazzy ♪♫ v0.14.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="noopener" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

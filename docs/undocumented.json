@@ -1,6 +1,117 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/MVVM/Factories/Initializable.swift",
+      "line": 11,
+      "symbol": "Initializable.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/MVVM/ViewModel.swift",
+      "line": 25,
+      "symbol": "ViewModel",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/MVVM/ViewModelProvider.swift",
+      "line": 21,
+      "symbol": "ViewModelProvider.init(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/ReMVVM.swift",
+      "line": 9,
+      "symbol": "ReMVVM",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/ReMVVM.swift",
+      "line": 10,
+      "symbol": "ReMVVM",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/ReMVVM.swift",
+      "line": 10,
+      "symbol": "ReMVVM",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/ReMVVM.swift",
+      "line": 13,
+      "symbol": "ReMVVM",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Middleware/AnyMiddleware.swift",
+      "line": 43,
+      "symbol": "AnyMiddleware.onNext(for:action:interceptor:dispatcher:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Source/MockSource.swift",
+      "line": 54,
+      "symbol": "MockSource.OnDispatchClosure",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Store.swift",
+      "line": 69,
+      "symbol": "Store.StateWrapper",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Store.swift",
+      "line": 84,
+      "symbol": "Store.StateWrapper.wrappedValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Store.swift",
+      "line": 109,
+      "symbol": "Store.StateWrapper.Publisher",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Store.swift",
+      "line": 112,
+      "symbol": "Store.StateWrapper.projectedValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Store.swift",
+      "line": 199,
+      "symbol": "AnyStore",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Redux/Store/Store.swift",
+      "line": 264,
+      "symbol": "Store.test(with:reducer:middleware:stateMappers:factory:onDispatch:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM/ReMVVMCore/Sources/Wrappers/ReMVVM.State.swift",
+      "line": 28,
+      "symbol": "ReMVVM.State.Publisher",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/dgrzeszczak/Projects/dgrzeszczak/ReMVVM"
 }
