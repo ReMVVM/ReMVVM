@@ -13,6 +13,7 @@ final class StateStore<State>: AnyStateSource {
     private var middleware: [AnyMiddleware]
     private let reducer: (State, StoreAction) -> State//AnyReducer<State>
     let source: StoreSource<State>
+    private let logger: Logger
 
     /// Initializes the store
     /// - Parameters:
@@ -21,20 +22,25 @@ final class StateStore<State>: AnyStateSource {
     ///   - middleware:middleware used to enchance action's dispatch functionality
     ///   - stateMappers: application state mappers used to observe application's 'substates'
     init<R>(with state: State,
-                   reducer: R.Type,
-                   middleware: [AnyMiddleware] = [],
-                   stateMappers: [StateMapper<State>] = []) where R: Reducer, R.Action == StoreAction, R.State == State, State: StoreState {
+            reducer: R.Type,
+            middleware: [AnyMiddleware] = [],
+            stateMappers: [StateMapper<State>] = [],
+            logger: Logger) where R: Reducer, R.Action == StoreAction, R.State == State, State: StoreState {
+
         self.state = state
         self.middleware = middleware
         self.reducer = reducer.reduce
+        self.logger = logger
         source = StoreSource(stateMappers: stateMappers)
     }
 
     /// Dishpatches actions in the store. Actions go through middleware and are reduced at the end.
     /// - Parameter action: action to dospatch
-    func dispatch(action: StoreAction) {
+    func dispatch(action: StoreAction, log: Logger.Info) {
 
-        next(index: 0, action: action) { _ in }
+        logger.logDispatch(action: action, log: log, state: state)
+
+        next(index: 0, action: action, log: log) { _ in }
 //        let semaphore = DispatchSemaphore(value: 0)
 //        let t = Thread(target: self, selector: #selector(InternalStore.handle), object: (action, semaphore))
 //        t.stackSize = 1024*1024*1024
@@ -49,29 +55,33 @@ final class StateStore<State>: AnyStateSource {
 //    }
 
 
-    private func next(index: Int, action: StoreAction, callback: @escaping (State) -> Void) {
+    private func next(index: Int, action: StoreAction, log: Logger.Info, callback: @escaping (State) -> Void) {
 
         guard index < self.middleware.count else {
-                self.reduce(with: action)
+                self.reduce(with: action, log: log)
                 callback(self.state)
                 return
         }
 
         let interceptor =  Interceptor<StoreAction, State>(mappers: source.mappers) { [weak self] act, completion in
 
-            self?.next(index: index + 1, action: act ?? action) { state in
+            self?.next(index: index + 1, action: act ?? action, log: log) { state in
                 completion?(state)
                 callback(state)
             }
         }
 
+        logger.logMiddleware(middleware: middleware[index], action: action, log: log)
+
         self.middleware[index].onNext(for: self.state, action: action, interceptor: interceptor, dispatcher: self)
     }
 
-    private func reduce(with action: StoreAction) {
+    private func reduce(with action: StoreAction, log: Logger.Info) {
         let oldState = state
         source.notifyStateWillChange(oldState: oldState)
         state = reducer(oldState, action)
+        logger.logReduce(state: state, oldState: oldState, action: action, log: log)
+        
         source.notifyStateDidChange(state: state, oldState: oldState)
     }
 

@@ -26,8 +26,8 @@ extension ReMVVM {
             }
         }
 
-        public func dispatch(action: StoreAction) {
-            wrappedValue.dispatch(action: action)
+        public func dispatch(action: StoreAction, log: Logger.Info) {
+            wrappedValue.dispatch(action: action, log: log)
         }
     }
 }

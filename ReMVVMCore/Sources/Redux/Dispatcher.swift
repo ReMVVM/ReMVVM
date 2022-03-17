@@ -12,13 +12,19 @@ import Foundation
 public protocol Dispatcher {
     /// Dishpatches an action.
     /// - Parameter action: action to dispach
-    func dispatch(action: StoreAction)
+    func dispatch(action: StoreAction, log: Logger.Info)
+}
+
+extension Dispatcher {
+    public func dispatch(action: StoreAction, file: String = #fileID, function: String = #function, line: Int = #line) {
+        self.dispatch(action: action, log: Logger.Info(file: file, function: function, line: line))
+    }
 }
 
 extension Dispatcher {
     /// Subscript to create closure to dispatch
     /// - Parameter action: action to dispatch
-    public subscript (_ action: @escaping @autoclosure () -> StoreAction) -> () -> Void {
-        { dispatch(action: action()) }
+    public subscript (_ action: @escaping @autoclosure () -> StoreAction, file: String = #fileID, function: String = #function, line: Int = #line) -> () -> Void {
+        { dispatch(action: action(), log: Logger.Info(file: file, function: function, line: line)) }
     }
 }

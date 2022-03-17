@@ -1,3 +1,8 @@
+## [3.1.0](https://github.com/dgrzeszczak/ReMVVM/releases/tag/3.1.0)
+
+#### New
+- Logger added
+
 ## [3.0.0](https://github.com/dgrzeszczak/ReMVVM/releases/tag/3.0.0)
 
 #### New

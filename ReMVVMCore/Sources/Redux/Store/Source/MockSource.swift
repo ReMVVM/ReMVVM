@@ -41,7 +41,7 @@ private final class MockDispatcher: Dispatcher {
         self.source = source
     }
 
-    public func dispatch(action: StoreAction) {
+    public func dispatch(action: StoreAction, log: Logger.Info) {
         closure(action, source)
     }
 
@@ -147,7 +147,7 @@ extension MockSource: AnyStateSource {
 
     /// Dishpatches an action.
     /// - Parameter action: action to dispach
-    public func dispatch(action: StoreAction) {
-        dispatcher?.dispatch(action: action)
+    public func dispatch(action: StoreAction, log: Logger.Info) {
+        dispatcher?.dispatch(action: action, log: log)
     }
 }

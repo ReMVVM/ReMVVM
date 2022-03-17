@@ -11,7 +11,7 @@ struct EmptyState: StoreState {
     var factory: ViewModelFactory = CompositeViewModelFactory()
 }
 
-private let emptyStore = Store(with: EmptyState(), reducer: EmptyReducer.self).any
+private let emptyStore = Store(with: EmptyState(), reducer: EmptyReducer.self, logger: .defaultEmptyLogger).any
 
 extension Store where State == Any {
 
