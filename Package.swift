@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version: 5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -30,6 +30,9 @@ let package = Package(
             dependencies: ["ReMVVMCore"],
             path: "ReMVVMSwiftUI/Sources",
             exclude: []
-            )
+            ),
+        .testTarget(name: "ReMVVMTests",
+                    dependencies: ["ReMVVMCore"],
+                    path: "ReMVVMTests")
     ]
 )

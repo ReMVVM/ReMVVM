@@ -47,7 +47,7 @@ public protocol Middleware: AnyMiddleware {
     associatedtype Action
     /// type of state handled by this Middleware
     associatedtype State
-
+    
     /// Method will be called during dispatch process.
     /// - Parameters:
     ///   - state: current state in the store
@@ -72,7 +72,10 @@ extension Middleware {
 
         onNext(for: saidDst.state, action: saidDst.action, interceptor: saidDst.interceptor, dispatcher: saidDst.dispatcher)
     }
-
+    
+    func handles(action: StoreAction) -> Bool {
+        action is Action
+    }
 }
 
 private final class SAID<State, Action> { //state, action, interceptor, dispatcher

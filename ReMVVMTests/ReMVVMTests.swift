@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import ReMVVM
+import ReMVVMCore
 
 struct State: StoreState {
     let factory: ViewModelFactory = CompositeViewModelFactory()
@@ -28,7 +28,7 @@ struct Substate {
 //    case add(number: Int)
 //}
 
-class CalcAction: StoreAction {
+class CalcAction: CommonTestAction {
     let number: Int
 
     init(number: Int) {
@@ -46,6 +46,7 @@ enum CalcReducer: Reducer {
     }
 }
 
+
 class CalcMiddleware: Middleware {
     static var numOfMiddlewares = 0
     let id: Int
@@ -54,7 +55,7 @@ class CalcMiddleware: Middleware {
         Self.numOfMiddlewares += 1
     }
 
-    func onNext(for state: Substate, action: StoreAction, interceptor: Interceptor<StoreAction, Substate>, dispatcher: Dispatcher) {
+    func onNext(for state: Substate, action: CalcAction, interceptor: Interceptor<CalcAction, Substate>, dispatcher: Dispatcher) {
         //print("before next \(id)")
         interceptor.next() { _ in
             //print("after next \(self.id)")
@@ -62,7 +63,23 @@ class CalcMiddleware: Middleware {
     }
 }
 
-enum SecondAction: StoreAction {
+class AnotherMiddleware: Middleware {
+    static var numOfMiddlewares = 0
+    let id: Int
+    init() {
+        id = Self.numOfMiddlewares
+        Self.numOfMiddlewares += 1
+    }
+
+    func onNext(for state: Substate, action: CommonTestAction, interceptor: Interceptor<CommonTestAction, Substate>, dispatcher: Dispatcher) {
+        print("before next \(id)")
+        interceptor.next() { _ in
+            //print("after next \(self.id)")
+        }
+    }
+}
+
+enum SecondAction: CommonTestAction {
     case first
 }
 
@@ -80,6 +97,12 @@ enum StateReducer: Reducer {
         State(substate: CalcReducer.reduce(state: state.substate, with: action))
     }
 }
+
+protocol CommonTestAction: StoreAction {
+    
+}
+
+
 
 class ReMVVMTests: XCTestCase {
     
@@ -101,14 +124,19 @@ class ReMVVMTests: XCTestCase {
         //dupa(int: 0)
 
 
-        var middleware: [AnyMiddlewareConvertible] = Range(1...2000).map { _ in CalcMiddleware() }
+        var middleware: [AnyMiddleware] = [AnotherMiddleware(), CalcMiddleware(), CalcMiddleware()]//Range(1...2).map { _ in CalcMiddleware() }
         let stateMappers = [StateMapper<State> { $0.substate }]
 
 //        let d = AnyMiddleware { CalcMiddleware()
 //            [CalcMiddleware(), CalcMiddleware() ]; CalcMiddleware()
 //        }
+        
+        let arrayss: [any Middleware] = [CalcMiddleware(), CalcMiddleware(), AnotherMiddleware()]
+        
+        
 
-
+        //print(type(of: middleware.first as! any Middleware).actionType)
+        //print(type(of: CalcMiddleware()).actionType)
         //middleware[1000] = Convert().any
         
 
@@ -117,9 +145,9 @@ class ReMVVMTests: XCTestCase {
                           middleware: middleware,
                           stateMappers: stateMappers)
 
-        self.measure {
-        store.dispatch(action: SecondAction.first)
-        }
+        //self.measure {
+        store.dispatch(action: CalcAction(number: 3))
+        //}
 
     }
 

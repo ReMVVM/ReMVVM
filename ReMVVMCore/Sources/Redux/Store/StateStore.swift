@@ -6,15 +6,17 @@
 //
 
 final class StateStore<State>: AnyStateSource {
-
+    
     /// Current state value
     private(set) var state: State
-
+    
     private var middleware: [AnyMiddleware]
+    private var middlewareShortcuts: [String: [AnyMiddleware]] = [:]
+    
     private let reducer: (State, StoreAction) -> State//AnyReducer<State>
     let source: StoreSource<State>
     private let logger: Logger
-
+    
     /// Initializes the store
     /// - Parameters:
     ///   - state: initial state of the app
@@ -26,12 +28,29 @@ final class StateStore<State>: AnyStateSource {
             middleware: [AnyMiddleware] = [],
             stateMappers: [StateMapper<State>] = [],
             logger: Logger) where R: Reducer, R.Action == StoreAction, R.State == State, State: StoreState {
-
+        
         self.state = state
         self.middleware = middleware
         self.reducer = reducer.reduce
         self.logger = logger
         source = StoreSource(stateMappers: stateMappers)
+    }
+    
+    func getMiddleware(for action: StoreAction) -> [AnyMiddleware] {
+        let key = String(reflecting: action)
+        let middleware: [AnyMiddleware]
+        if let cached = middlewareShortcuts[key] {
+            middleware = cached
+        } else {
+            middleware = self.middleware.filter {
+                guard let middleware = $0 as? any Middleware else { return false }
+                return middleware.handles(action: action)
+            }
+            
+            middlewareShortcuts[key] = middleware
+        }
+        
+        return middleware
     }
 
     /// Dishpatches actions in the store. Actions go through middleware and are reduced at the end.
@@ -39,8 +58,8 @@ final class StateStore<State>: AnyStateSource {
     func dispatch(action: StoreAction, log: Logger.Info) {
 
         logger.logDispatch(action: action, log: log, state: state)
-
-        next(index: 0, action: action, log: log) { _ in }
+        let middleware = getMiddleware(for: action)
+        next(middleware: middleware, index: 0, action: action, log: log) { _ in }
 //        let semaphore = DispatchSemaphore(value: 0)
 //        let t = Thread(target: self, selector: #selector(InternalStore.handle), object: (action, semaphore))
 //        t.stackSize = 1024*1024*1024
@@ -55,9 +74,9 @@ final class StateStore<State>: AnyStateSource {
 //    }
 
 
-    private func next(index: Int, action: StoreAction, log: Logger.Info, callback: @escaping (State) -> Void) {
+    private func next(middleware: [AnyMiddleware], index: Int, action: StoreAction, log: Logger.Info, callback: @escaping (State) -> Void) {
 
-        guard index < self.middleware.count else {
+        guard index < middleware.count else {
                 self.reduce(with: action, log: log)
                 callback(self.state)
                 return
@@ -65,7 +84,7 @@ final class StateStore<State>: AnyStateSource {
 
         let interceptor =  Interceptor<StoreAction, State>(mappers: source.mappers) { [weak self] act, completion in
 
-            self?.next(index: index + 1, action: act ?? action, log: log) { state in
+            self?.next(middleware: middleware, index: index + 1, action: act ?? action, log: log) { state in
                 completion?(state)
                 callback(state)
             }
@@ -73,7 +92,7 @@ final class StateStore<State>: AnyStateSource {
 
         logger.logMiddleware(middleware: middleware[index], action: action, log: log)
 
-        self.middleware[index].onNext(for: self.state, action: action, interceptor: interceptor, dispatcher: self)
+        middleware[index].onNext(for: self.state, action: action, interceptor: interceptor, dispatcher: self)
     }
 
     private func reduce(with action: StoreAction, log: Logger.Info) {
