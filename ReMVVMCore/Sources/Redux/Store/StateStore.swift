@@ -36,7 +36,7 @@ final class StateStore<State>: AnyStateSource {
         source = StoreSource(stateMappers: stateMappers)
     }
     
-    func getMiddleware(for action: StoreAction) -> [AnyMiddleware] {
+    func middlewareShorcut(for action: StoreAction) -> [AnyMiddleware] {
         let key = String(reflecting: action)
         let middleware: [AnyMiddleware]
         if let cached = middlewareShortcuts[key] {
@@ -58,7 +58,7 @@ final class StateStore<State>: AnyStateSource {
     func dispatch(action: StoreAction, log: Logger.Info) {
 
         logger.logDispatch(action: action, log: log, state: state)
-        let middleware = getMiddleware(for: action)
+        let middleware = middlewareShorcut(for: action)
         next(middleware: middleware, index: 0, action: action, log: log) { _ in }
 //        let semaphore = DispatchSemaphore(value: 0)
 //        let t = Thread(target: self, selector: #selector(InternalStore.handle), object: (action, semaphore))
