@@ -101,14 +101,13 @@ public final class MockSource {
             observers.append(weakObserver)
             observer.didReduce(state: state as! Observer.State, oldState: nil)
         } else {
-            let mapper = StateMapper<MockState> { state -> Observer.State in
+            let mapper = StateMapper<MockState> { state -> Observer.State? in
                 let key = String(reflecting: Observer.State.self)
-                return state.subStates[key] as! Observer.State
+                return state.subStates[key] as? Observer.State
             }
 
             weakObserver = AnyWeakStoreObserver<MockState>(observer: observer, mapper: mapper) ??
                 AnyWeakStoreObserver<MockState>(observer: observer)
-
 
             observers.append(weakObserver)
 
