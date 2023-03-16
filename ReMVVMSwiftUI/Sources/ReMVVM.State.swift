@@ -53,7 +53,7 @@ A property wrapper that serves the State from the Store and delivers any State c
                 wrapper = .init(store: userProvidedStore)
             } else {
                 wrapper = .init(store: ReMVVMConfig.empty.store)
-                wrapper.update(store: remvvmConfig.store)
+                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
             }
         }
 

@@ -51,7 +51,7 @@ extension ReMVVM {
                 wrapper = .init(store: userProvidedStore)
             } else {
                 wrapper = .init(store: ReMVVMConfig.empty.store)
-                wrapper.update(store: remvvmConfig.store)
+                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
             }
         }
 

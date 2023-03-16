@@ -65,7 +65,7 @@ public struct DetailsView: View {
                 wrapper = .init(store: userProvidedStore, object: wrappedValue)
             } else {
                 wrapper = .init(store: ReMVVMConfig.empty.store, object: wrappedValue)
-                wrapper.update(store: remvvmConfig.store)
+                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
             }
         }
 

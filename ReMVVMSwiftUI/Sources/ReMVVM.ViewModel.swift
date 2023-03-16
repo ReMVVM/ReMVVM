@@ -89,7 +89,7 @@ class DetailsViewModel: ObservableObject, Initializable {
                 wrapper = .init(store: userProvidedStore, key: key)
             } else {
                 wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
-                wrapper.update(store: remvvmConfig.store)
+                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
             }
         }
 
@@ -103,7 +103,7 @@ class DetailsViewModel: ObservableObject, Initializable {
                 wrapper = .init(store: userProvidedStore, key: key)
             } else {
                 wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
-                wrapper.update(store: remvvmConfig.store)
+                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
             }
         }
 
