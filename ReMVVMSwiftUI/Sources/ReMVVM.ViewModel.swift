@@ -56,8 +56,32 @@ class DetailsViewModel: ObservableObject, Initializable {
         @Environment(\.remvvmConfig) private var remvvmConfig
 
         private var userProvidedStore: AnyStore?
-        @SwiftUI.ObservedObject private var wrapper: Wrapper
-
+        
+        private var wrapper: Wrapper {
+            if stateWrapper.wrapper == nil {
+                stateWrapper.wrapper = wrapperFactory()
+            }
+            
+            if observedWrapper.wrapper == nil {
+                observedWrapper.wrapper = stateWrapper.wrapper
+                observedWrapper.cancellable = observedWrapper.wrapper?.objectWillChange.sink { [weak observedWrapper] in
+                    DispatchQueue.main.async {
+                        observedWrapper?.objectWillChange.send()
+                    }
+                }
+            }
+            return stateWrapper.wrapper!
+        }
+        
+        private class OptionalWrapperBox: ObservableObject {
+            var cancellable: AnyCancellable?
+            var wrapper: Wrapper? = nil
+        }
+        
+        @SwiftUI.ObservedObject private var observedWrapper = OptionalWrapperBox()
+        @SwiftUI.State private var stateWrapper = OptionalWrapperBox()
+        private var wrapperFactory: () -> Wrapper
+          
         /// The underlying value referenced by the observed object.
         public var wrappedValue: VM?  {
             wrapper.wrappedValue
@@ -84,12 +108,18 @@ class DetailsViewModel: ObservableObject, Initializable {
         /// - key: optional identifier that will be used to create view model by ViewModelProvider
         /// - store: user provided store that will be used intsted of ReMVVM provided
         public init(key: String? = nil, store: AnyStore? = nil) {
-            userProvidedStore = store
-            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
-                wrapper = .init(store: userProvidedStore, key: key)
-            } else {
-                wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
-                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
+            let userProvidedStore = store
+            self.userProvidedStore = userProvidedStore
+            wrapperFactory = {
+                let wrapper: Wrapper
+                if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                    wrapper = .init(store: userProvidedStore, key: key)
+                } else {
+                    wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
+                    wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
+                }
+                
+                return wrapper
             }
         }
 
@@ -98,12 +128,18 @@ class DetailsViewModel: ObservableObject, Initializable {
         /// - key: optional identifier that will be used to create view model by ViewModelProvider
         /// - store: user provided store that will be used intsted of ReMVVM provided
         public init(key: String? = nil, store: AnyStore? = nil) where VM: StateObserver {
-            userProvidedStore = store
-            if let userProvidedStore = userProvidedStore { // do not update store when provided by user
-                wrapper = .init(store: userProvidedStore, key: key)
-            } else {
-                wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
-                wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
+            let userProvidedStore = store
+            self.userProvidedStore = userProvidedStore
+            wrapperFactory = {
+                let wrapper: Wrapper
+                if let userProvidedStore = userProvidedStore { // do not update store when provided by user
+                    wrapper = .init(store: userProvidedStore, key: key)
+                } else {
+                    wrapper = Wrapper(store: ReMVVMConfig.empty.store, key: key)
+                    wrapper.update(store: StoreEnvKey.defaultValue.store) // default value without UI
+                }
+                
+                return wrapper
             }
         }
 
