@@ -41,8 +41,10 @@ private final class MockDispatcher: Dispatcher {
         self.source = source
     }
 
-    public func dispatch(action: StoreAction, log: Logger.Info) {
-        closure(action, source)
+    public func dispatch(actions: [StoreAction], log: Logger.Info) {
+        for action in actions {
+            closure(action, source)
+        }
     }
 
 
@@ -144,9 +146,9 @@ extension MockSource: AnyStateSource {
         return state.subStates[key] as? NewState ?? state as? NewState
     }
 
-    /// Dishpatches an action.
+    /// Dishpatches multiple actions.
     /// - Parameter action: action to dispach
-    public func dispatch(action: StoreAction, log: Logger.Info) {
-        dispatcher?.dispatch(action: action, log: log)
+    public func dispatch(actions: [StoreAction], log: Logger.Info) {
+        dispatcher?.dispatch(actions: actions, log: log)
     }
 }

@@ -13,11 +13,23 @@ public protocol Dispatcher {
     /// Dishpatches an action.
     /// - Parameter action: action to dispach
     func dispatch(action: StoreAction, log: Logger.Info)
+    
+    /// Dishpatches multiple actions.
+    /// - Parameter actions: action to dispach
+    func dispatch(actions: [StoreAction], log: Logger.Info)
 }
 
 extension Dispatcher {
     public func dispatch(action: StoreAction, file: String = #fileID, function: String = #function, line: Int = #line) {
         self.dispatch(action: action, log: Logger.Info(file: file, function: function, line: line))
+    }
+    
+    public func dispatch(actions: [StoreAction], file: String = #fileID, function: String = #function, line: Int = #line) {
+        self.dispatch(actions: actions, log: Logger.Info(file: file, function: function, line: line))
+    }
+    
+    public func dispatch(action: StoreAction, log: Logger.Info) {
+        self.dispatch(actions: [action], log: log)
     }
 }
 

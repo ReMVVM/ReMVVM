@@ -91,11 +91,16 @@ public struct Logger {
 
         self.log(.dispatch, params: params)
     }
+    
+    func logWarning(message: String, log: Info) {
+        self.log(.warning, params: [message])
+    }
 
     private enum LogType: String {
         case reduce = "Reduce"
         case middleware = "Middleware"
         case dispatch = "Dispatch"
+        case warning = "!!! WARNING !!!"
     }
 
     private func log(_ logType: LogType, params: [String]) {

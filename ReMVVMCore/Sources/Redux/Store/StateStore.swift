@@ -4,6 +4,7 @@
 //
 //  Created by Dariusz Grzeszczak on 06/08/2021.
 //
+import Foundation
 
 final class StateStore<State>: AnyStateSource {
     
@@ -27,12 +28,14 @@ final class StateStore<State>: AnyStateSource {
             reducer: R.Type,
             middleware: [AnyMiddleware] = [],
             stateMappers: [StateMapper<State>] = [],
+            dispatchQueue: DispatchQueue,
             logger: Logger) where R: Reducer, R.Action == StoreAction, R.State == State, State: StoreState {
         
         self.state = state
         self.middleware = middleware
         self.reducer = reducer.reduce
         self.logger = logger
+        self.dispatchQueue = dispatchQueue
         source = StoreSource(stateMappers: stateMappers)
     }
     
@@ -53,46 +56,71 @@ final class StateStore<State>: AnyStateSource {
         return middleware
     }
 
+    private let dispatchQueue: DispatchQueue
     /// Dishpatches actions in the store. Actions go through middleware and are reduced at the end.
     /// - Parameter action: action to dospatch
-    func dispatch(action: StoreAction, log: Logger.Info) {
-
-        logger.logDispatch(action: action, log: log, state: state)
-        let middleware = middlewareShorcut(for: action)
-        next(middleware: middleware, index: 0, action: action, log: log) { _ in }
-//        let semaphore = DispatchSemaphore(value: 0)
-//        let t = Thread(target: self, selector: #selector(InternalStore.handle), object: (action, semaphore))
-//        t.stackSize = 1024*1024*1024
-//        t.start()
-//        semaphore.wait()
-    }
-
-//    @objc private func handle(action: Any) {
-//        let action = action as! (StoreAction, DispatchSemaphore)
-//        next(index: 0, action: action.0) { _ in }
-//        action.1.signal()
-//    }
-
-
-    private func next(middleware: [AnyMiddleware], index: Int, action: StoreAction, log: Logger.Info, callback: @escaping (State) -> Void) {
-
-        guard index < middleware.count else {
-                self.reduce(with: action, log: log)
-                callback(self.state)
-                return
-        }
-
-        let interceptor =  Interceptor<StoreAction, State>(mappers: source.mappers) { [weak self] act, completion in
-
-            self?.next(middleware: middleware, index: index + 1, action: act ?? action, log: log) { state in
-                completion?(state)
-                callback(state)
+    func dispatch(actions: [StoreAction], log: Logger.Info) {
+        dispatchQueue.async { [weak self] in
+            for action in actions {
+                guard let self else { return }
+                self.logger.logDispatch(action: action, log: log, state: self.state)
+                let middleware = self.middlewareShorcut(for: action)
+                self.dispatch(action: action, middleware: middleware, log: log)
             }
         }
-
-        logger.logMiddleware(middleware: middleware[index], action: action, log: log)
-
-        middleware[index].onNext(for: self.state, action: action, interceptor: interceptor, dispatcher: self)
+    }
+    
+    private class Dispatch {
+        let middleware: [AnyMiddleware]
+        var action: StoreAction
+        let log: Logger.Info
+        var middlewareOffset = -1
+        var completions: [(State) -> Void] = []
+        
+        init(action: StoreAction, middleware: [AnyMiddleware], log: Logger.Info) {
+            self.action = action
+            self.middleware = middleware
+            self.log = log
+        }
+        
+    }
+    
+    private func dispatch(action: StoreAction, middleware: [AnyMiddleware], log: Logger.Info) {
+        let dispatch = Dispatch(action: action, middleware: middleware, log: log)
+        
+        for middleware in middleware.enumerated() {
+            let interceptor =  Interceptor<StoreAction, State>(mappers: source.mappers) { [weak dispatch, logger] act, completion in
+                
+                guard let dispatch else {
+                    logger.logWarning(message: """
+                                        interceptor.next() called outside thread, ignoring that call in \(String(reflecting: type(of: middleware.element)))
+                                        """, log: log)
+                    return
+                }
+                guard dispatch.middlewareOffset == middleware.offset - 1 else {
+                    logger.logWarning(message: """
+                                        interceptor.next() called multiple times, ignoring that call in \(String(reflecting: type(of: middleware.element)))
+                                        """, log: log)
+                    return
+                }
+                if let act { dispatch.action = act }
+                if let completion { dispatch.completions.append(completion) }
+                dispatch.middlewareOffset = middleware.offset
+            }
+            
+            logger.logMiddleware(middleware: middleware.element, action: action, log: log)
+            middleware.element.onNext(for: state, action: dispatch.action, interceptor: interceptor, dispatcher: self)
+            if dispatch.middlewareOffset != middleware.offset {
+                break
+            }
+        }
+        
+        if dispatch.middlewareOffset == dispatch.middleware.count - 1 {
+            reduce(with: action, log: log)
+            dispatch.completions.reversed().forEach {
+                $0(state)
+            }
+        }
     }
 
     private func reduce(with action: StoreAction, log: Logger.Info) {

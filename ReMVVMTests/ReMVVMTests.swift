@@ -58,7 +58,13 @@ class CalcMiddleware: Middleware {
     func onNext(for state: Substate, action: CalcAction, interceptor: Interceptor<CalcAction, Substate>, dispatcher: Dispatcher) {
         //print("before next \(id)")
         interceptor.next() { _ in
-            //print("after next \(self.id)")
+            print("after next \(self.id)")
+        }
+        
+        interceptor.next()
+        
+        DispatchQueue.main.async {
+            interceptor.next()
         }
     }
 }
@@ -103,6 +109,17 @@ protocol CommonTestAction: StoreAction {
 }
 
 
+class Observer: StateObserver {
+    
+    let expectation = XCTestExpectation(description: "Open a file asynchronously.")
+    
+    func willReduce(state: State) {
+        expectation.fulfill()
+    }
+    func didReduce(state: State, oldState: State?) {
+        expectation.fulfill()
+    }
+}
 
 class ReMVVMTests: XCTestCase {
     
@@ -124,14 +141,20 @@ class ReMVVMTests: XCTestCase {
         //dupa(int: 0)
 
 
-        var middleware: [AnyMiddleware] = [AnotherMiddleware(), CalcMiddleware(), CalcMiddleware()]//Range(1...2).map { _ in CalcMiddleware() }
+        var middleware: [AnyMiddleware] = //[AnotherMiddleware(), CalcMiddleware(), CalcMiddleware()]
+        
+        Range(1...2000).map { _ in CalcMiddleware() }
+        
+        // dla 2000  0.235: z dispatchem vs 0.222 bez
+        // 2m 14.221s
+        
         let stateMappers = [StateMapper<State> { $0.substate }]
 
 //        let d = AnyMiddleware { CalcMiddleware()
 //            [CalcMiddleware(), CalcMiddleware() ]; CalcMiddleware()
 //        }
         
-        let arrayss: [any Middleware] = [CalcMiddleware(), CalcMiddleware(), AnotherMiddleware()]
+        //let arrayss: [any Middleware] = [CalcMiddleware(), CalcMiddleware(), AnotherMiddleware()]
         
         
 
@@ -148,6 +171,12 @@ class ReMVVMTests: XCTestCase {
         //self.measure {
         store.dispatch(action: CalcAction(number: 3))
         //}
+        
+        let observer = Observer()
+        store.add(observer: observer)
+
+        
+        wait(for: [observer.expectation], timeout: 10)
 
     }
 

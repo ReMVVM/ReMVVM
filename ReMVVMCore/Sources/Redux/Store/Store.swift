@@ -33,9 +33,10 @@ public final class Store<State>: Dispatcher, StateSource {
                    reducer: R.Type,
                    middleware: [AnyMiddleware] = [],
                    stateMappers: [StateMapper<State>] = [],
+                   dispatchQueue: DispatchQueue = .main,
                    logger: Logger = .noLogger) where R: Reducer, R.Action == StoreAction, R.State == State, State: StoreState {
 
-        _state = .init(with: state, reducer: reducer, middleware: middleware, stateMappers: stateMappers, logger: logger)
+        _state = .init(with: state, reducer: reducer, middleware: middleware, stateMappers: stateMappers, dispatchQueue: dispatchQueue, logger: logger)
     }
 
     init(with mock: MockSource) where State == MockState {
@@ -50,10 +51,10 @@ public final class Store<State>: Dispatcher, StateSource {
         _state = .init(with: store._state.source)
     }
 
-    /// Dishpatches actions in the store. Actions go through middleware and are reduced at the end.
-    /// - Parameter action: action to dospatch
-    public func dispatch(action: StoreAction, log: Logger.Info) {
-        _state.source.dispatch(action: action, log: log)
+    /// Dishpatches multiple actions in the store. Actions go through middleware and are reduced at the end.
+    /// - Parameter actions: actions to dospatch
+    public func dispatch(actions: [StoreAction], log: Logger.Info) {
+        _state.source.dispatch(actions: actions, log: log)
     }
 
     /// Adds the state observer. Observer will be notified on every state change occured in the store. It's allowed to add observer for any application's 'substate' - but appropriete StateMapper has to be added during the store initialization.
@@ -122,9 +123,10 @@ public final class Store<State>: Dispatcher, StateSource {
                 reducer: R.Type,
                 middleware: [AnyMiddleware] = [],
                 stateMappers: [StateMapper<State>] = [],
+                dispatchQueue: DispatchQueue,
                 logger: Logger) where R: Reducer, R.Action == StoreAction, R.State == State, State: StoreState {
 
-            let store = StateStore(with: state, reducer: reducer, middleware: middleware, stateMappers: stateMappers, logger: logger)
+            let store = StateStore(with: state, reducer: reducer, middleware: middleware, stateMappers: stateMappers, dispatchQueue: dispatchQueue, logger: logger)
             self.source = store
             #if canImport(Combine)
             if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {

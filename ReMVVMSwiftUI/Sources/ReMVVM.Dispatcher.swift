@@ -62,16 +62,16 @@ extension ReMVVM {
             }
         }
 
-        /// Dishpatches an action.
-        /// - Parameter action: action to dispach
-        public func dispatch(action: StoreAction, log: Logger.Info) {
-            wrappedValue.dispatch(action: action, log: log)
+        /// Dishpatches multiple actions.
+        /// - Parameter actions: actions to dispach
+        public func dispatch(actions: [StoreAction], log: Logger.Info) {
+            wrappedValue.dispatch(actions: actions, log: log)
         }
 
         private class Wrapper: StoreUpdatableBase<Any>, ReMVVMCore.Dispatcher {
 
-            func dispatch(action: StoreAction, log: Logger.Info) {
-                store.dispatch(action: action, log: log)
+            func dispatch(actions: [StoreAction], log: Logger.Info) {
+                store.dispatch(actions: actions, log: log)
             }
         }
     }
